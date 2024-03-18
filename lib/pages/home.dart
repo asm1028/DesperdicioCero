@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class Home extends StatelessWidget {
   Home({super.key});
@@ -64,7 +65,6 @@ class Home extends StatelessWidget {
           children: [
             Text(
               'Página principal\n\n',
-
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
@@ -79,6 +79,14 @@ class Home extends StatelessWidget {
           ],
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          final image = await ImagePicker().getImage(source: ImageSource.camera);
+        },
+        child: Icon(Icons.add),
+        backgroundColor: Colors.greenAccent[400],
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }
