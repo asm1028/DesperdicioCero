@@ -1,8 +1,14 @@
+import 'package:desperdicio_cero/pages/home.dart';
+import 'package:desperdicio_cero/pages/lista_compra.dart';
+import 'package:desperdicio_cero/pages/primera_pagina.dart';
 import 'package:desperdicio_cero/pages/productos.dart';
+import 'package:desperdicio_cero/pages/lista_productos.dart';
+import 'package:desperdicio_cero/pages/profile.dart';
+import 'package:desperdicio_cero/pages/settings.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -12,73 +18,16 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          title: const Text(
-            'DesperdicioCero',
-            style: TextStyle(
-              color: Colors.white,
-            ),
-          ),
-          backgroundColor: Colors.greenAccent[400],
-          leading: const Icon(
-            Icons.menu,
-            color: Colors.white,
-          ),
-          actions: [
-            IconButton(
-              icon: const Icon(
-                Icons.search,
-                color: Colors.white,
-              ),
-              onPressed: () {},
-            ),
-            IconButton(
-              icon: const Icon(
-                Icons.more_vert,
-                color: Colors.white,
-              ),
-              onPressed: () {},
-            ),
-          ],
-        ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                'Bienvenido a DesperdicioCero!',
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Text(
-                'Desarrollado por: \n\n'
-                'Alberto Santos Martínez',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          ),
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => Productos()),
-            );
-          },
-          backgroundColor: Colors.greenAccent[400],
-        ),
-      ),
+      home: PrimeraPagina(),
+      routes: {
+        'primera_pagina': (context) => PrimeraPagina(),
+        '/home': (context) => Home(),
+        '/productos': (context) => Productos(),
+        '/listaProductos': (context) => ListaProductos(),
+        '/settings': (context) => Settings(),
+        '/profile': (context) => Profile(),
+        '/listaCompra': (context) => ListaCompra(),
+      },
     );
   }
 }

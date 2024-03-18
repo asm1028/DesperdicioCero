@@ -1,0 +1,84 @@
+import 'package:flutter/material.dart';
+
+class Home extends StatelessWidget {
+  Home({super.key});
+
+  @override
+  Widget build(BuildContext context){
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'DesperdicioCero',
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        ),
+        backgroundColor: Colors.greenAccent[400],
+      ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.greenAccent,
+              ),
+              child: Text(
+                '\nBienvenido a DesperdicioCero!'
+                '\n\nDesarrollado por: \n'
+                'Alberto Santos Martínez',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 20,
+                ),
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.settings),
+              title: Text('A J U S T E S'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(
+                  context,
+                  '/settings',
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.person),
+              title: Text('P E R F I L'),
+              onTap: () {
+                Navigator.pushNamed(
+                  context,
+                  '/profile',
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+  
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Página principal\n\n',
+
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            ElevatedButton(
+              child: Text('Regresar'),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

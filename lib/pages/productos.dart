@@ -1,21 +1,20 @@
-import 'package:desperdicio_cero/pages/lista_productos.dart';
 import 'package:flutter/material.dart';
 
 class Productos extends StatelessWidget {
-  const Productos({super.key});
+  Productos({super.key});
 
   @override
   Widget build(BuildContext context){
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           'Productos',
           style: TextStyle(
             color: Colors.white,
           ),
         ),
         backgroundColor: Colors.greenAccent[400],
-        leading: const Icon(
+        leading: Icon(
           Icons.arrow_back,
           color: Colors.white,
         ),
@@ -26,10 +25,9 @@ class Productos extends StatelessWidget {
             'Lista Productos'
             ),
             onPressed: () {
-              Navigator.push(
+              Navigator.pushNamed(
                 context,
-                MaterialPageRoute(builder: (context) => ListaProductos()
-                ),
+                '/listaProductos',
               );
             },
         ),
