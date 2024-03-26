@@ -6,8 +6,10 @@ import 'package:desperdicio_cero/pages/lista_productos.dart';
 import 'package:desperdicio_cero/pages/profile.dart';
 import 'package:desperdicio_cero/pages/settings.dart';
 import 'package:flutter/material.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart' as sqflite_ffi;
 
 void main() {
+  sqflite_ffi.databaseFactory = sqflite_ffi.databaseFactoryFfi;
   runApp(MyApp());
 }
 

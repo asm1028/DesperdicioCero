@@ -81,7 +81,7 @@ class Home extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          final image = await ImagePicker().getImage(source: ImageSource.camera);
+          // final image = await ImagePicker().getImage(source: ImageSource.camera);
         },
         child: Icon(Icons.add),
         backgroundColor: Colors.greenAccent[400],
