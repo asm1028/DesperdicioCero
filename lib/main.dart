@@ -1,3 +1,4 @@
+import 'package:desperdicio_cero/firebase_options.dart';
 import 'package:desperdicio_cero/pages/home.dart';
 import 'package:desperdicio_cero/pages/lista_compra.dart';
 import 'package:desperdicio_cero/pages/primera_pagina.dart';
@@ -5,12 +6,16 @@ import 'package:desperdicio_cero/pages/productos.dart';
 import 'package:desperdicio_cero/pages/lista_productos.dart';
 import 'package:desperdicio_cero/pages/profile.dart';
 import 'package:desperdicio_cero/pages/settings.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:sqflite_common_ffi/sqflite_ffi.dart' as sqflite_ffi;
 
-void main() {
-  sqflite_ffi.databaseFactory = sqflite_ffi.databaseFactoryFfi;
-  runApp(MyApp());
+Future<void> main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform, 
+  );
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {

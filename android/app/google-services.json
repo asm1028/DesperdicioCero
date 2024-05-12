@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "185732800857",
+    "project_id": "desperdiciocero-f3a23",
+    "storage_bucket": "desperdiciocero-f3a23.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:185732800857:android:5ccd38df9e3b209de46c48",
+        "android_client_info": {
+          "package_name": "com.example.desperdicio_cero"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD9n1QMXBmleos3Zt0Dgoln2FESwm8iTKM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
