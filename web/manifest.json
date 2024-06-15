@@ -1,6 +1,6 @@
 {
-    "name": "desperdicio_cero",
-    "short_name": "desperdicio_cero",
+    "name": "desperdiciocero",
+    "short_name": "desperdiciocero",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

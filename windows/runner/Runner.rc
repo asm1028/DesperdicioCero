@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "desperdicio_cero" "\0"
+            VALUE "FileDescription", "desperdiciocero" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "desperdicio_cero" "\0"
+            VALUE "InternalName", "desperdiciocero" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2024 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "desperdicio_cero.exe" "\0"
-            VALUE "ProductName", "desperdicio_cero" "\0"
+            VALUE "OriginalFilename", "desperdiciocero.exe" "\0"
+            VALUE "ProductName", "desperdiciocero" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

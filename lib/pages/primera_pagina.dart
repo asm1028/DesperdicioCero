@@ -1,6 +1,6 @@
-import 'package:desperdicio_cero/pages/home.dart';
-import 'package:desperdicio_cero/pages/lista_compra.dart';
-import 'package:desperdicio_cero/pages/lista_productos.dart';
+import 'package:desperdiciocero/pages/home.dart';
+import 'package:desperdiciocero/pages/lista_compra.dart';
+import 'package:desperdiciocero/pages/lista_productos.dart';
 import 'package:flutter/material.dart';
 
 class PrimeraPagina extends StatefulWidget {
