@@ -1,60 +1,162 @@
-import 'package:desperdicio_cero/models/productos.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class Productos extends StatelessWidget {
-  Productos({Key? key}) : super(key: key);
+class Productos extends StatefulWidget {
+  Productos({super.key});
+
+  @override
+  ProductosState createState() => ProductosState();
+}
+
+class ProductosState extends State<Productos> {
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController _nameController = TextEditingController();
+  DateTime _selectedDate = DateTime.now();
+  bool _dateSelected = false;
+
+  Future<void> addProduct(String name, DateTime expirationDate) async {
+    if (_formKey.currentState!.validate() && _dateSelected) {
+      CollectionReference products = FirebaseFirestore.instance.collection('products');
+      return products
+          .add({
+            'name': name,
+            'expiration_date': expirationDate,
+          })
+          .then((value) {
+            print("Producto añadido");
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Producto "$name" añadido para el ${DateFormat('yyyy-MM-dd').format(expirationDate)}'),
+                duration: Duration(seconds: 3),
+              ),
+            );
+            _clearFields();
+          })
+          .catchError((error) {
+            print("Error al añadir producto: $error");
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Error al añadir producto: $error'),
+                duration: Duration(seconds: 3),
+              ),
+            );
+          });
+    }
+  }
+
+  _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: _selectedDate,
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2050),
+    );
+    if (picked != null && picked != _selectedDate) {
+      setState(() {
+        _selectedDate = picked;
+        _dateSelected = true;
+      });
+    }
+  }
+
+  void _clearFields() {
+    _nameController.clear();
+    setState(() {
+      _selectedDate = DateTime.now();
+      _dateSelected = false;
+    });
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Campos limpiados'),
+        duration: Duration(seconds: 2),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Productos',
-          style: TextStyle(
-            color: Colors.white,
+        title: Text('Productos'),
+        backgroundColor: Colors.greenAccent[400],
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Card(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+            elevation: 5,
+            child: Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      'Añadir Nuevo Producto',
+                      style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: 16),
+                    TextFormField(
+                      controller: _nameController,
+                      decoration: InputDecoration(
+                        hintText: 'Nombre del producto',
+                        hintStyle: TextStyle(color: Colors.grey[550]),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                         prefixIcon: Icon(FontAwesomeIcons.carrot, color: Color.fromARGB(255, 192, 70, 70)),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Por favor ingrese el nombre del producto';
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(height: 40),
+                    ElevatedButton.icon(
+                      onPressed: () => _selectDate(context),
+                      icon: Icon(Icons.calendar_today),
+                      label: Text('Seleccionar fecha'),
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                    Text(
+                      'Fecha de expiración: ${DateFormat('dd/MM/yyyy').format(_selectedDate)}',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    SizedBox(height: 50),
+                    SizedBox(height: 16),
+                    ElevatedButton.icon(
+                      onPressed: () => addProduct(_nameController.text, _selectedDate),
+                      icon: Icon(Icons.add),
+                      label: Text('Añadir Producto'),
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+                      ),
+                    ),
+                    SizedBox(height: 8),
+                    ElevatedButton.icon(
+                      onPressed: _clearFields,
+                      icon: Icon(Icons.delete_sweep),
+                      label: Text('Limpiar Campos'),
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ),
         ),
-        backgroundColor: Colors.greenAccent[400],
-        leading: Icon(
-          Icons.arrow_back,
-          color: Colors.white,
-        ),
       ),
-      /*
-      body: FutureBuilder<List<Map<String, dynamic>>>(
-        future: _getProductos(), // Cambia la llamada al método
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator();
-          } else if (snapshot.hasError) {
-            return Text('Error: ${snapshot.error}');
-          } else {
-            // Construye la lista de productos utilizando los datos obtenidos de la base de datos
-            // Por ejemplo:
-            return ListView.builder(
-              itemCount: snapshot.data!.length,
-              itemBuilder: (context, index) {
-                var producto = snapshot.data![index];
-                return ListTile(
-                  title: Text(producto['nombre_producto']),
-                  subtitle: Text(producto['fecha_caducidad']),
-                  // Agrega más detalles según sea necesario
-                );
-              },
-            );
-          }
-        },
-      ),*/
     );
   }
-
-  // Future<List<Map<String, dynamic>>> _getProductos() async {
-  //   try {
-  //     final db = await DatabaseHelper().database; // Cambia aquí
-  //     return await db.query('Productos');
-  //   } catch (e) {
-  //     print("Error al obtener los productos: $e");
-  //     return [];
-  //   }
-  // }
 }

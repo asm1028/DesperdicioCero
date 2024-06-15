@@ -1,6 +1,6 @@
 import 'package:desperdicio_cero/pages/home.dart';
 import 'package:desperdicio_cero/pages/lista_compra.dart';
-import 'package:desperdicio_cero/pages/productos.dart';
+import 'package:desperdicio_cero/pages/lista_productos.dart';
 import 'package:flutter/material.dart';
 
 class PrimeraPagina extends StatefulWidget {
@@ -16,7 +16,7 @@ class _PrimeraPaginaState extends State<PrimeraPagina> {
   final List _pages = [
     ListaCompra(),
     Home(),
-    Productos()
+    ListaProductos()
   ];
 
   void _navigateBottomBar(int index){

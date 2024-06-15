@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
+//import 'package:image_picker/image_picker.dart';
 
 class Home extends StatelessWidget {
   Home({super.key});
@@ -81,10 +81,10 @@ class Home extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          // final image = await ImagePicker().getImage(source: ImageSource.camera);
+          //final image = await ImagePicker().getImage(source: ImageSource.camera);
         },
-        child: Icon(Icons.add),
         backgroundColor: Colors.greenAccent[400],
+        child: Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
