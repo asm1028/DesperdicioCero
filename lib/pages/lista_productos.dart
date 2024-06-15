@@ -111,7 +111,18 @@ class ListaProductosState extends State<ListaProductos> {
                 SizedBox(height: 8),
                 Row(
                   children: [
-                    Expanded(
+                    IconButton(
+                      icon: Icon(Icons.clear),
+                      onPressed: () {
+                        setState(() {
+                          _filterText = ''; // Limpia el filtro de texto
+                          selectedDate = null; // Limpia el filtro de fecha
+                        });
+                      },
+                    ),
+                    SizedBox(width: 8), // Espacio entre el botón de limpiar y el TextField
+                    Container(
+                      width: 200, // Ajusta este valor según necesites para hacer el TextField más pequeño
                       child: TextField(
                         decoration: InputDecoration(
                           hintText: 'Nombre',
@@ -124,7 +135,7 @@ class ListaProductosState extends State<ListaProductos> {
                         },
                       ),
                     ),
-                    SizedBox(width: 8),
+                    SizedBox(width: 8), // Espacio entre el TextField y el botón de fecha
                     ElevatedButton(
                       onPressed: () async {
                         DateTime? picked = await showDatePicker(
@@ -142,6 +153,11 @@ class ListaProductosState extends State<ListaProductos> {
                       child: Text(selectedDate == null ? 'Fecha' : DateFormat('dd/MM/yyyy').format(selectedDate!)),
                     ),
                   ],
+                ),
+                SizedBox(height: 16),
+                Text(
+                  'Ordenar por:',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly, // Ajusta la alineación según necesites
