@@ -22,3 +22,7 @@ Documentación de Flutter
 - [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
 - [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 - [online documentation](https://docs.flutter.dev/)
+
+Desgarga de Firebase
+- https://firebase.google.com/docs/cli?hl=es&authuser=0#install-cli-windows
+- https://firebase.google.com/docs/flutter/setup?hl=es-419&platform=ios#available-plugins
