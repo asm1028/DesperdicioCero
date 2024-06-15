@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Productos extends StatefulWidget {
   Productos({super.key});
@@ -17,34 +18,38 @@ class ProductosState extends State<Productos> {
   bool _dateSelected = false;
 
   Future<void> addProduct(String name, DateTime expirationDate) async {
-    if (_formKey.currentState!.validate() && _dateSelected) {
-      CollectionReference products = FirebaseFirestore.instance.collection('products');
-      return products
-          .add({
-            'name': name,
-            'expiration_date': expirationDate,
-          })
-          .then((value) {
-            print("Producto añadido");
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Producto "$name" añadido para el ${DateFormat('yyyy-MM-dd').format(expirationDate)}'),
-                duration: Duration(seconds: 3),
-              ),
-            );
-            _clearFields();
-          })
-          .catchError((error) {
-            print("Error al añadir producto: $error");
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Error al añadir producto: $error'),
-                duration: Duration(seconds: 3),
-              ),
-            );
-          });
-    }
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  String? userToken = prefs.getString('userToken');
+
+  if (_formKey.currentState!.validate() && _dateSelected && userToken != null) {
+    CollectionReference products = FirebaseFirestore.instance.collection('products');
+    return products
+        .add({
+          'name': name,
+          'expiration': expirationDate, // Fecha de caducidad
+          'user_token': userToken, // Token del usuario
+        })
+        .then((value) {
+          print("Producto añadido");
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Producto "$name" añadido para el ${DateFormat('dd-MM-yyyy').format(expirationDate)}'),
+              duration: Duration(seconds: 3),
+            ),
+          );
+          _clearFields(false);
+        })
+        .catchError((error) {
+          print("Error al añadir producto: $error");
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Error al añadir producto: $error'),
+              duration: Duration(seconds: 3),
+            ),
+          );
+        });
   }
+}
 
   _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -61,12 +66,18 @@ class ProductosState extends State<Productos> {
     }
   }
 
-  void _clearFields() {
+  void _clearFields(bool showMessage) {
     _nameController.clear();
     setState(() {
       _selectedDate = DateTime.now();
-      _dateSelected = false;
+      _dateSelected = true;
     });
+    if (showMessage){
+      _showClearFieldsMessage();
+    }
+  }
+
+  void _showClearFieldsMessage(){
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('Campos limpiados'),
@@ -143,7 +154,7 @@ class ProductosState extends State<Productos> {
                     ),
                     SizedBox(height: 8),
                     ElevatedButton.icon(
-                      onPressed: _clearFields,
+                      onPressed: () => _clearFields(true),
                       icon: Icon(Icons.delete_sweep),
                       label: Text('Limpiar Campos'),
                       style: ElevatedButton.styleFrom(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class Settings extends StatelessWidget {
-  Settings({super.key});
+class UserSettings extends StatelessWidget {
+  UserSettings({super.key});
 
   @override
   Widget build(BuildContext context){
