@@ -8,13 +8,15 @@ class ListaProductos extends StatefulWidget {
   ListaProductos({super.key});
 
   @override
-  _ListaProductosState createState() => _ListaProductosState();
+  ListaProductosState createState() => ListaProductosState();
 }
 
-class _ListaProductosState extends State<ListaProductos> {
-  String _sortOrder = 'expiration'; // Default sort order
+class ListaProductosState extends State<ListaProductos> {
+  String _sortField = 'Fecha de caducidad'; // Valor inicial
+  String _sortOrder = 'Ascendente'; // Valor inicial
+
   String _filterText = '';
-  DateTime? _selectedDate;
+  DateTime? selectedDate;
 
   Future<String?> getUserToken() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -26,8 +28,8 @@ class _ListaProductosState extends State<ListaProductos> {
   }
 
   Future<void> _editProduct(BuildContext context, String productId, String currentName, DateTime currentExpirationDate) async {
-    TextEditingController _nameController = TextEditingController(text: currentName);
-    DateTime _selectedDate = currentExpirationDate;
+    TextEditingController nameController = TextEditingController(text: currentName);
+    DateTime selectedDate = currentExpirationDate;
 
     await showDialog(
       context: context,
@@ -38,7 +40,7 @@ class _ListaProductosState extends State<ListaProductos> {
             mainAxisSize: MainAxisSize.min,
             children: [
               TextFormField(
-                controller: _nameController,
+                controller: nameController,
                 decoration: InputDecoration(hintText: 'Nombre del producto'),
               ),
               SizedBox(height: 16),
@@ -46,18 +48,18 @@ class _ListaProductosState extends State<ListaProductos> {
                 onPressed: () async {
                   DateTime? picked = await showDatePicker(
                     context: context,
-                    initialDate: _selectedDate,
+                    initialDate: selectedDate,
                     firstDate: DateTime.now(),
                     lastDate: DateTime(2050),
                   );
                   if (picked != null) {
-                    _selectedDate = picked;
+                    selectedDate = picked;
                   }
                 },
                 child: Text('Seleccionar caducidad'),
               ),
               SizedBox(height: 16),
-              Text('Caducidad: ${DateFormat('dd/MM/yyyy').format(_selectedDate)}'),
+              Text('Caducidad: ${DateFormat('dd/MM/yyyy').format(selectedDate)}'),
             ],
           ),
           actions: [
@@ -70,8 +72,8 @@ class _ListaProductosState extends State<ListaProductos> {
             TextButton(
               onPressed: () async {
                 await FirebaseFirestore.instance.collection('products').doc(productId).update({
-                  'name': _nameController.text,
-                  'expiration': _selectedDate,
+                  'name': nameController.text,
+                  'expiration': selectedDate,
                 });
                 Navigator.of(context).pop();
               },
@@ -133,43 +135,41 @@ class _ListaProductosState extends State<ListaProductos> {
                         );
                         if (picked != null) {
                           setState(() {
-                            _selectedDate = picked;
+                            selectedDate = picked;
                           });
                         }
                       },
-                      child: Text(_selectedDate == null ? 'Fecha' : DateFormat('dd/MM/yyyy').format(_selectedDate!)),
+                      child: Text(selectedDate == null ? 'Fecha' : DateFormat('dd/MM/yyyy').format(selectedDate!)),
                     ),
                   ],
                 ),
-                SizedBox(height: 16),
-                Text(
-                  'Ordenar por:',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 8),
-                DropdownButton<String>(
-                  value: _sortOrder,
-                  icon: Icon(Icons.sort),
-                  iconSize: 24,
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      _sortOrder = newValue!;
-                    });
-                  },
-                  items: <String>['expiration', 'name']
-                      .map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                        child: Text(
-                          value == 'expiration' ? 'Fecha de caducidad' : 'Nombre',
-                          style: TextStyle(color: Colors.black),
-                        ),
-                      ),
-                    );
-                  }).toList(),
-                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly, // Ajusta la alineación según necesites
+                  children: [
+                    ElevatedButton.icon(
+                      onPressed: () {
+                        setState(() {
+                          if (_sortField == 'Fecha de caducidad') {
+                            _sortField = 'Nombre';
+                          } else {
+                            _sortField = 'Fecha de caducidad';
+                          }
+                        });
+                      },
+                      icon: Icon(Icons.sort), // Elige el icono que prefieras
+                      label: Text(_sortField),
+                    ),
+                    ElevatedButton.icon(
+                      onPressed: () {
+                        setState(() {
+                          _sortOrder = _sortOrder == 'Ascendente' ? 'Descendente' : 'Ascendente';
+                        });
+                      },
+                      icon: Icon(Icons.swap_vert), // Elige el icono que prefieras
+                      label: Text(_sortOrder),
+                    ),
+                  ],
+                )
               ],
             ),
           ),
@@ -218,16 +218,16 @@ class _ListaProductosState extends State<ListaProductos> {
                       }).toList();
                     }
 
-                    if (_selectedDate != null) {
+                    if (selectedDate != null) {
                       docs = docs.where((doc) {
                         DateTime expirationDate = doc['expiration'] is Timestamp
                             ? (doc['expiration'] as Timestamp).toDate()
                             : DateTime.parse(doc['expiration']);
-                        return expirationDate == _selectedDate;
+                        return expirationDate == selectedDate;
                       }).toList();
                     }
 
-                    if (_sortOrder == 'expiration') {
+                    if (_sortField == 'Fecha de caducidad') {
                       docs.sort((a, b) {
                         DateTime expirationA = a['expiration'] is Timestamp
                             ? (a['expiration'] as Timestamp).toDate()
@@ -235,10 +235,13 @@ class _ListaProductosState extends State<ListaProductos> {
                         DateTime expirationB = b['expiration'] is Timestamp
                             ? (b['expiration'] as Timestamp).toDate()
                             : DateTime.parse(b['expiration']);
-                        return expirationA.compareTo(expirationB);
+                        return _sortOrder == 'Ascendente' ? expirationA.compareTo(expirationB) : expirationB.compareTo(expirationA);
                       });
-                    } else if (_sortOrder == 'name') {
-                      docs.sort((a, b) => (a['name'] as String).compareTo(b['name'] as String));
+                    } else if (_sortField == 'Nombre') {
+                      docs.sort((a, b) {
+                        int comparison = (a['name'] as String).compareTo(b['name'] as String);
+                        return _sortOrder == 'Ascendente' ? comparison : -comparison;
+                      });
                     }
 
                     return GridView.builder(
@@ -316,7 +319,7 @@ class _ListaProductosState extends State<ListaProductos> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   IconButton(
-                                    icon: Icon(Icons.edit, color: Colors.blue),
+                                    icon: Icon(Icons.edit, color: const Color.fromARGB(255, 60, 224, 66)),
                                     onPressed: () => _editProduct(context, productId, data['name'], expirationDate),
                                   ),
                                   IconButton(
