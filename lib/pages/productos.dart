@@ -3,6 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:async';
+import 'package:connectivity_plus/connectivity_plus.dart';
 
 class Productos extends StatefulWidget {
   Productos({super.key});
@@ -15,41 +17,57 @@ class ProductosState extends State<Productos> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
   DateTime _selectedDate = DateTime.now();
-  bool _dateSelected = false;
+  bool _dateSelected = true;
+  final Connectivity _connectivity = Connectivity();
+  StreamSubscription<List<ConnectivityResult>>? _connectivitySubscription;
+
+  @override
+  void initState() {
+    super.initState();
+    _connectivitySubscription = _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
+  }
+
+  @override
+  void dispose() {
+    _connectivitySubscription?.cancel();
+    super.dispose();
+  }
+
+  void _updateConnectionStatus(List<ConnectivityResult> result) async {
+    if (result == ConnectivityResult.none) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('No hay conexión a Internet. Los datos se sincronizarán automáticamente cuando se restablezca la conexión.'),
+          duration: Duration(seconds: 5),
+        ),
+      );
+    }
+  }
 
   Future<void> addProduct(String name, DateTime expirationDate) async {
-  final SharedPreferences prefs = await SharedPreferences.getInstance();
-  String? userToken = prefs.getString('userToken');
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? userToken = prefs.getString('userToken');
 
-  if (_formKey.currentState!.validate() && _dateSelected && userToken != null) {
-    CollectionReference products = FirebaseFirestore.instance.collection('products');
-    return products
-        .add({
-          'name': name,
-          'expiration': expirationDate, // Fecha de caducidad
-          'user_token': userToken, // Token del usuario
-        })
-        .then((value) {
-          print("Producto añadido");
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Producto "$name" añadido para el ${DateFormat('dd-MM-yyyy').format(expirationDate)}'),
-              duration: Duration(seconds: 3),
-            ),
-          );
-          _clearFields(false);
-        })
-        .catchError((error) {
-          print("Error al añadir producto: $error");
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Error al añadir producto: $error'),
-              duration: Duration(seconds: 3),
-            ),
-          );
-        });
+    if (_formKey.currentState!.validate() && _dateSelected && userToken != null) {
+      CollectionReference products = FirebaseFirestore.instance.collection('products');
+      products
+          .add({
+            'name': name,
+            'expiration': expirationDate, // Fecha de caducidad
+            'user_token': userToken, // Token del usuario
+          })
+          .then((value) => print("Producto añadido"))
+          .catchError((error) => print("Error al añadir producto: $error"));
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Añadido "$name" con fecha de expiración ${DateFormat('dd/MM/yyyy').format(expirationDate)}'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+      _clearFields(true, false);
+    }
   }
-}
 
   _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -66,13 +84,13 @@ class ProductosState extends State<Productos> {
     }
   }
 
-  void _clearFields(bool showMessage) {
+  void _clearFields(bool clearDate, bool showMessage) {
     _nameController.clear();
-    setState(() {
+    if (clearDate) {
       _selectedDate = DateTime.now();
-      _dateSelected = true;
-    });
-    if (showMessage){
+      _dateSelected = false;
+    }
+    if (showMessage) {
       _showClearFieldsMessage();
     }
   }
@@ -154,7 +172,7 @@ class ProductosState extends State<Productos> {
                     ),
                     SizedBox(height: 8),
                     ElevatedButton.icon(
-                      onPressed: () => _clearFields(true),
+                      onPressed: () => _clearFields(true, true),
                       icon: Icon(Icons.delete_sweep),
                       label: Text('Limpiar Campos'),
                       style: ElevatedButton.styleFrom(
