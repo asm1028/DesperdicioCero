@@ -23,8 +23,39 @@ class ListaProductosState extends State<ListaProductos> {
     return prefs.getString('userToken');
   }
 
-  Future<void> _deleteProduct(String productId) async {
-    await FirebaseFirestore.instance.collection('products').doc(productId).delete();
+  void _deleteProduct(BuildContext context, String productId) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Eliminar Producto'),
+          content: Text('¿Estás seguro de que quieres eliminar este producto?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancelar'),
+            ),
+            TextButton(
+              onPressed: () async {
+                await FirebaseFirestore.instance.collection('products').doc(productId).delete();
+                Navigator.of(context).pop();
+                
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Eliminado satisfactoriamente'),
+                    duration: Duration(seconds: 2),
+                  ),
+                );
+                setState(() {});
+              },
+              child: Text('Eliminar'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   Future<void> _editProduct(BuildContext context, String productId, String currentName, DateTime currentExpirationDate) async {
@@ -53,7 +84,9 @@ class ListaProductosState extends State<ListaProductos> {
                     lastDate: DateTime(2050),
                   );
                   if (picked != null) {
-                    selectedDate = picked;
+                    setState(() {
+                      selectedDate = picked;
+                    });
                   }
                 },
                 child: Text('Seleccionar caducidad'),
@@ -76,6 +109,7 @@ class ListaProductosState extends State<ListaProductos> {
                   'expiration': selectedDate,
                 });
                 Navigator.of(context).pop();
+                setState(() {}); // Refresh the UI after updating
               },
               child: Text('Guardar'),
             ),
@@ -340,7 +374,7 @@ class ListaProductosState extends State<ListaProductos> {
                                   ),
                                   IconButton(
                                     icon: Icon(Icons.delete, color: Colors.red),
-                                    onPressed: () => _deleteProduct(productId),
+                                    onPressed: () => _deleteProduct(context, productId),
                                   ),
                                 ],
                               ),

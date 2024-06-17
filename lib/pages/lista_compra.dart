@@ -61,7 +61,7 @@ class ListaCompraState extends State<ListaCompra> {
       CollectionReference products = FirebaseFirestore.instance.collection('shopping_list');
       products
           .add({
-            'name': name,
+            'name': name.trim(),
             'user_token': userToken,
             'added_day': FieldValue.serverTimestamp(),
           })
@@ -70,7 +70,7 @@ class ListaCompraState extends State<ListaCompra> {
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Añadido "$name"'),
+            content: Text('Añadido "${name.trim()}"'),
           duration: Duration(seconds: 2),
         ),
       );
