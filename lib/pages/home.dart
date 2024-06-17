@@ -64,17 +64,16 @@ class Home extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Página principal\n\n',
+              'Página principal\n\n\n\n'
+              'En esta interfaz se pondrán\n'
+              'los productos más proximos\n'
+              'a caducar y los productos que\n'
+              'el usuario tiene en la lista\n'
+              'de la compra\n',
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
-            ),
-            ElevatedButton(
-              child: Text('Regresar'),
-              onPressed: () {
-                Navigator.pop(context);
-              },
             ),
           ],
         ),

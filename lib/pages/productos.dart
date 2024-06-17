@@ -108,7 +108,12 @@ class ProductosState extends State<Productos> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Productos'),
+        title: Text(
+          'Productos',
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        ),
         backgroundColor: Colors.greenAccent[400],
       ),
       body: SingleChildScrollView(

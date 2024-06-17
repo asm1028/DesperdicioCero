@@ -120,9 +120,9 @@ class ListaProductosState extends State<ListaProductos> {
                         });
                       },
                     ),
-                    SizedBox(width: 8), // Espacio entre el botón de limpiar y el TextField
-                    Container(
-                      width: 200, // Ajusta este valor según necesites para hacer el TextField más pequeño
+                    SizedBox(width: 8),
+                    SizedBox(
+                      width: 200,
                       child: TextField(
                         decoration: InputDecoration(
                           hintText: 'Nombre',
@@ -135,7 +135,7 @@ class ListaProductosState extends State<ListaProductos> {
                         },
                       ),
                     ),
-                    SizedBox(width: 8), // Espacio entre el TextField y el botón de fecha
+                    SizedBox(width: 8),
                     ElevatedButton(
                       onPressed: () async {
                         DateTime? picked = await showDatePicker(
@@ -160,7 +160,7 @@ class ListaProductosState extends State<ListaProductos> {
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly, // Ajusta la alineación según necesites
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     ElevatedButton.icon(
                       onPressed: () {
@@ -172,7 +172,7 @@ class ListaProductosState extends State<ListaProductos> {
                           }
                         });
                       },
-                      icon: Icon(Icons.sort), // Elige el icono que prefieras
+                      icon: Icon(Icons.sort),
                       label: Text(_sortField),
                     ),
                     ElevatedButton.icon(
@@ -181,7 +181,7 @@ class ListaProductosState extends State<ListaProductos> {
                           _sortOrder = _sortOrder == 'Ascendente' ? 'Descendente' : 'Ascendente';
                         });
                       },
-                      icon: Icon(Icons.swap_vert), // Elige el icono que prefieras
+                      icon: Icon(Icons.swap_vert),
                       label: Text(_sortOrder),
                     ),
                   ],
