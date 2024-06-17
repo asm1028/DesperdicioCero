@@ -6,6 +6,7 @@ import 'package:desperdiciocero/pages/productos.dart';
 import 'package:desperdiciocero/pages/lista_productos.dart';
 import 'package:desperdiciocero/pages/profile.dart';
 import 'package:desperdiciocero/pages/user_settings.dart';
+import 'package:desperdiciocero/pages/productos_comprados.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -60,6 +61,7 @@ class MyApp extends StatelessWidget {
         '/settings': (context) => UserSettings(),
         '/profile': (context) => Profile(),
         '/listaCompra': (context) => ListaCompra(),
+        '/productosComprados': (context) => ProductosComprados(),
       },
     );
   }

@@ -416,9 +416,10 @@ class ListaCompraState extends State<ListaCompra> {
               },
               backgroundColor: Colors.grey[400],
               shape: CircleBorder(),
+              heroTag: "bagShoppingFAB", // Tag único para este botón, sino provoca un error de hero
               child: Icon(FontAwesomeIcons.bagShopping),
-            ),
-          ),
+        ),
+      ),
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
