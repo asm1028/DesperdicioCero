@@ -50,14 +50,11 @@ class ProductosState extends State<Productos> {
 
     if (_formKey.currentState!.validate() && _dateSelected && userToken != null) {
       CollectionReference products = FirebaseFirestore.instance.collection('products');
-      products
-          .add({
-            'name': name,
-            'expiration': expirationDate, // Fecha de caducidad
-            'user_token': userToken, // Token del usuario
-          })
-          .then((value) => print("Producto añadido"))
-          .catchError((error) => print("Error al añadir producto: $error"));
+      await products.add({
+        'name': name,
+        'expiration': expirationDate, // Fecha de caducidad
+        'user_token': userToken, // Token del usuario
+      });
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -87,15 +84,20 @@ class ProductosState extends State<Productos> {
   void _clearFields(bool clearDate, bool showMessage) {
     _nameController.clear();
     if (clearDate) {
-      _selectedDate = DateTime.now();
-      _dateSelected = false;
+      setState(() {
+        _selectedDate = DateTime.now();
+        _dateSelected = true;
+      });
     }
     if (showMessage) {
       _showClearFieldsMessage();
     }
   }
 
-  void _showClearFieldsMessage(){
+  void _showClearFieldsMessage() {
+    // Elimina el Snackbar actual si está mostrándose
+    ScaffoldMessenger.of(context).removeCurrentSnackBar();
+    
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('Campos limpiados'),
@@ -142,8 +144,20 @@ class ProductosState extends State<Productos> {
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10.0),
                         ),
-                         prefixIcon: Icon(FontAwesomeIcons.carrot, color: Color.fromARGB(255, 192, 70, 70)),
+                        prefixIcon: Icon(FontAwesomeIcons.carrot, color: Color.fromARGB(255, 192, 70, 70)),
                       ),
+                      maxLength: 40,
+                      buildCounter: (
+                        BuildContext context, {
+                        required int currentLength,
+                        required bool isFocused,
+                        required int? maxLength,
+                      }) {
+                        return Text(
+                          '${maxLength! - currentLength}', // Muestra el número de caracteres restantes
+                          style: TextStyle(color: isFocused ? Colors.blue : Colors.grey),
+                        );
+                      },
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Por favor ingrese el nombre del producto';
@@ -166,7 +180,6 @@ class ProductosState extends State<Productos> {
                       style: TextStyle(fontSize: 16),
                     ),
                     SizedBox(height: 50),
-                    SizedBox(height: 16),
                     ElevatedButton.icon(
                       onPressed: () => addProduct(_nameController.text, _selectedDate),
                       icon: Icon(Icons.add),

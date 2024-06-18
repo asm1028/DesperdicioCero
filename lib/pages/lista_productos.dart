@@ -17,6 +17,7 @@ class ListaProductosState extends State<ListaProductos> {
 
   String _filterText = '';
   DateTime? selectedDate;
+  TextEditingController _filterController = TextEditingController();
 
   Future<String?> getUserToken() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -41,7 +42,7 @@ class ListaProductosState extends State<ListaProductos> {
               onPressed: () async {
                 await FirebaseFirestore.instance.collection('products').doc(productId).delete();
                 Navigator.of(context).pop();
-                
+
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text('Eliminado satisfactoriamente'),
@@ -120,6 +121,12 @@ class ListaProductosState extends State<ListaProductos> {
   }
 
   @override
+  void dispose() {
+    _filterController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -150,6 +157,7 @@ class ListaProductosState extends State<ListaProductos> {
                       onPressed: () {
                         setState(() {
                           _filterText = ''; // Limpia el filtro de texto
+                          _filterController.clear(); // Limpia el texto del TextField
                           selectedDate = null; // Limpia el filtro de fecha
                         });
                       },
@@ -158,6 +166,7 @@ class ListaProductosState extends State<ListaProductos> {
                     SizedBox(
                       width: 200,
                       child: TextField(
+                        controller: _filterController,
                         decoration: InputDecoration(
                           hintText: 'Nombre',
                           border: OutlineInputBorder(),
@@ -300,7 +309,7 @@ class ListaProductosState extends State<ListaProductos> {
                         crossAxisCount: 2,
                         crossAxisSpacing: 8.0,
                         mainAxisSpacing: 8.0,
-                        childAspectRatio: 1,
+                        childAspectRatio: 1.15,
                       ),
                       itemCount: docs.length,
                       itemBuilder: (BuildContext context, int index) {
@@ -349,7 +358,7 @@ class ListaProductosState extends State<ListaProductos> {
                               ),
                             ],
                           ),
-                          padding: EdgeInsets.all(16),
+                          padding: EdgeInsets.all(15),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
