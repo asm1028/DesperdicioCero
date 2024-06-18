@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'dart:async';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:desperdiciocero/assets/products_data.dart';
 
 class ListaCompra extends StatefulWidget {
   ListaCompra({super.key});
@@ -20,7 +21,6 @@ class ListaCompraState extends State<ListaCompra> {
 
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
-
   final Connectivity _connectivity = Connectivity();
   StreamSubscription<List<ConnectivityResult>>? _connectivitySubscription;
 
@@ -37,7 +37,7 @@ class ListaCompraState extends State<ListaCompra> {
   }
 
   void _updateConnectionStatus(List<ConnectivityResult> results) async {
-    ConnectivityResult result = results.last;
+    ConnectivityResult result = results.first;
     if (result == ConnectivityResult.none) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -70,7 +70,7 @@ class ListaCompraState extends State<ListaCompra> {
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-            content: Text('Añadido "${name.trim()}"'),
+          content: Text('Añadido "${name.trim()}"'),
           duration: Duration(seconds: 2),
         ),
       );
@@ -159,27 +159,70 @@ class ListaCompraState extends State<ListaCompra> {
           title: Text('Añadir Nuevo Producto', textAlign: TextAlign.center),
           content: SingleChildScrollView(
             child: Padding(
-              padding: EdgeInsets.all(16.0),
+              padding: EdgeInsets.all(10.0),
               child: Form(
                 key: _formKey,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    TextFormField(
-                      controller: _nameController,
-                      decoration: InputDecoration(
-                        hintText: 'Nombre del producto',
-                        hintStyle: TextStyle(color: Colors.grey[550]),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        prefixIcon: Icon(FontAwesomeIcons.carrot, color: Color.fromARGB(255, 192, 70, 70)),
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Por favor ingrese el nombre del producto';
+                    Autocomplete<String>(
+                      optionsBuilder: (TextEditingValue textEditingValue) {
+                        if (textEditingValue.text.isEmpty) {
+                          return const Iterable<String>.empty();
                         }
-                        return null;
+                        return productos.keys.where((String option) {
+                          return option.toLowerCase().contains(textEditingValue.text.toLowerCase());
+                        });
+                      },
+                      onSelected: (String selection) {
+                        _nameController.text = selection;
+                      },
+                      fieldViewBuilder: (context, controller, focusNode, onEditingComplete) {
+                        return TextFormField(
+                          controller: controller,
+                          focusNode: focusNode,
+                          onEditingComplete: onEditingComplete,
+                          decoration: InputDecoration(
+                            hintText: 'Nombre del producto',
+                            hintStyle: TextStyle(color: Colors.grey[550]),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            prefixIcon: Icon(FontAwesomeIcons.carrot, color: Color.fromARGB(255, 192, 70, 70)),
+                            contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Por favor ingrese el nombre del producto';
+                            }
+                            return null;
+                          },
+                        );
+                      },
+                      optionsViewBuilder: (context, onSelected, options) {
+                        return Align(
+                          alignment: Alignment.topLeft,
+                          child: Material(
+                            elevation: 4.0,
+                            child: Container(
+                              width: MediaQuery.of(context).size.width * 0.55,
+                              height: MediaQuery.of(context).size.height * options.length * 0.07,
+                              child: ListView.builder(
+                                padding: EdgeInsets.all(0.0),
+                                itemCount: options.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  final String option = options.elementAt(index);
+                                  return ListTile(
+                                    title: Text(option),
+                                    onTap: () {
+                                      onSelected(option);
+                                    },
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                        );
                       },
                     ),
                     SizedBox(height: 16),
@@ -215,6 +258,7 @@ class ListaCompraState extends State<ListaCompra> {
     );
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -225,7 +269,7 @@ class ListaCompraState extends State<ListaCompra> {
             color: Colors.white,
           ),
         ),
-        backgroundColor: Colors.grey[400],
+        backgroundColor: Colors.blue[400],
       ),
       body: Column(
         children: [
@@ -321,67 +365,88 @@ class ListaCompraState extends State<ListaCompra> {
                     });
 
                     return ListView(
-                      children: filteredDocs.map((DocumentSnapshot document) {
-                        Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
-                        return Card(
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-                          elevation: 4,
-                          margin: EdgeInsets.all(8.0),
-                          child: ListTile(
-                            leading: CircleAvatar(
-                              backgroundColor: Color.fromARGB(255, 192, 70, 70),
-                              child: Icon(FontAwesomeIcons.carrot, color: Colors.white),
+                      children: [
+                        ...filteredDocs.map((DocumentSnapshot document) {
+                          Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+                          String productName = data['name'];
+                          String category = productos[productName] ?? 'Cesta';
+                          String iconPath = 'lib/assets/images/$category.png';
+
+                          return Card(
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+                            elevation: 4,
+                            margin: EdgeInsets.all(8.0),
+                            child: ListTile(
+                              leading: CircleAvatar(
+                                radius: 20,
+                                backgroundColor: Color.fromARGB(255, 192, 70, 70),
+                                child: CircleAvatar(
+                                  radius: 17,
+                                  backgroundColor: Colors.white,
+                                  child: Container(
+                                    width: 24,
+                                    height: 24,
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: AssetImage(iconPath),
+                                        fit: BoxFit.contain, // Para que la imagen no se corte
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              title: Text(data['name']),
+                              trailing: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  IconButton(
+                                    icon: Icon(Icons.edit),
+                                    onPressed: () {
+                                      _editItem(context, document.id, data['name']);
+                                    },
+                                  ),
+                                  IconButton(
+                                    icon: Icon(Icons.delete),
+                                    onPressed: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: Text('Eliminar Producto'),
+                                            content: Text('¿Estás seguro de que quieres eliminar este producto?'),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                },
+                                                child: Text('Cancelar'),
+                                              ),
+                                              TextButton(
+                                                onPressed: () {
+                                                  _deleteItem(document.id);
+                                                  Navigator.of(context).pop();
+                                                },
+                                                child: Text('Eliminar'),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    },
+                                  ),
+                                  IconButton(
+                                    icon: Icon(Icons.shopping_bag),
+                                    onPressed: () {
+                                      _moveToPurchased(document.id, data['name']);
+                                    },
+                                  ),
+                                ],
+                              ),
                             ),
-                            title: Text(data['name']),
-                            trailing: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                IconButton(
-                                  icon: Icon(Icons.edit),
-                                  onPressed: () {
-                                    _editItem(context, document.id, data['name']);
-                                  },
-                                ),
-                                IconButton(
-                                  icon: Icon(Icons.delete),
-                                  onPressed: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: Text('Eliminar Producto'),
-                                          content: Text('¿Estás seguro de que quieres eliminar este producto?'),
-                                          actions: [
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: Text('Cancelar'),
-                                            ),
-                                            TextButton(
-                                              onPressed: () {
-                                                _deleteItem(document.id);
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: Text('Eliminar'),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  },
-                                ),
-                                IconButton(
-                                  icon: Icon(Icons.shopping_bag),
-                                  onPressed: () {
-                                    _moveToPurchased(document.id, data['name']);
-                                  },
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      }).toList(),
+                          );
+                        }).toList(),
+                        SizedBox(height: 80), // Ajusta la altura según sea necesario
+                      ],
                     );
                   },
                 );
@@ -393,20 +458,20 @@ class ListaCompraState extends State<ListaCompra> {
       floatingActionButton: Stack(
         children: <Widget>[
           Positioned(
-            right: 5.0,
-            bottom: 5.0,
+            right: 0.0,
+            bottom: 0.0,
             child: FloatingActionButton(
               onPressed: () {
                 _showAddProductModal(context);
               },
-              backgroundColor: Colors.grey[400],
+              backgroundColor: Colors.blue[400],
               shape: CircleBorder(),
               child: Icon(Icons.add),
             ),
           ),
           Positioned(
             left: 30.0,
-            bottom: 5.0,
+            bottom: 0.0,
             child: FloatingActionButton(
               onPressed: () async {
                 Navigator.push(
@@ -414,12 +479,12 @@ class ListaCompraState extends State<ListaCompra> {
                   MaterialPageRoute(builder: (context) => ProductosComprados()),
                 );
               },
-              backgroundColor: Colors.grey[400],
+              backgroundColor: Colors.blue[400],
               shape: CircleBorder(),
-              heroTag: "bagShoppingFAB", // Tag único para este botón, sino provoca un error de hero
+              heroTag: "bagShoppingFAB",
               child: Icon(FontAwesomeIcons.bagShopping),
-        ),
-      ),
+            ),
+          ),
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
