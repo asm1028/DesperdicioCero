@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:desperdiciocero/assets/products_data.dart';
 
 class Productos extends StatefulWidget {
   Productos({super.key});
@@ -97,7 +98,7 @@ class ProductosState extends State<Productos> {
   void _showClearFieldsMessage() {
     // Elimina el Snackbar actual si está mostrándose
     ScaffoldMessenger.of(context).removeCurrentSnackBar();
-    
+
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('Campos limpiados'),
@@ -136,33 +137,79 @@ class ProductosState extends State<Productos> {
                       style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: 16),
-                    TextFormField(
-                      controller: _nameController,
-                      decoration: InputDecoration(
-                        hintText: 'Nombre del producto',
-                        hintStyle: TextStyle(color: Colors.grey[550]),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        prefixIcon: Icon(FontAwesomeIcons.carrot, color: Color.fromARGB(255, 192, 70, 70)),
-                      ),
-                      maxLength: 40,
-                      buildCounter: (
-                        BuildContext context, {
-                        required int currentLength,
-                        required bool isFocused,
-                        required int? maxLength,
-                      }) {
-                        return Text(
-                          '${maxLength! - currentLength}', // Muestra el número de caracteres restantes
-                          style: TextStyle(color: isFocused ? Colors.blue : Colors.grey),
+                    Autocomplete<String>(
+                      optionsBuilder: (TextEditingValue textEditingValue) {
+                        if (textEditingValue.text.isEmpty) {
+                          return const Iterable<String>.empty();
+                        }
+                        return productos.keys.where((String option) {
+                          return option.toLowerCase().contains(textEditingValue.text.toLowerCase());
+                        });
+                      },
+                      onSelected: (String selection) {
+                        _nameController.text = selection;
+                        _nameController.selection = TextSelection.fromPosition(
+                          TextPosition(offset: _nameController.text.length),
                         );
                       },
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Por favor ingrese el nombre del producto';
-                        }
-                        return null;
+                      fieldViewBuilder: (context, controller, focusNode, onEditingComplete) {
+                        _nameController.addListener(() {
+                          setState(() {});
+                        });
+                        return TextFormField(
+                          controller: _nameController,
+                          focusNode: focusNode,
+                          onEditingComplete: onEditingComplete,
+                          decoration: InputDecoration(
+                            hintText: 'Nombre del producto',
+                            hintStyle: TextStyle(color: Colors.grey[550]),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            prefixIcon: Icon(FontAwesomeIcons.carrot, color: Color.fromARGB(255, 192, 70, 70)),
+                            suffixIcon: Container(
+                              width: 48, // Ancho fijo para el contenedor del contador
+                              alignment: Alignment.center, // Centra el texto dentro del contenedor
+                              child: Text(
+                                '${40 - _nameController.text.length}', // Muestra los caracteres restantes de 40
+                                style: TextStyle(color: Colors.grey), // Estilo del texto en gris
+                              ),
+                            ),
+                            counterText: '', // Oculta el contador predeterminado
+                          ),
+                          maxLength: 40,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Por favor ingrese el nombre del producto';
+                            }
+                            return null;
+                          },
+                        );
+                      },
+                      optionsViewBuilder: (context, onSelected, options) {
+                        return Align(
+                          alignment: Alignment.topLeft,
+                          child: Material(
+                            elevation: 4.0,
+                            child: Container(
+                              width: MediaQuery.of(context).size.width * 0.82,
+                              height: MediaQuery.of(context).size.height * 0.3, // Ajusta la altura para mejor visualización
+                              child: ListView.builder(
+                                padding: EdgeInsets.all(0.0),
+                                itemCount: options.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  final String option = options.elementAt(index);
+                                  return ListTile(
+                                    title: Text(option),
+                                    onTap: () {
+                                      onSelected(option);
+                                    },
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                        );
                       },
                     ),
                     SizedBox(height: 40),
