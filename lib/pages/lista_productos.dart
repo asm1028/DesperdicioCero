@@ -369,9 +369,12 @@ class ListaProductosState extends State<ListaProductos> {
                               ),
                               SizedBox(height: 8),
                               Text(
-                                'Caducidad: $expirationDateString',
-                                style: TextStyle(fontSize: 14),
-                                textAlign: TextAlign.center,
+                              'Caducidad: $expirationDateString',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: expirationDate.isBefore(DateTime.now()) ? Colors.red : null,
+                              ),
+                              textAlign: TextAlign.center,
                               ),
                               SizedBox(height: 8),
                               Row(
