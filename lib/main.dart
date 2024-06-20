@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:desperdiciocero/pages/expiration_date_recognizer.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -62,6 +63,7 @@ class MyApp extends StatelessWidget {
         '/profile': (context) => Profile(),
         '/listaCompra': (context) => ListaCompra(),
         '/productosComprados': (context) => ProductosComprados(),
+        '/recognizeExpirationDate': (context) => ExpirationDateRecognizer(),
       },
     );
   }
