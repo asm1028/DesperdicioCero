@@ -22,6 +22,9 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
+  // Habilita la persistencia de datos en Firestore para que la app funcione sin conexión
+  FirebaseFirestore.instance.settings = const Settings(persistenceEnabled: true);
+
   await initializeUserToken(); // Llama a la función para inicializar el token del usuario
   await requestPermissions(); // Solicita los permisos necesarios antes de iniciar la app
 

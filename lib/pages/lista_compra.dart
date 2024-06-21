@@ -204,7 +204,7 @@ class ListaCompraState extends State<ListaCompra> {
                           alignment: Alignment.topLeft,
                           child: Material(
                             elevation: 4.0,
-                            child: Container(
+                            child: SizedBox(
                               width: MediaQuery.of(context).size.width * 0.55,
                               height: MediaQuery.of(context).size.height * options.length * 0.07,
                               child: ListView.builder(
@@ -444,7 +444,7 @@ class ListaCompraState extends State<ListaCompra> {
                               ),
                             ),
                           );
-                        }).toList(),
+                        }),
                         SizedBox(height: 80), // Ajusta la altura según sea necesario
                       ],
                     );
