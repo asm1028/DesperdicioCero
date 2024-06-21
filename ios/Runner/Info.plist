@@ -14,11 +14,6 @@
 	<string>6.0</string>
 	<key>NSCameraUsageDescription</key>
 	<string>We need access to your camera for text recognition</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>We need access to your microphone for audio recording</string>
-	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>We need access to your photo library for saving images</string>
-
 	<key>CFBundleName</key>
 	<string>desperdiciocero</string>
 	<key>CFBundlePackageType</key>

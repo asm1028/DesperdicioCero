@@ -14,6 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,6 +23,7 @@ Future<void> main() async {
   );
 
   await initializeUserToken(); // Llama a la función para inicializar el token del usuario
+  await requestPermissions(); // Solicita los permisos necesarios antes de iniciar la app
 
   runApp(const MyApp());
 }
@@ -45,6 +47,22 @@ Future<void> initializeUserToken() async {
     
     print("User Token: $userToken");
   }
+}
+
+// Función para solicitar permisos
+Future<void> requestPermissions() async {
+  final status = await Permission.camera.request();
+  if (status.isGranted) {
+    // Permiso concedido
+    print("Permiso de cámara concedido");
+  } else if (status.isDenied) {
+    // Permiso denegado
+    print("Permiso de cámara denegado");
+  } else if (status.isPermanentlyDenied) {
+    // El usuario ha denegado permanentemente el permiso; abra la configuración de la app
+    openAppSettings();
+  }
+  // Aquí puedes añadir más solicitudes de permisos según sea necesario
 }
 
 class MyApp extends StatelessWidget {
