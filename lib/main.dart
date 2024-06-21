@@ -7,12 +7,13 @@ import 'package:desperdiciocero/pages/lista_productos.dart';
 import 'package:desperdiciocero/pages/profile.dart';
 import 'package:desperdiciocero/pages/user_settings.dart';
 import 'package:desperdiciocero/pages/productos_comprados.dart';
+import 'package:desperdiciocero/pages/expiration_date_recognizer.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:desperdiciocero/pages/expiration_date_recognizer.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -53,6 +54,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      // Rutas para poder viajar entre las diferentes páginas de la aplicación
       home: PrimeraPagina(),
       routes: {
         'primera_pagina': (context) => PrimeraPagina(),
@@ -65,6 +67,16 @@ class MyApp extends StatelessWidget {
         '/productosComprados': (context) => ProductosComprados(),
         '/recognizeExpirationDate': (context) => ExpirationDateRecognizer(),
       },
+
+      // Localización de la aplicación para que salgan los textos en español
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale('es', ''), // Español
+      ],
     );
   }
 }
