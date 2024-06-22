@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:desperdiciocero/assets/products_data.dart';
-import 'package:easy_autocomplete/easy_autocomplete.dart';
+import 'package:desperdiciocero/utils/autocomplete_products.dart';
 
 class Productos extends StatefulWidget {
   Productos({super.key});
@@ -91,31 +90,9 @@ class ProductosState extends State<Productos> {
                   children: [
                     Text('Añadir Nuevo Producto', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
                     SizedBox(height: 16),
-                    EasyAutocomplete(
+                    CustomAutocomplete(
                       controller: _nameController,
                       suggestions: productos.keys.toList(),
-                      decoration: InputDecoration(
-                        hintText: 'Nombre del producto',
-                        hintStyle: TextStyle(color: Colors.grey[550]),
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-                        prefixIcon: Icon(FontAwesomeIcons.carrot, color: Color.fromARGB(255, 192, 70, 70)),
-                      ),
-                      suggestionBuilder: (data) {
-                        return Container(
-                          margin: EdgeInsets.all(2),
-                          padding: EdgeInsets.all(5),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5)
-                          ),
-                          child: Text(
-                            data,
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.black,
-                            )
-                          )
-                        );
-                      },
                       onChanged: (value) {
                         setState(() {});
                       },
