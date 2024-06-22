@@ -21,22 +21,13 @@ class _PrimeraPaginaState extends State<PrimeraPagina> {
 
   void _navigateBottomBar(int index){
     setState(() {
-      _selectedIndex = index;  
+      _selectedIndex = index;
     });
   }
 
   @override
   Widget build(BuildContext context){
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text(
-      //     'DesperdicioCero',
-      //     style: TextStyle(
-      //       color: Colors.white,
-      //     ),
-      //   ),
-      //   backgroundColor: Colors.greenAccent[400],
-      // ),
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,

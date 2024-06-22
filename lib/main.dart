@@ -31,26 +31,25 @@ Future<void> main() async {
   runApp(const MyApp());
 }
 
-// Función para generar y almacenar el token del usuario si no existe
+// Función para inicializar el token del usuario solo si es necesario
 Future<void> initializeUserToken() async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  final FirebaseFirestore firestore = FirebaseFirestore.instance;
-  String? userToken = prefs.getString('userToken');
+  String userToken = prefs.getString('userToken') ?? '';
   
-  if (userToken == null) {
-    var uuid = Uuid();
-    userToken = uuid.v4(); // Genera un UUID
+  if (userToken.isEmpty) {
+    userToken = Uuid().v4();  // Genera un UUID
     await prefs.setString('userToken', userToken);
-    
+
     // Guarda el token en la base de datos bajo la colección 'users'
-    await firestore.collection('users').doc(userToken).set({
+    FirebaseFirestore.instance.collection('users').doc(userToken).set({
       'token': userToken,
       'created_at': FieldValue.serverTimestamp(),
     });
-    
+
     print("User Token: $userToken");
   }
 }
+
 
 // Función para solicitar permisos
 Future<void> requestPermissions() async {
@@ -65,7 +64,6 @@ Future<void> requestPermissions() async {
     // El usuario ha denegado permanentemente el permiso; abra la configuración de la app
     openAppSettings();
   }
-  // Aquí puedes añadir más solicitudes de permisos según sea necesario
 }
 
 class MyApp extends StatelessWidget {
