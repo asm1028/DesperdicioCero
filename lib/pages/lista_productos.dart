@@ -20,6 +20,8 @@ class ListaProductosState extends State<ListaProductos> {
   DateTime? selectedDate;
   TextEditingController _filterController = TextEditingController();
 
+  GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
   // Función para obtener el token del usuario
   Future<String?> getUserToken() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -27,59 +29,73 @@ class ListaProductosState extends State<ListaProductos> {
   }
 
   // Función para eliminar un producto
-  void _deleteProduct(BuildContext context, String productId) {
+  void _deleteProduct(BuildContext context, String productId) async {
+    final productRef = FirebaseFirestore.instance.collection('products').doc(productId);
+    final userToken = await getUserToken();
+
+    if (userToken == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('No se pudo obtener la información del usuario.'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+      return;
+    }
+
     showDialog(
       context: context,
-      builder: (BuildContext context) {
+      barrierDismissible: false,
+      builder: (BuildContext dialogContext) {
         return AlertDialog(
           title: Text('Eliminar Producto'),
           content: Text('¿Estás seguro de que quieres eliminar este producto?'),
           actions: [
+            // Botón para cancelar la operación
             TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(); // Cerrar el modal y no hacer nada
-              },
+              onPressed: () => Navigator.of(dialogContext).pop(),
               child: Text('Cancelar'),
             ),
             // Botón para mover el producto a la lista de la compra
             TextButton(
               onPressed: () async {
-                final userToken = await getUserToken();
-                if (userToken != null) {
-                  final productDoc = await FirebaseFirestore.instance.collection('products').doc(productId).get();
-                  if (productDoc.exists) {
-                    final productData = productDoc.data()!;
-                    // Adición del producto eliminado a la lista de la compra
-                    await FirebaseFirestore.instance.collection('shopping_list').add({
-                      'name': productData['name'],
-                      'added_day': DateTime.now(),
-                      'user_token': userToken,
-                    });
-                    // Y eliminación del producto de la lista actual
-                    await FirebaseFirestore.instance.collection('products').doc(productId).delete();
-                    // Mensaje de información de que se ha movido el producto correctamente
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Producto movido a la lista de la compra y eliminado satisfactoriamente'),
-                        duration: Duration(seconds: 2),
-                      ),
-                    );
-                    Navigator.of(context).pop();
-                    setState(() {});
-                  } else {
-                    // Manejar el caso en que el producto no exista (Igual se ha borrado desde otro dispositivo)
+                // Cierra el diálogo antes de la operación asincrónica
+                Navigator.of(dialogContext).pop();
+                _showLoadingDialog();
+
+                try {
+                  DocumentSnapshot productDoc = await productRef.get();
+                  if (!productDoc.exists) {
+                    Navigator.of(context, rootNavigator: true).pop();
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text('El producto no existe.'),
                         duration: Duration(seconds: 2),
                       ),
                     );
+                    return;
                   }
-                } else {
-                  // Manejar el caso en que userToken es nulo
+
+                  final productData = productDoc.data() as Map<String, dynamic>;
+                  FirebaseFirestore.instance.collection('shopping_list').add({
+                    'name': productData['name'],
+                    'added_day': DateTime.now(),
+                    'user_token': userToken,
+                  });
+                  productRef.delete();
+
+                  Navigator.of(context, rootNavigator: true).pop();
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text('No se pudo obtener la información del usuario.'),
+                      content: Text('Producto movido a la lista de la compra y eliminado.'),
+                      duration: Duration(seconds: 2),
+                    ),
+                  );
+                } catch (e) {
+                  Navigator.of(context, rootNavigator: true).pop();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Algo salió mal: ${e.toString()}'),
                       duration: Duration(seconds: 2),
                     ),
                   );
@@ -90,16 +106,27 @@ class ListaProductosState extends State<ListaProductos> {
             // Botón para eliminar el producto
             TextButton(
               onPressed: () async {
-                await FirebaseFirestore.instance.collection('products').doc(productId).delete();
-                Navigator.of(context).pop();
+                Navigator.of(dialogContext).pop();
+                _showLoadingDialog();
 
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('Producto eliminado satisfactoriamente'),
-                    duration: Duration(seconds: 2),
-                  ),
-                );
-                setState(() {});
+                try {
+                  productRef.delete();
+                  Navigator.of(context, rootNavigator: true).pop();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Producto eliminado.'),
+                      duration: Duration(seconds: 2),
+                    ),
+                  );
+                } catch (e) {
+                  Navigator.of(context, rootNavigator: true).pop();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Error al eliminar el producto: ${e.toString()}'),
+                      duration: Duration(seconds: 2),
+                    ),
+                  );
+                }
               },
               child: Text('Eliminar'),
             ),
@@ -110,61 +137,107 @@ class ListaProductosState extends State<ListaProductos> {
   }
 
   Future<void> _editProduct(BuildContext context, String productId, String currentName, DateTime currentExpirationDate) async {
-    TextEditingController nameController = TextEditingController(text: currentName);
-    DateTime selectedDate = currentExpirationDate;
+  TextEditingController nameController = TextEditingController(text: currentName);
+  DateTime selectedDate = currentExpirationDate;
 
-    await showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Editar Producto'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextFormField(
-                controller: nameController,
-                decoration: InputDecoration(hintText: 'Nombre del producto'),
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext dialogContext) {
+      return StatefulBuilder(  // Utiliza StatefulBuilder para manejar el estado local
+        builder: (BuildContext context, StateSetter setState) {
+          return AlertDialog(
+            title: Text('Editar Producto'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextFormField(
+                  controller: nameController,
+                  decoration: InputDecoration(hintText: 'Nombre del producto'),
+                ),
+                SizedBox(height: 16),
+                ElevatedButton(
+                  onPressed: () async {
+                    DateTime? picked = await showDatePicker(
+                      context: context,  // Usa el context del StatefulBuilder
+                      initialDate: selectedDate,
+                      firstDate: DateTime.now(),
+                      lastDate: DateTime(2050),
+                    );
+                    if (picked != null) {
+                      setState(() {
+                        selectedDate = picked;
+                      });
+                    }
+                  },
+                  child: Text('Seleccionar caducidad'),
+                ),
+                SizedBox(height: 16),
+                Text('Caducidad: ${DateFormat('dd/MM/yyyy').format(selectedDate)}'),
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text('Cancelar'),
               ),
-              SizedBox(height: 16),
-              ElevatedButton(
+              TextButton(
                 onPressed: () async {
-                  DateTime? picked = await showDatePicker(
-                    context: context,
-                    initialDate: selectedDate,
-                    firstDate: DateTime.now(),
-                    lastDate: DateTime(2050),
-                  );
-                  if (picked != null) {
-                    setState(() {
-                      selectedDate = picked;
+                  Navigator.of(context).pop(); // Cierra el diálogo primero
+                  _showLoadingDialog(); // Muestra el diálogo de carga
+
+                  try {
+                    FirebaseFirestore.instance.collection('products').doc(productId).update({
+                      'name': nameController.text,
+                      'expiration': selectedDate,
                     });
+
+                    Navigator.of(context, rootNavigator: true).pop(); // Cierra el diálogo de carga
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Producto editado correctamente.'),
+                        duration: Duration(seconds: 2),
+                      ),
+                    );
+                  } catch (e) {
+                    Navigator.of(context, rootNavigator: true).pop(); // Cierra el diálogo de carga
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Algo salió mal. Por favor, inténtalo de nuevo. Error: ${e.toString()}'),
+                        duration: Duration(seconds: 2),
+                      ),
+                    );
                   }
                 },
-                child: Text('Seleccionar caducidad'),
+                child: Text('Guardar'),
               ),
-              SizedBox(height: 16),
-              Text('Caducidad: ${DateFormat('dd/MM/yyyy').format(selectedDate)}'),
             ],
+          );
+        }
+      );
+    },
+  );
+}
+
+
+  // Función que muestra un diálogo de carga
+  void _showLoadingDialog() {
+    showDialog(
+      context: scaffoldKey.currentContext!,
+      barrierDismissible: false,
+      builder: (BuildContext dialogContext) {
+        return Dialog(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CircularProgressIndicator(),
+                SizedBox(width: 20),
+                Text("Procesando..."),
+              ],
+            ),
           ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('Cancelar'),
-            ),
-            TextButton(
-              onPressed: () async {
-                await FirebaseFirestore.instance.collection('products').doc(productId).update({
-                  'name': nameController.text,
-                  'expiration': selectedDate,
-                });
-                Navigator.of(context).pop();
-                setState(() {}); // Refresh the UI after updating
-              },
-              child: Text('Guardar'),
-            ),
-          ],
         );
       },
     );
@@ -183,6 +256,7 @@ class ListaProductosState extends State<ListaProductos> {
       onTap: () {
         FocusScope.of(context).unfocus();
       },
+      key: scaffoldKey ,
       child: Scaffold(
         appBar: AppBar(
           title: Text(
