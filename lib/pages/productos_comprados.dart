@@ -40,8 +40,8 @@ class ProductosComprados extends StatelessWidget {
                           final DateTime? picked = await showDatePicker(
                             context: context,
                             initialDate: selectedDate,
-                            firstDate: DateTime(2020),
-                            lastDate: DateTime(2101),
+                            firstDate: DateTime.now(),
+                            lastDate: DateTime(2050),
                           );
                           if (picked != null && picked != selectedDate) {
                             setState(() {
@@ -86,17 +86,27 @@ class ProductosComprados extends StatelessWidget {
                     DateTime finalExpiryDate = selectedDate.add(Duration(days: additionalDays));
                     String userToken = (await getUserToken())!;
 
-                    // Agregar producto a la base de datos "products"
-                    await FirebaseFirestore.instance.collection('products').add({
-                      'name': nameController.text,
-                      'expiration': Timestamp.fromDate(finalExpiryDate),
-                      'user_token': userToken,
-                    });
+                    try {
+                      // Agregar producto a la base de datos "products"
+                      FirebaseFirestore.instance.collection('products').add({
+                        'name': nameController.text,
+                        'expiration': Timestamp.fromDate(finalExpiryDate),
+                        'user_token': userToken,
+                      });
 
-                    // Eliminar producto de la base de datos "purchased_products"
-                    await FirebaseFirestore.instance.collection('purchased_products').doc(productId).delete();
+                      // Eliminar producto de la base de datos "purchased_products"
+                      FirebaseFirestore.instance.collection('purchased_products').doc(productId).delete();
 
-                    Navigator.of(context).pop();
+                      Navigator.of(context).pop();
+                    } catch (e) {
+                      Navigator.of(context).pop();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Algo salió mal. Por favor, inténtalo de nuevo.'),
+                          duration: Duration(seconds: 2),
+                        ),
+                      );
+                    }
                   },
                   child: Text('Guardar'),
                 ),
@@ -124,8 +134,18 @@ class ProductosComprados extends StatelessWidget {
             ),
             TextButton(
               onPressed: () async {
-                await FirebaseFirestore.instance.collection('purchased_products').doc(productId).delete();
-                Navigator.of(context).pop();
+                try{
+                  FirebaseFirestore.instance.collection('purchased_products').doc(productId).delete();
+                  Navigator.of(context).pop();
+                } catch (e) {
+                  Navigator.of(context).pop();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Algo salió mal. Por favor, inténtalo de nuevo.'),
+                      duration: Duration(seconds: 2),
+                    ),
+                  );
+                }
               },
               child: Text('Eliminar'),
             ),
