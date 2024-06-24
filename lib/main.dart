@@ -7,6 +7,7 @@ import 'package:desperdiciocero/pages/lista_productos.dart';
 import 'package:desperdiciocero/pages/profile.dart';
 import 'package:desperdiciocero/pages/user_settings.dart';
 import 'package:desperdiciocero/pages/productos_comprados.dart';
+import 'package:desperdiciocero/pages/productos_compra.dart';
 import 'package:desperdiciocero/pages/expiration_date_recognizer.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -35,7 +36,7 @@ Future<void> main() async {
 Future<void> initializeUserToken() async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   String userToken = prefs.getString('userToken') ?? '';
-  
+
   if (userToken.isEmpty) {
     userToken = Uuid().v4();  // Genera un UUID
     await prefs.setString('userToken', userToken);
@@ -83,6 +84,7 @@ class MyApp extends StatelessWidget {
         '/settings': (context) => UserSettings(),
         '/profile': (context) => Profile(),
         '/listaCompra': (context) => ListaCompra(),
+        '/productosCompra': (context) => ProductosCompra(),
         '/productosComprados': (context) => ProductosComprados(),
         '/recognizeExpirationDate': (context) => ExpirationDateRecognizer(),
       },
