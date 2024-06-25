@@ -1,4 +1,3 @@
-// lib/utils/custom_autocomplete.dart
 import 'package:flutter/material.dart';
 import 'package:easy_autocomplete/easy_autocomplete.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -11,13 +10,13 @@ class CustomAutocomplete extends StatefulWidget {
   final int maxLength;
 
   CustomAutocomplete({
-    Key? key,
+    super.key,
     required this.controller,
     required this.suggestions,
     this.onChanged,
     this.validator,
     this.maxLength = 40,
-  }) : super(key: key);
+  });
 
   @override
   _CustomAutocompleteState createState() => _CustomAutocompleteState();

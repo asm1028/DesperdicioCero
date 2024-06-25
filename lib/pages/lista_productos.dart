@@ -137,88 +137,88 @@ class ListaProductosState extends State<ListaProductos> {
   }
 
   Future<void> _editProduct(BuildContext context, String productId, String currentName, DateTime currentExpirationDate) async {
-  TextEditingController nameController = TextEditingController(text: currentName);
-  DateTime selectedDate = currentExpirationDate;
+    TextEditingController nameController = TextEditingController(text: currentName);
+    DateTime selectedDate = currentExpirationDate;
 
-  showDialog(
-    context: context,
-    barrierDismissible: false,
-    builder: (BuildContext dialogContext) {
-      return StatefulBuilder(  // Utiliza StatefulBuilder para manejar el estado local
-        builder: (BuildContext context, StateSetter setState) {
-          return AlertDialog(
-            title: Text('Editar Producto'),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextFormField(
-                  controller: nameController,
-                  decoration: InputDecoration(hintText: 'Nombre del producto'),
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext dialogContext) {
+        return StatefulBuilder(  // Utiliza StatefulBuilder para manejar el estado local
+          builder: (BuildContext context, StateSetter setState) {
+            return AlertDialog(
+              title: Text('Editar Producto'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextFormField(
+                    controller: nameController,
+                    decoration: InputDecoration(hintText: 'Nombre del producto'),
+                  ),
+                  SizedBox(height: 16),
+                  // Selector de fecha
+                  ElevatedButton(
+                    onPressed: () async {
+                      DateTime? picked = await showDatePicker(
+                        context: context,
+                        initialDate: selectedDate,
+                        firstDate: DateTime.now(),
+                        lastDate: DateTime(2050),
+                      );
+                      if (picked != null) {
+                        setState(() {
+                          selectedDate = picked;
+                        });
+                      }
+                    },
+                    child: Text('Seleccionar caducidad'),
+                  ),
+                  SizedBox(height: 16),
+                  Text('Caducidad: ${DateFormat('dd/MM/yyyy').format(selectedDate)}'),
+                ],
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text('Cancelar'),
                 ),
-                SizedBox(height: 16),
-                ElevatedButton(
+                TextButton(
                   onPressed: () async {
-                    DateTime? picked = await showDatePicker(
-                      context: context,  // Usa el context del StatefulBuilder
-                      initialDate: selectedDate,
-                      firstDate: DateTime.now(),
-                      lastDate: DateTime(2050),
-                    );
-                    if (picked != null) {
-                      setState(() {
-                        selectedDate = picked;
+                    Navigator.of(context).pop(); // Cierra el diálogo primero
+                    _showLoadingDialog(); // Muestra el diálogo de carga
+
+                    try {
+                      FirebaseFirestore.instance.collection('products').doc(productId).update({
+                        'name': nameController.text,
+                        'expiration': selectedDate,
                       });
+
+                      Navigator.of(context, rootNavigator: true).pop();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Producto editado correctamente.'),
+                          duration: Duration(seconds: 2),
+                        ),
+                      );
+                    } catch (e) {
+                      Navigator.of(context, rootNavigator: true).pop();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Algo salió mal. Por favor, inténtalo de nuevo. Error: ${e.toString()}'),
+                          duration: Duration(seconds: 2),
+                        ),
+                      );
                     }
                   },
-                  child: Text('Seleccionar caducidad'),
+                  child: Text('Guardar'),
                 ),
-                SizedBox(height: 16),
-                Text('Caducidad: ${DateFormat('dd/MM/yyyy').format(selectedDate)}'),
               ],
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: Text('Cancelar'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  Navigator.of(context).pop(); // Cierra el diálogo primero
-                  _showLoadingDialog(); // Muestra el diálogo de carga
-
-                  try {
-                    FirebaseFirestore.instance.collection('products').doc(productId).update({
-                      'name': nameController.text,
-                      'expiration': selectedDate,
-                    });
-
-                    Navigator.of(context, rootNavigator: true).pop(); // Cierra el diálogo de carga
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Producto editado correctamente.'),
-                        duration: Duration(seconds: 2),
-                      ),
-                    );
-                  } catch (e) {
-                    Navigator.of(context, rootNavigator: true).pop(); // Cierra el diálogo de carga
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Algo salió mal. Por favor, inténtalo de nuevo. Error: ${e.toString()}'),
-                        duration: Duration(seconds: 2),
-                      ),
-                    );
-                  }
-                },
-                child: Text('Guardar'),
-              ),
-            ],
-          );
-        }
-      );
-    },
-  );
-}
-
+            );
+          }
+        );
+      },
+    );
+  }
 
   // Función que muestra un diálogo de carga
   void _showLoadingDialog() {
@@ -256,7 +256,7 @@ class ListaProductosState extends State<ListaProductos> {
       onTap: () {
         FocusScope.of(context).unfocus();
       },
-      key: scaffoldKey ,
+      key: scaffoldKey,
       child: Scaffold(
         appBar: AppBar(
           title: Text(

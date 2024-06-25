@@ -33,21 +33,30 @@ class ProductosCompraState extends State<ProductosCompra> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String? userToken = prefs.getString('userToken');
 
-    if (_formKey.currentState!.validate() && userToken != null) {
-      CollectionReference products = FirebaseFirestore.instance.collection('shopping_list');
-      products.add({
-        'name': name.trim(),
-        'user_token': userToken,
-        'added_day': FieldValue.serverTimestamp(),
-      });
+    try{
+      if (_formKey.currentState!.validate() && userToken != null) {
+        CollectionReference products = FirebaseFirestore.instance.collection('shopping_list');
+        products.add({
+          'name': name.trim(),
+          'user_token': userToken,
+          'added_day': FieldValue.serverTimestamp(),
+        });
 
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Producto añadido: "${name.trim()}" al carro de la compra'),
+            duration: Duration(seconds: 2),
+          ),
+        );
+        _clearFields();
+      }
+    } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Producto añadido: "${name.trim()}" al carro de la compra'),
+          content: Text('Algo salió mal. Por favor, inténtalo de nuevo.'),
           duration: Duration(seconds: 2),
         ),
       );
-      _clearFields();
     }
   }
 

@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:desperdiciocero/assets/products_data.dart';
 import 'package:desperdiciocero/utils/autocomplete_products.dart';
 
+/// Esta clase representa la página de añadir productos de forma manual.
 class Productos extends StatefulWidget {
   Productos({super.key});
 
@@ -17,30 +18,47 @@ class ProductosState extends State<Productos> {
   final TextEditingController _nameController = TextEditingController();
   DateTime _selectedDate = DateTime.now();
 
+  /// Inicializa el estado de la página de productos.
   @override
   void initState() {
     super.initState();
   }
 
+  /// Agrega un producto a la base de datos.
+  ///
+  /// Esta función recibe el nombre del producto y la fecha de expiración como parámetros.
+  /// Verifica si el formulario es válido y si el token de usuario no es nulo.
+  /// Luego, agrega el producto a la colección 'products' en la base de datos de Firebase.
+  /// Muestra un mensaje emergente con el nombre del producto y su fecha de expiración.
+  /// Finalmente, limpia los campos del formulario.
   void addProduct(String name, DateTime expirationDate) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String? userToken = prefs.getString('userToken');
 
-    if (_formKey.currentState!.validate() && userToken != null) {
-      CollectionReference products = FirebaseFirestore.instance.collection('products');
-      products.add({
-        'name': name.trim(),
-        'expiration': expirationDate,
-        'user_token': userToken,
-      });
+    try {
+      if (_formKey.currentState!.validate() && userToken != null) {
+        CollectionReference products = FirebaseFirestore.instance.collection('products');
+        products.add({
+          'name': name.trim(),
+          'expiration': expirationDate,
+          'user_token': userToken,
+        });
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
             content: Text('Producto añadido: "${name.trim()}" con fecha de expiración ${DateFormat('dd/MM/yyyy').format(expirationDate)}'),
             duration: Duration(seconds: 2),
+          ),
+        );
+        _clearFields();
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Algo salió mal. Por favor, inténtalo de nuevo.'),
+          duration: Duration(seconds: 2),
         ),
       );
-      _clearFields();
     }
   }
 
