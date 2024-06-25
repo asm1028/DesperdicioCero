@@ -26,13 +26,13 @@ class _ExpirationDateRecognizerState extends State<ExpirationDateRecognizer> {
 
   Future<void> _recognizeText(File image) async {
     TextRecognizer? textRecognizer;
-  
+
     try {
       final inputImage = InputImage.fromFile(image);
       textRecognizer = TextRecognizer(script: TextRecognitionScript.latin);
       final RecognizedText recognizedText = await textRecognizer.processImage(inputImage);
       String extractedText = recognizedText.text;
-  
+
       setState(() {
         _recognizedText = extractedText;
       });
@@ -47,38 +47,30 @@ class _ExpirationDateRecognizerState extends State<ExpirationDateRecognizer> {
 
   List<String> _extractDates(String text) {
     RegExp datePattern = RegExp(
-      r'\b(\d{2})[-/](\d{2})[-/](\d{4})\b' // dd/mm/yyyy o dd-mm-yyyy
-      r'|\b(\d{2})[-/](\d{2})[-/](\d{2})\b' // dd/mm/yy o dd-mm-yy
-      r'|\b(\d{2})-(JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC)-(\d{2}|\d{4})\b' // dd-MON-yy o dd-MON-yyyy
-      r'|\b(\d{2})-(JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC)\b' // dd-MON
-      r'|\b(\d{2})/(\d{4})\b' // mm/yyyy específicamente para mantener el separador
-      r'|\b(\d{2})-(\d{4})\b', // mm-yyyy
+      r'\b(\d{2})[-/.](\d{2})[-/.](\d{4})\b' // grupos 1-3: dd/mm/yyyy, dd-mm-yyyy, dd.mm.yyyy
+      r'|\b(\d{2})[-/.](\d{2})[-/.](\d{2})\b' // grupos 4-6: dd/mm/yy, dd-mm-yy, dd.mm.yy
+      r'|\b(\d{2})[-/.](\d{2})\b' // grupos 7-8: dd/mm, dd-mm, dd.mm
+      r'|\b(\d{2})[-/.](\d{4})\b' // grupos 9-10: mm/yyyy, mm-yyyy, m.yyyy
+      r'|\b(\d{2})[-/.](JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC|ENE|FEB|MAR|ABR|MAY|JUN|JUL|AGO|SEP|OCT|NOV|DIC)\b' // grupos 11-12: dd-MON, dd-MES, etc.
+      r'|\b(\d{2})[-/.](JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC|ENE|FEB|MAR|ABR|MAY|JUN|JUL|AGO|SEP|OCT|NOV|DIC)[-/.](\d{2})\b' // grupos 13-15: dd-MON-yy, dd-MES-yy, etc.
+      r'|\b(\d{2})[-/.](JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC|ENE|FEB|MAR|ABR|MAY|JUN|JUL|AGO|SEP|OCT|NOV|DIC)[-/.](\d{4})\b', // grupos 16-18: dd-MON-yyyy, dd-MES-yyyy, etc.
       caseSensitive: false,
     );
 
     Iterable<Match> matches = datePattern.allMatches(text);
     return matches.map((match) {
-      if (match.group(1) != null && match.group(2) != null && match.group(3) != null) {
-        // dd/mm/yyyy o dd-mm-yyyy
-        return '${match.group(1)}-${match.group(2)}-${match.group(3)}';
-      } else if (match.group(4) != null && match.group(5) != null && match.group(6) != null) {
-        // dd/mm/yy o dd-mm-yy
-        return '${match.group(4)}-${match.group(5)}-${match.group(6)}';
-      } else if (match.group(7) != null && match.group(8) != null && match.group(9) != null) {
-        // dd-MON-yy o dd-MON-yyyy
-        return '${match.group(7)}-${match.group(8)}-${match.group(9)}';
-      } else if (match.group(10) != null && match.group(11) != null) {
-        // dd-MON
-        return '${match.group(10)}-${match.group(11)}';
-      } else if (match.group(12) != null && match.group(13) != null) {
-        // mm/yyyy
-        return '${match.group(12)}/${match.group(13)}';
-      } else if (match.group(14) != null && match.group(15) != null) {
-        // mm-yyyy
-        return '${match.group(14)}-${match.group(15)}';
-      } else {
-        return 'Fecha no detectada';
+      for (int i = 1; i <= 18; i += 3) {
+        if (match.group(i) != null && match.group(i+1) != null) {
+          if (i + 2 <= 18 && match.group(i+2) != null) {
+            // dd-mm-yyyy, dd/mm/yyyy, dd.mm.yyyy, dd-MON-yyyy, dd-MES-yyyy, etc.
+            return '${match.group(i)}-${match.group(i+1)}-${match.group(i+2)}';
+          } else {
+            // dd-mm, dd/mm, dd.mm, dd-MON, dd-MES, etc.
+            return '${match.group(i)}-${match.group(i+1)}';
+          }
+        }
       }
+      return 'Fecha no detectada'; // En caso de no encontrar una coincidencia válida.
     }).toList();
   }
 
@@ -86,7 +78,7 @@ class _ExpirationDateRecognizerState extends State<ExpirationDateRecognizer> {
   Widget build(BuildContext context) {
     // Extrae las fechas del texto reconocido.
     List<String> detectedDates = _extractDates(_recognizedText);
-  
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Reconocimiento de Fecha de Caducidad'),
