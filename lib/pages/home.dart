@@ -1,9 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:desperdiciocero/pages/productos.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:image_picker/image_picker.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -11,9 +9,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  String _sortField = 'Fecha de caducidad';
-  String _sortOrder = 'Ascendente';
-  String _filterText = '';
   DateTime? selectedDate;
   TextEditingController _filterController = TextEditingController();
 
@@ -26,17 +21,31 @@ class _HomeState extends State<Home> {
     String? userToken = await _getUserToken();
     if (userToken == null) return [];
 
-    DateTime today = DateTime.now();
-    DateTime threeDaysLater = today.add(Duration(days: 3));
+    // Cálculo de la fecha actual y la fecha dentro de 3 días
+    DateTime now = DateTime.now();
+    DateTime todayAtMidnight = DateTime(now.year, now.month, now.day);
+    DateTime threeDaysLater = now.add(Duration(days: 3));
+    Timestamp start = Timestamp.fromDate(todayAtMidnight);
+    Timestamp end = Timestamp.fromDate(threeDaysLater);
 
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-        .collection('products')
-        .where('user_token', isEqualTo: userToken)
-        .where('expiration', isGreaterThanOrEqualTo: Timestamp.fromDate(today))
-        .where('expiration', isLessThanOrEqualTo: Timestamp.fromDate(threeDaysLater))
-        .get();
+    try {
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection('products')
+          .where('user_token', isEqualTo: userToken)
+          .where('expiration', isGreaterThanOrEqualTo: start)
+          .where('expiration', isLessThanOrEqualTo: end)
+          .get();
 
-    return querySnapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
+      return querySnapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Algo salió mal. Por favor, inténtalo de nuevo. Error: ${e.toString()}'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+      return [];
+    }
   }
 
   Future<List<Map<String, dynamic>>> _fetchPurchasedProducts() async {
@@ -122,7 +131,7 @@ class _HomeState extends State<Home> {
                   return Center(child: CircularProgressIndicator());
                 }
                 if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return Center(child: Text('No hay productos próximos a caducar.'));
+                  return Center(child: Text('Enhorabuena. No hay productos próximos a caducar.'));
                 }
                 var products = snapshot.data!;
                 return Padding(
@@ -161,7 +170,11 @@ class _HomeState extends State<Home> {
           ),
           Expanded(
             flex: 1,
-            child: FutureBuilder<List<Map<String, dynamic>>>(
+            child: GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(context, '/productosComprados');
+              },
+              child: FutureBuilder<List<Map<String, dynamic>>>(
               future: _fetchPurchasedProducts(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
@@ -180,19 +193,19 @@ class _HomeState extends State<Home> {
                       children: [
                         Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            'Productos en la Bolsa de la Compra',
-                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                            child: Text(
+                              'Productos en la Bolsa de la Compra',
+                              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                           ),
                         ),
                         Expanded(
                           child: ListView.builder(
                             itemCount: purchasedProducts.length,
                             itemBuilder: (context, index) {
-                              var item = purchasedProducts[index];
-                              return ListTile(
-                                title: Text(item['name']),
-                              );
+                            var item = purchasedProducts[index];
+                            return ListTile(
+                              title: Text(item['name']),
+                            );
                             },
                           ),
                         ),
@@ -201,8 +214,9 @@ class _HomeState extends State<Home> {
                   ),
                 );
               },
+              ),
             ),
-          ),
+            ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -211,8 +225,8 @@ class _HomeState extends State<Home> {
         },
         backgroundColor: Colors.greenAccent[400],
         child: Container(
-          width: 45,
-          height: 45,
+          width: 40,
+          height: 40,
           decoration: BoxDecoration(
             image: DecorationImage(
               image: AssetImage('lib/assets/images/Camara.png'),
