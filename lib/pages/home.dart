@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -77,6 +78,21 @@ class _HomeState extends State<Home> {
           ),
         ),
         backgroundColor: Colors.greenAccent[400],
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(FontAwesomeIcons.rotateLeft),
+            onPressed: () {
+              // Función para recargar la página
+              Navigator.pushReplacement(
+                context,
+                PageRouteBuilder(
+                  pageBuilder: (context, animation1, animation2) => Home(), // Recarga la página actual
+                  transitionDuration: Duration(seconds: 0),
+                ),
+              );
+            },
+          ),
+        ],
       ),
       drawer: Drawer(
         child: ListView(
