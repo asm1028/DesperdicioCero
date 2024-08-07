@@ -208,11 +208,11 @@ class _HomeState extends State<Home> {
                   return Center(child: CircularProgressIndicator());
                 }
                 if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return Center(child: Text('No hay productos en la bolsa de la compra.'));
+                  return Center(child: Text('Has añadido toda tu compra a la lista de productos.'));
                 }
                 var purchasedProducts = snapshot.data!;
                 return Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(2.0),
                   child: Card(
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
                     elevation: 5,
@@ -221,7 +221,7 @@ class _HomeState extends State<Home> {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                             child: Text(
-                              'Productos en la Bolsa de la Compra',
+                              'Productos que te faltan por añadir',
                               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                           ),
                         ),
@@ -229,10 +229,25 @@ class _HomeState extends State<Home> {
                           child: ListView.builder(
                             itemCount: purchasedProducts.length,
                             itemBuilder: (context, index) {
-                            var item = purchasedProducts[index];
-                            return ListTile(
-                              title: Text(item['name']),
-                            );
+                              var item = purchasedProducts[index];
+                              Color backgroundColor = index % 2 == 0 ? const Color.fromARGB(255, 0, 240, 124) : const Color.fromARGB(255, 223, 218, 218);  // Alternar colores
+
+                              return Column(
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(10.0),  // Bordes redondeados para el contenedor
+                                    child: Container(
+                                      color: backgroundColor,
+                                      margin: EdgeInsets.only(bottom: 1.0),  // Margen para reducir espacio entre ítems
+                                      child: ListTile(
+                                        contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 0.0),  // Reducir el padding vertical
+                                        title: Text(item['name']),
+                                      ),
+                                    ),
+                                  ),
+                                  Divider(height: 1),  // Divisor entre ítems
+                                ],
+                              );
                             },
                           ),
                         ),
@@ -243,7 +258,7 @@ class _HomeState extends State<Home> {
               },
               ),
             ),
-            ),
+          ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
