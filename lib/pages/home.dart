@@ -24,7 +24,7 @@ class _HomeState extends State<Home> {
     // Cálculo de la fecha actual y la fecha dentro de 3 días
     DateTime now = DateTime.now();
     DateTime todayAtMidnight = DateTime(now.year, now.month, now.day);
-    DateTime threeDaysLater = now.add(Duration(days: 3));
+    DateTime threeDaysLater = now.add(Duration(days: 50));
     Timestamp start = Timestamp.fromDate(todayAtMidnight);
     Timestamp end = Timestamp.fromDate(threeDaysLater);
 
@@ -154,9 +154,36 @@ class _HomeState extends State<Home> {
                             itemBuilder: (context, index) {
                               var product = products[index];
                               DateTime expirationDate = (product['expiration'] as Timestamp).toDate();
-                              return ListTile(
-                                title: Text(product['name']),
-                                subtitle: Text('Caduca: ${DateFormat('dd/MM/yyyy').format(expirationDate)}'),
+                              DateTime now = DateTime.now();
+                              int daysToExpire = expirationDate.difference(now).inDays;
+
+                              Color tileColor; // Variable para almacenar el color del tile
+                              if (daysToExpire <= 1) {
+                                // Si caduca hoy o mañana
+                                tileColor = const Color.fromARGB(255, 243, 86, 75);
+                              } else if (daysToExpire > 1 && daysToExpire <= 5) {
+                                // Si caduca entre 2 y 5 días
+                                tileColor = Colors.orange;
+                              } else {
+                                // Si caduca en 6 días o más
+                                tileColor = const Color.fromARGB(255, 93, 210, 97);
+                              }
+
+                              // Envuelve ListTile y Divider en un Container para aplicar el color de fondo
+                              return Container(
+                                decoration: BoxDecoration(
+                                  color: tileColor, // Aplica el color aquí
+                                  borderRadius: BorderRadius.circular(5.0),
+                                ),
+                                child: Column(
+                                  children: [
+                                    ListTile(
+                                      title: Text(product['name']),
+                                      subtitle: Text('Caduca: ${DateFormat('dd/MM/yyyy').format(expirationDate)}'),
+                                    ),
+                                    Divider(height: 1), // Añade una fina línea entre cada item
+                                  ],
+                                ),
                               );
                             },
                           ),
