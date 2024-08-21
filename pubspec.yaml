@@ -15,21 +15,23 @@ dependencies:
   provider: ^6.1.2
   cupertino_icons: ^1.0.8
   image_picker: ^1.1.2
-  firebase_core: ^3.1.0
+  firebase_core: ^3.3.0
   cloud_firestore: ^5.0.1
   intl: 0.19.0
   font_awesome_flutter: ^10.7.0
   shared_preferences: ^2.2.3
   uuid: ^4.4.0
   connectivity_plus: ^6.0.3
-  internet_connection_checker: ^1.0.0+1
+  internet_connection_checker: ^2.0.0
   easy_autocomplete: ^1.6.0
   firebase_app_installations: ^0.3.0+1
   google_ml_kit: ^0.18.0
   google_mlkit_text_recognition: ^0.13.0
   permission_handler: ^11.3.1
   camera: ^0.11.0+1
-  firebase_messaging: ^15.0.4
+  # firebase_messaging: ^15.0.4
+  flutter_local_notifications: ^17.2.2
+  android_alarm_manager_plus: ^4.0.4
 
   flutter_localizations:
     sdk: flutter
