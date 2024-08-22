@@ -200,18 +200,34 @@ class ProductosComprados extends StatelessWidget {
               return ListView(
                 children: snapshot.data!.docs.map((DocumentSnapshot document) {
                   Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
-                  return Card(
+                  return Dismissible(
+                    key: Key(document.id),
+                    background: Container(
+                      color: Colors.green,
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Icon(Icons.edit, color: Colors.white),
+                      ),
+                    ),
+                    secondaryBackground: Container(
+                      color: Colors.red,
+                      alignment: Alignment.centerRight,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Icon(Icons.delete, color: Colors.white),
+                      ),
+                    ),
+                    onDismissed: (direction) {
+                      if (direction == DismissDirection.startToEnd) {
+                        _editProduct(context, document.id, data['name']);
+                      } else {
+                        _deleteProduct(context, document.id);
+                      }
+                    },
                     child: ListTile(
                       title: Text(data['name']),
-                      onTap: () {
-                        _editProduct(context, document.id, data['name']);
-                      },
-                      trailing: IconButton(
-                        icon: Icon(Icons.delete),
-                        onPressed: () {
-                          _deleteProduct(context, document.id);
-                        },
-                      ),
+                      onTap: () => _editProduct(context, document.id, data['name']),
                     ),
                   );
                 }).toList(),
