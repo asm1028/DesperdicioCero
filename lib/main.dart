@@ -9,6 +9,7 @@ import 'package:desperdiciocero/pages/user_settings.dart';
 import 'package:desperdiciocero/pages/productos_comprados.dart';
 import 'package:desperdiciocero/pages/productos_compra.dart';
 import 'package:desperdiciocero/pages/expiration_date_recognizer.dart';
+import 'package:desperdiciocero/utils/notification_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -28,6 +29,8 @@ Future<void> main() async {
 
   await initializeUserToken(); // Llama a la función para inicializar el token del usuario
   await requestPermissions(); // Solicita los permisos necesarios antes de iniciar la app
+
+  NotificationService.initialize(); // Inicializa el servicio de notificaciones
 
   runApp(const MyApp());
 }
@@ -64,6 +67,13 @@ Future<void> requestPermissions() async {
   } else if (status.isPermanentlyDenied) {
     // El usuario ha denegado permanentemente el permiso; abra la configuración de la app
     openAppSettings();
+  }
+}
+
+Future<void> requestExactAlarmPermission() async {
+  if (await Permission.scheduleExactAlarm.isDenied) {
+    // Si el permiso está denegado, solicita permiso
+    await openAppSettings(); // O usa otra forma de guiar al usuario para que otorgue permiso
   }
 }
 
