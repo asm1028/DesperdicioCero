@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:desperdiciocero/pages/primera_pagina.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
@@ -86,7 +87,7 @@ class _HomeState extends State<Home> {
               Navigator.pushReplacement(
                 context,
                 PageRouteBuilder(
-                  pageBuilder: (context, animation1, animation2) => Home(), // Recarga la página actual
+                  pageBuilder: (context, animation1, animation2) => PrimeraPagina(), // Recarga la página actual
                   transitionDuration: Duration(seconds: 0),
                 ),
               );
