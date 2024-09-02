@@ -265,7 +265,7 @@ class ListaProductosState extends State<ListaProductos> {
               color: Colors.white,
             ),
           ),
-          backgroundColor: Colors.greenAccent[400],
+          backgroundColor: Colors.purple[400],
         ),
         body: Column(
           children: [
@@ -540,12 +540,12 @@ class ListaProductosState extends State<ListaProductos> {
               MaterialPageRoute(builder: (context) => Productos()),
             );
           },
-          backgroundColor: Colors.greenAccent[400],
+          backgroundColor: Colors.purple[400],
           shape: CircleBorder(),
-          child: Icon(Icons.add),
+          child: Icon(Icons.add, color: Colors.white),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      ),
+            ),
     );
   }
 }

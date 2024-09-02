@@ -92,7 +92,7 @@ class ProductosState extends State<Productos> {
       child: Scaffold(
         appBar: AppBar(
           title: Text('Añadir Productos', style: TextStyle(color: Colors.white)),
-          backgroundColor: Colors.greenAccent[400],
+          backgroundColor: Colors.purple[400],
         ),
         body: SingleChildScrollView(
           padding: EdgeInsets.all(16.0),

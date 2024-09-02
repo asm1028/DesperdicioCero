@@ -1,6 +1,7 @@
 import 'package:desperdiciocero/pages/home.dart';
 import 'package:desperdiciocero/pages/lista_compra.dart';
 import 'package:desperdiciocero/pages/lista_productos.dart';
+import 'package:desperdiciocero/pages/recipes.dart';
 import 'package:flutter/material.dart';
 
 class PrimeraPagina extends StatefulWidget {
@@ -11,10 +12,12 @@ class PrimeraPagina extends StatefulWidget {
 }
 
 class _PrimeraPaginaState extends State<PrimeraPagina> {
-  int _selectedIndex = 1;
+  int _selectedIndex = 2;
+  Color? _selectedItemColor = Colors.greenAccent[400];  // Color inicial para el ítem Home
 
   final List _pages = [
     ListaCompra(),
+    Recipes(),
     Home(),
     ListaProductos()
   ];
@@ -22,6 +25,20 @@ class _PrimeraPaginaState extends State<PrimeraPagina> {
   void _navigateBottomBar(int index){
     setState(() {
       _selectedIndex = index;
+      switch(index) {
+        case 0:
+          _selectedItemColor = Colors.blue;  // Color para "Lista de la compra"
+          break;
+        case 1:
+          _selectedItemColor = Color.fromARGB(255, 255, 212, 38);   // Color para "Recetas"
+          break;
+        case 2:
+          _selectedItemColor = Colors.greenAccent[400];  // Color para "Inicio"
+          break;
+        case 3:
+          _selectedItemColor = Colors.purple;  // Color para "Productos"
+          break;
+      }
     });
   }
 
@@ -81,6 +98,12 @@ class _PrimeraPaginaState extends State<PrimeraPagina> {
             label: 'Lista de la compra',
           ),
 
+          // Recetas
+          BottomNavigationBarItem(
+            icon: Icon(Icons.receipt_long_sharp),
+            label: 'Recetas',
+          ),
+
           // Home
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
@@ -95,7 +118,8 @@ class _PrimeraPaginaState extends State<PrimeraPagina> {
             label: 'Productos',
           ),
         ],
-        selectedItemColor: Colors.greenAccent[400],
+        selectedItemColor: _selectedItemColor,
+        unselectedItemColor: Colors.grey,
       ),
     );
   }
