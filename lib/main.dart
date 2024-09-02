@@ -6,6 +6,9 @@ import 'package:desperdiciocero/pages/productos.dart';
 import 'package:desperdiciocero/pages/lista_productos.dart';
 import 'package:desperdiciocero/pages/profile.dart';
 import 'package:desperdiciocero/pages/recipes.dart';
+import 'package:desperdiciocero/pages/recipes_all.dart';
+import 'package:desperdiciocero/pages/recipes_detail.dart';
+import 'package:desperdiciocero/pages/recipes_recommendations.dart';
 import 'package:desperdiciocero/pages/user_settings.dart';
 import 'package:desperdiciocero/pages/productos_comprados.dart';
 import 'package:desperdiciocero/pages/productos_compra.dart';
@@ -97,7 +100,10 @@ class MyApp extends StatelessWidget {
         '/listaCompra': (context) => ListaCompra(),
         '/productosCompra': (context) => ProductosCompra(),
         '/productosComprados': (context) => ProductosComprados(),
-        '/recipes': (context) => Recipes(),
+        '/recipes': (context) => RecipesPage(),
+        '/recipes/all': (context) => AllRecipes(),
+        '/recipes/detail': (context) => RecipeDetail(recipe: {},),
+        '/recipes/recommendations': (context) => RecommendationsRecipesPage(),
         '/recognizeExpirationDate': (context) => ExpirationDateRecognizer(),
       },
 

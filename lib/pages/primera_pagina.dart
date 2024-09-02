@@ -17,7 +17,7 @@ class _PrimeraPaginaState extends State<PrimeraPagina> {
 
   final List _pages = [
     ListaCompra(),
-    Recipes(),
+    RecipesPage(),
     Home(),
     ListaProductos()
   ];
