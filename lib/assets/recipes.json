@@ -1,33 +1,176 @@
 [
     {
-      "nombre": "Paella de marisco",
+      "nombre": "Paella de marisco (4 personas)",
       "ingredientes": ["Arroz", "Mejillones", "Calamar", "Calamares", "Sepia", "Gambas", "Gamba", "Langostinos", "Tomate", "Pimiento Verde", "Ajo", "Caldo de Pescado", "Azafrán", "Pimentón Dulce", "Aceite de Oliva", "Sal"],
       "cantidades": ["400 gr Arroz", "12 Mejillones", "1 Calamar/Sepia", "8 Gambas/Langostinos", "1 Pimiento Verde", "2 cucharadas soperas de Tomate triturado o Tomate fresco", "2 Dientes de Ajo", "1,4 L de Caldo de pescado", "4 hebras de Azafrán", "1 cucharadita de Pimentón dulce", "1 cucharadita de colorante", "1 chorro de Aceite de oliva", "Una pizca de Sal"],
       "pasos": [
-        "Lava los mejillones, corta el pimiento verde y pica los ajos. Asimismo, limpia y corta el calamar. para lavar los mejillones, báñalos en agua fría, quita con un cuchillo o un estropajo de aluminio las impurezas de su concha y corta con una tijera las barbas que se asoman entre las valvas.",
-        "Pon una paella al fuego con un buen chorro de aceite. Saltea las gambas y los calamares o la sepia a fuego fuerte. Saca las gambas y resérvalas.",
-        "Pon el calamar y la sepia a un lado. Si hace falta, añade un poco más de aceite y agrega el pimiento verde. Deja cocinar por 3-4 minutos y añade los ajos picados.",
-        "Remueve para que no se queme el ajo y, antes de que coja color, añade el tomate. Remueve y deja cocinar unos minutos más.",
-        "Añade los mejillones para que se vayan abriendo. Puedes verter también un cazo de caldo. Añade la cucharadita de pimentón dulce y las hebras de azafrán.",
-        "Incorpora el arroz, remueve todo para que el arroz se impregne del sabor de todos los ingredientes.",
-        "Echa el resto del caldo (calentado previamente), prueba de sal y corrige si hace falta. Añade el colorante y deja cocinar la paella por unos 15-18 minutos o hasta que el arroz esté listo.",
-        "5 minutos antes de que el arroz esté listo, pon por encima las gambas y termina de cocinar el arroz. Deja reposar la paella de marisco por unos 5 o 10 minutos. ¡Listos y a comer!"
-      ]
+            "Lava los mejillones, corta el pimiento verde y pica los ajos. Asimismo, limpia y corta el calamar. para lavar los mejillones, báñalos en agua fría, quita con un cuchillo o un estropajo de aluminio las impurezas de su concha y corta con una tijera las barbas que se asoman entre las valvas.",
+            "Pon una paella al fuego con un buen chorro de aceite. Saltea las gambas y los calamares o la sepia a fuego fuerte. Saca las gambas y resérvalas.",
+            "Pon el calamar y la sepia a un lado. Si hace falta, añade un poco más de aceite y agrega el pimiento verde. Deja cocinar por 3-4 minutos y añade los ajos picados.",
+            "Remueve para que no se queme el ajo y, antes de que coja color, añade el tomate. Remueve y deja cocinar unos minutos más.",
+            "Añade los mejillones para que se vayan abriendo. Puedes verter también un cazo de caldo. Añade la cucharadita de pimentón dulce y las hebras de azafrán.",
+            "Incorpora el arroz, remueve todo para que el arroz se impregne del sabor de todos los ingredientes.",
+            "Echa el resto del caldo (calentado previamente), prueba de sal y corrige si hace falta. Añade el colorante y deja cocinar la paella por unos 15-18 minutos o hasta que el arroz esté listo.",
+            "5 minutos antes de que el arroz esté listo, pon por encima las gambas y termina de cocinar el arroz. Deja reposar la paella de marisco por unos 5 o 10 minutos. ¡Listos y a comer!"
+        ]
     },
     {
-      "nombre": "Tortilla de patatas",
-      "ingredientes": ["Huevos", "Patatas", "Aceite de Oliva Virgen Extra", "Aceite de Oliva", "Sal", "Cebolla", "Cebollas"],
-      "cantidades": ["8 Huevos", "1 kg Patatas", "1 Cebolla (opcional)", "Aceite de oliva", "Sal"],
+      "nombre": "Tortilla de patatas (8 personas)",
+      "ingredientes": ["Huevos", "Patata", "Patatas", "Aceite de Oliva Virgen Extra", "Aceite de Oliva", "Sal", "Cebolla", "Cebollas"],
+      "cantidades": ["8 Huevos", "1 kg Patatas", "1 Cebolla (opcional)", "Aceite de oliva virgen extra", "Sal"],
       "pasos": [
-        "Pelamos las patatas, las lavamos para quitar restos de suciedad y muy importante, las secamos. Cortamos en láminas semifinas. Las colocamos en un bol grande, donde luego vamos a mezclar con el huevo y añadimos sal al gusto. Removemos bien y reservamos.",
-        "Elegimos nuestra sartén más grande y antiadherente. La ponemos al fuego y añadimos un buen aceite de oliva virgen extra.",
-        "Cuando el aceite esté caliente, añadimos las patatas. Bajamos el fuego a medio y dejamos que se hagan poco a poco. Removemos de vez en cuando para que se hagan por igual durante 20-30 minutos.",
-        "Pon el calamar y la sepia a un lado. Si hace falta, añade un poco más de aceite y agrega el pimiento verde. Deja cocinar por 3-4 minutos y añade los ajos picados.",
-        "Mientras se están friendo las patatas, en el bol donde luego vamos a echar las patatas batimos los huevos, reservamos. Pelamos la cebolla y cortamos lo más fino posible.",
-        "En otra sartén calentamos aceite de oliva y añadimos los trozos de cebolla. Pochamos hasta que tenga un color dorado, que tenga un punto de caramelización pero sin llegar a quemarse. La cebolla se hará antes que las patatas, así que escurrimos y añadimos al bol con el huevo batido. Quitamos con una espumadera de la sartén, dejando las patatas con el menor resto de aceite posible, bien escurridas. Si no queremos nada de aceite extra podemos emplear un colador grande. Las dejamos escurrir y luego las introducimos al bol con la cebolla y el huevo.",
-        "Reposamos la futura tortilla durante 15 minutos para que se junten bien todos los sabores. Pasados esos minutos esta mezcla ya está deliciosa",
-        "En la misma sartén en la que hemos frito las patatas y una vez retirado el aceite. Cocinamos la mezcla que tenemos en reposo. Para este tipo de tortilla poco hecha sólo necesitamos 4 minutos a fuego medio-alto por cada lado. Depende de lo cuajada que queramos que quede la tortilla.",
-        "Para darle la vuelta utiliza un plato grande. Emplead el método más cómodo y que más fácil os sea para que no se os desparrame, con cuidado. No desesperéis si no os sale, en ese caso tendréis una tortilla más cuajada, pero igual de rica."
-    ]
+            "Pelamos las patatas, las lavamos para quitar restos de suciedad y muy importante, las secamos. Cortamos en láminas semifinas. Las colocamos en un bol grande, donde luego vamos a mezclar con el huevo y añadimos sal al gusto. Removemos bien y reservamos.",
+            "Elegimos nuestra sartén más grande y antiadherente. La ponemos al fuego y añadimos un buen aceite de oliva virgen extra.",
+            "Cuando el aceite esté caliente, añadimos las patatas. Bajamos el fuego a medio y dejamos que se hagan poco a poco. Removemos de vez en cuando para que se hagan por igual durante 20-30 minutos.",
+            "Pon el calamar y la sepia a un lado. Si hace falta, añade un poco más de aceite y agrega el pimiento verde. Deja cocinar por 3-4 minutos y añade los ajos picados.",
+            "Mientras se están friendo las patatas, en el bol donde luego vamos a echar las patatas batimos los huevos, reservamos. Pelamos la cebolla y cortamos lo más fino posible.",
+            "En otra sartén calentamos aceite de oliva y añadimos los trozos de cebolla. Pochamos hasta que tenga un color dorado, que tenga un punto de caramelización pero sin llegar a quemarse. La cebolla se hará antes que las patatas, así que escurrimos y añadimos al bol con el huevo batido. Quitamos con una espumadera de la sartén, dejando las patatas con el menor resto de aceite posible, bien escurridas. Si no queremos nada de aceite extra podemos emplear un colador grande. Las dejamos escurrir y luego las introducimos al bol con la cebolla y el huevo.",
+            "Reposamos la futura tortilla durante 15 minutos para que se junten bien todos los sabores. Pasados esos minutos esta mezcla ya está deliciosa",
+            "En la misma sartén en la que hemos frito las patatas y una vez retirado el aceite. Cocinamos la mezcla que tenemos en reposo. Para este tipo de tortilla poco hecha sólo necesitamos 4 minutos a fuego medio-alto por cada lado. Depende de lo cuajada que queramos que quede la tortilla.",
+            "Para darle la vuelta utiliza un plato grande. Emplead el método más cómodo y que más fácil os sea para que no se os desparrame, con cuidado. No desesperéis si no os sale, en ese caso tendréis una tortilla más cuajada, pero igual de rica."
+        ]
+    },
+    {
+      "nombre": "Gazpacho andaluz (6 personas)",
+      "ingredientes": ["Tomate", "Pimiento Verde", "Pepino",  "Ajo", "Pan", "Aceite de Oliva", "Aceite de Oliva Virgen Extra", "Vinagre", "Sal"],
+      "cantidades": ["1 kg Tomates maduros", "1 Pimiento verde", "1 Pepino",  "2 Dientes de ajo", "50 gr Pan duro", "250 ml Aceite de oliva virgen extra", "250 ml de agua fría", "5 gr de sal", "50 ml de vinagre de Jerez"],
+      "pasos": [
+            "Troceamos todos los ingredientes y los introducimos en el vaso de una batidora.",
+            "Añadimos el aceite, el agua y el vinagre y trituramos.",
+            "Pasamos el gazpacho resultante por un colador fino, apretando con un cucharón para que quede una crema sin pieles ni semillas y lo metemos en la nevera un par de horas para que enfríe bien antes de servir."
+        ]
+    },
+    {
+        "nombre": "Cocido Madrileño (6 personas)",
+        "ingredientes": ["Garbanzos", "Morcillo", "Tocino", "Chorizo", "Fideos", "Gallina", "Patata", "Patatas", "Zanahorias", "Zanahoria", "Sal", "Morcilla"],
+        "cantidades": ["300 gr de Garbanzos", "400 gr de Morcillo", "2 Huesos de rodilla de ternera",  "3 Huesos de espinazo de cerdo salado", "3 Huesos de caña con tuétano", "3 chorizos frescos", "150 gr de Fideos", "150 gr de Gallina", "1 Morcilla de cebolla", "3 patatas", "2 Zanahorias", "Sal al gusto", "Agua abudante"],
+        "pasos": [
+            "La noche anterior pondremos a remojo unos buenos garbanzos castellanos en la víspera del cocido. Truco: Además le pondremos un puñado de sal gorda para que al día siguiente no se encallen en la cocción.",
+            "Empezaremos por poner a cocer, partiendo de agua fría, las carnes, la punta de jamón y los huesos indicados. Clave: Durante todo el cocido, de principio a fin, retiraremos la espuma que se vaya formando con una espumadera. Asimismo iremos incorporando agua según se vaya evaporando para que nuestro cocido no se quede seco. El fuego del cocido lo tendremos de una forma continua a media potencia.",
+            "Cuando el agua empiece a hervir, añadimos los garbanzos, previamente escurridos y lavados.",
+            "Desde que el agua vuelva a hervir, tardarán en estar tiernos entre dos y tres horas, hecho a fuego lento o bien unos 20 minutos en caso de hacerlo en olla rápida. Recomendación: meted los garbanzos en una malla para poder sacarlos con facilidad al finalizar la cocción y así poder servir el cocido en los tres vuelcos tradicionales.",
+            "En un puchero aparte, ponemos a cocer el repollo, y en otra cacerola, cocemos chorizos y morcillas, para que no llenen de grasa nuestro caldo.",
+            "Cuando el cocido esté prácticamente hecho, incorporamos las patatas y las zanahorias peladas en el puchero del cocido madrileño.",
+            "Al finalizar el proceso, sacamos las carnes y las servimos en una fuente a la que incorporamos chorizos y morcillas.",
+            "Rehogamos el repollo y lo ponemos en una fuente con los garbanzos, las patatas y las zanahorias.",
+            "Para hacer la sopa, colamos el caldo y añadimos los fideos cuando el caldo empiece a hervir, siendo necesarios dos o tres minutos para los fideos finos tipo cabellín."
+        ]
+    },
+    {
+        "nombre": "Pulpo a la gallega (4 personas)",
+        "ingredientes": ["Pulpo", "Patata", "Patatas", "Pimentón Dulce", "Pimentón Picante", "Aceite de Oliva Virgen Extra", "Aceite de Oliva", "Sal", "Sal Gruesa"],
+        "cantidades": ["2 kg de Pulpo congelado o fresco", "1 kg de Patatas", "Pimentón Dulce o Picante al gusto",  "Aceite de oliva virgen extra al gusto", "Sal gruesa al gusto"],
+        "pasos": [
+            "Retiraremos el pulpo del congelador la noche anterior y lo dejamos dentro de la nevera para que se vaya descongelando lentamente. Importante hacerlo en un recipiente bien grande, pues va a soltar mucho líquido al descongelar.",
+            "Seguidamente ponemos agua en una olla grande y alta. No le echaremos sal, pues lo salamos después, una vez cocido.",
+            "Cuando el agua ya esté bien caliente y casi ya empezando a hervir, cogeremos el pulpo agarrándolo por la cabeza y lo sumergiremos tres veces en el agua. Lo dejamos, ahora sí, dentro del agua de cocción.",
+            "Cuando el agua comience a hervir de nuevo, es cuando comenzamos a contar el tiempo, unos treinta minutos por cada 1,8 kg a 2 kg de pulpo. Vamos pinchándolo de vez en cuando para ver como está de duro en la parte más gruesa de los tentáculos. Debe ofrecer la resistencia de una patata cocida al pincharlo.",
+            "Cuando acabemos de cocer el pulpo lo dejamos reposar unos minutos y luego lo sacamos a una bandeja. En la misma agua de cocerlo echamos las patatas y las coceremos durante 15 minutos.",
+            "Para servir el pulpo, cortaremos los tentáculos en trozos de 1 cm de grosor con unas tijeras de cocina y la cabeza en trozos pequeños.",
+            "Lo servimos en un plato de madera, este mejor mojado con un poco del agua de cocción, añadimos una base de patatas. Salamos los trozos de pulpo con sal gorda, espolvoreamos con el pimentón que puede ser al gusto dulce o picante, y lo rociamos todo con un poco de aceite. Servimos bien caliente."
+        ]
+    },
+    {
+        "nombre": "Ensaladilla rusa (6 personas)",
+        "ingredientes": ["Patata", "Patatas", "Huevos", "Zanahorias", "Zanahoria", "Mayonesa", "Mahonesa", "Vinagre", "Sal"],
+        "cantidades": ["3 Patatas medianas", "4 huevos", "2 Zanahorias grandes",  "300 gr Mayonesa", "Sal al gusto", "15 ml Vinagre de vvino blanco"],
+        "pasos": [
+            "Cocemos las patatas y las zanahorias, sin pelar, en una cacerola con abundante agua. Lo hacemos a fuego suave, sin prisas, y vamos retirando las hortalizas cuando notemos que, al pinchar con una brocheta, están al dente. Las zanahorias estarán listas antes que las patatas, aunque todo dependerá del tamaño y la antigüedad de ambas.",
+            "Mientras tanto cocemos tres huevos, sumergiéndolos en un cacito con agua hirviendo con sal y un chorrito de vinagre. Retiramos después de 10-12 minutos y refrescamos inmediatamente en abundante agua helada para cortar la cocción. Pelamos, picamos finamente y reservamos.",
+            "Cuando las hortalizas estén listas y hayan perdido temperatura, las pelamos y picamos o, en el caso de la patata, rallamos.",
+            "Mezclamos con los huevos y sazonamos al gusto. Añadimos la mayonesa, removemos bien y guardamos en la nevera. Atemperamos unos minutos antes de servir."
+        ]
+    },
+    {
+        "nombre": "Lubina a la sal (4 personas)",
+        "ingredientes": ["Lubina", "Sal Gruesa", "Huevos"],
+        "cantidades": ["1.5 kg de Lubina grande", "1 clara de huevo", "2 kg de Sal gruesa"],
+        "pasos": [
+            "Para hacer el pescado a la sal, necesitamos un bol grande en el que pondremos la sal.",
+            "A menudo la sal gruesa viene algo húmeda, lo cual nos viene bien. Tanto si está algo húmeda como si viene seca, la aliñaremos con una clara de huevo bien batida, trabajando la mezcla para repartirla bien. Así la sal será muy manejable y se quedará pegada al pescado sin desmoronarse.",
+            "En una bandeja de horno, colocamos un papel sulfurizado o un silpat y extendemos encima una pequeña capa -de medio cm más o menos- de sal que haga de cama. Sobre ella acomodamos la lubina colocándola de medio lado.",
+            "Poco a poco, puñado a puñado vamos cubriendo el pescado con el resto de la sal, apretando ligeramente para que la sal quede en su sitio. Podéis humedeceros las manos para que sea más sencillo. No tengáis pereza que es divertido hacerlo. Al comprarla habremos pedido al pescadero que no quite las escamas y que la limpie sin abrirla ya que la queremos cocinar a la sal.",
+            "Acabamos metiendo la lubina unos 30 minutos en el horno."
+        ]
+    },
+    {
+        "nombre": "Tarta de queso (8 personas)",
+        "ingredientes": ["Queso", "Huevos", "Azúcar", "Nata", "Mantequilla", "Galletas", "Galleta", "Mermelada de fresa"],
+        "cantidades": ["500 gr de Queso", "4 Huevos", "200 gr de Azúcar", "200 ml de Nata", "50 gr de Mantequilla", "200 gr de Galletas", "Mermelada de fresa al gusto"],
+        "pasos": [
+            "Para hacer la base de la tarta de queso, trituramos las galletas y las mezclamos con la mantequilla derretida. Extendemos la mezcla en la base de un molde desmontable y la metemos en el horno precalentado a 180ºC durante 10 minutos.",
+            "Para hacer la crema de queso, batimos el queso con el azúcar, la nata y los huevos. Vertemos la mezcla en el molde y la metemos en el horno precalentado a 180ºC durante 40 minutos.",
+            "Dejamos enfriar la tarta de queso y la metemos en la nevera durante 4 horas.",
+            "Antes de servir, cubrimos la tarta de queso con mermelada al gusto."
+        ]
+    },
+    {
+        "nombre": "Marmitako (6 personas)",
+        "ingredientes": ["Bonito", "Patata", "Patatas", "Cebolla", "Cebollas", "Pimiento Verde", "Zanahoria", "Zanahorias", "Ajo", "Caldo de Pescado", "Pimentón Dulce", "Pimiento Choricero", "Guindilla", "Salsa de tomate", "Laurel", "Aceite de Oliva Virgen Extra", "Sal"],
+        "cantidades": ["1 kg de Bonito", "5 Patatas", "1 Cebolla", "2 Pimientos Verdes", "1 Zanahoria", "2 Dientes de Ajo", "200 ml de Vino Blanco", "1L de Caldo de pescado", "1 Guindilla", "15 gr de Pimentón dulce", "1 cucharada de Pimiento choricero", "1 chorro de Aceite de oliva virgen extra", "Laurel", "Sal al gusto"],
+        "pasos": [
+            "Comenzaremos picando la cebolla en juliana, el pimiento en tiras de mediano tamaño, para que se vean, y el ajo muy picado.",
+            "En una cazuela grande y ancha, que nos permita remover los ingredientes, ponemos un poco de aceite y en él, salteamos la cebolla, el pimiento y el ajo.",
+            "Bajamos el gas al mínimo, y añadimos la zanahoria, bien picada. Dejamos pochar los ingredientes para que se ablanden bien.",
+            "Ponemos el pimiento choricero en agua caliente, y sacamos su carne con el canto de una cuchara. También podemos utilizar la carne de pimiento choricero en conserva, que da un excelente resultado y resulta muy cómoda de utilizar. La incorporamos al sofrito junto a la guindilla y removemos bien.",
+            "Añadimos el vino blanco, y dejamos que evapore el alcohol. Pelamos las patatas y las cortamos en cachelos, desgajando un poco con el cuchillo para que los pedazos suelten más fécula, lo cual hará que el caldo resultante engorde un poco.",
+            "Añadimos las patatas al guiso, junto a una punta de cuchillo de pimentón, y un buen pellizco de sal.",
+            "Subimos el gas a fuego fuerte e incorporamos el caldo, las hojas de laurel y las dos cucharadas de tomate, removemos un poco y soltamos la cuchara. Si se desea, se puede poner una ramita de perejil a cocer que después retiraremos.",
+            "Una vez que el caldo comience a hervir, bajamos de nuevo el gas al mínimo. A partir de ahora removeremos solamente agitando las asas de la cacerola. De esta manera, las patatas permanecerán enteras.",
+            "Dejamos a fuego lento durante unos treinta minutos, hasta que las patatas casi se deshagan, y aprovechamos ese tiempo para repasar los tacos de bonito, cortándolos en trozos de bocado, y retirando alguna espina que puedan tener.",
+            "Pasados los treinta minutos, añadimos el bonito a la cazuela, apagamos el fuego y dejamos que las tajadas se hagan con el calor residual. Servimos tras cinco minutos de reposo."
+        ]
+    },
+    {
+        "nombre": "Croquetas de Jamón ibérico y huevo duro (6 personas)",
+        "ingredientes": ["Leche entera", "Mantequilla", "Harina de Trigo", "Jamón Ibérico", "Huevos", "Pan"],
+        "cantidades": ["600 ml de Leche entera", "1 Cucharada sopera de Mantequilla", "100 gr de Jamón ibérico muy picado", "2 Huevos duros/cocidos", "1 Huevo para envolver las croquetas", "Pan rallado para envolver las croquetas", "Sal (opcional)"],
+        "pasos": [
+            "Picamos bien el jamón ibérico para que quede en taquitos muy pequeños.",
+            "Ponemos en la sartén la mantequilla y la harina y en cuanto se funde la primera, removemos y agregamos la mitad del jamón, para que este quede envuelto en esa masa.",
+            "Muy despacio, vamos añadiendo la leche a chorritos, dejando que la masa la vaya absorbiendo antes de añadir más. De esta manera, nunca nos saldrán grumos, mientras que si añadimos toda la leche de golpe, tendremos que trabajar más removiendo para disolverlos correctamente.",
+            "Mientras, cocemos los huevos y los pelamos, picándolos también muy finamente.",
+            "Conforme la bechamel va espesando y terminamos de añadir toda la leche, vamos probando de sal, porque el jamón puede ser suficiente para sazonar nuestra pasta de croquetas.",
+            "Cuando prácticamente esté en su punto, añadimos el resto del jamón y el huevo duro picado. Sabremos que ya está lista cuando toda la sartén se llene de burbujas, y al remover la pasta haga un ruidito con la sartén, formando caminitos o pasillos al pasar la cuchara.",
+            "Sacamos la bechamel y la dejamos enfriar en una fuente. Yo la cubro con un film de cocina para que no haga costra.",
+            "Cuando la pasta está bien fría, formamos las croquetas y las envolvemos en huevo batido y pan rallado, friéndolas en tandas de cuatro o cinco croquetas en aceite muy caliente. Así conseguimos que no se nos abran y nos lleguen con un aspecto bien apetecible a la mesa."
+        ]
+    },
+    {
+        "nombre": "Pimientos del piquillo rellenos de bacalao y gambas (4 personas)",
+        "ingredientes": ["Pimientos del piquillo", "Pimiento del piquillo", "Lomos de Bacalao", "Bacalao", "Harina de Trigo", "Leche", "Aceite de Oliva", "Cebolla", "Cebollas", "Ajo", "Nata", "Aceite de Oliva Virgen Extra", "Gambas", "Gamba"],
+        "cantidades": ["12 Pimientos del piquillo", "400 g de Lomos de Bacalao", "60 g de Cebolla", "1 Diente de Ajo", "25 g de Harina de Trigo", "425 ml de Leche", "250 ml Aceite de oliva virgen", "8 Pimientos del Piquillo (para la salsa)", "40 g de Cebolla (para la salsa)", "1 Diente de Ajo (para la salsa)", "325 ml de Nata Líquida (para la salsa)", "15 ml de Aceite de Oliva Virgen Extra (para la salsa)", "100 g de Gambas"],
+        "pasos": [
+            "Picar finamente la cebolla y el ajo, y sofreírlos en una sartén con aceite durante unos 10 minutos.",
+            "Añadir los lomos de bacalao desalados a la sartén y separar las lascas conforme se va cocinando el pescado.",
+            "Cuando el bacalao deje de estar transparente, agregar la harina, removiendo bien para cocinar durante unos minutos.",
+            "Incorporar las gambas y rehogar. Luego, añadir la leche gradualmente para formar la bechamel, cocer sin dejar de remover hasta que espese. Rectificar de sal, retirar del fuego y dejar enfriar.",
+            "Para la salsa, sofreír la cebolla y el ajo picados en aceite hasta que estén transparentes.",
+            "Añadir los pimientos y saltear durante cinco o seis minutos. Incorporar la nata y dejar reducir.",
+            "Triturar la mezcla con una batidora para obtener la salsa.",
+            "Rellenar los pimientos del piquillo con la farsa preparada, colocarlos en una cazuela, verter la salsa por encima y hornear durante 15 minutos a 180º C."
+        ]
+    },
+    {
+        "nombre": "Arroz con leche (6 personas)",
+        "ingredientes": ["Arroz", "Leche", "Azúcar", "Canela", "Limón"],
+        "cantidades": ["200 gr de Arroz", "1 L de Leche", "200 gr de Azúcar", "Canela en rama", "Cáscara de limón"],
+        "pasos": [
+            "Ponemos la leche a calentar en una cazuela con la cáscara de limón y la canela en rama.",
+            "Cuando la leche empiece a hervir, añadimos el arroz y dejamos cocer a fuego lento durante 20 minutos, removiendo de vez en cuando.",
+            "Pasado ese tiempo, añadimos el azúcar y dejamos cocer durante 10 minutos más.",
+            "Retiramos la cáscara de limón y la canela en rama y dejamos enfriar el arroz con leche antes de servir."
+        ]
+    },
+    {
+        "nombre": "Tarta de manzana (8 personas)",
+        "ingredientes": ["Manzana", "Azúcar", "Harina de Trigo", "Mantequilla", "Huevos", "Levadura", "Azúcar Vainillado"],
+        "cantidades": ["4 Manzanas", "200 gr de Azúcar", "200 gr de Harina de trigo", "100 gr de Mantequilla", "3 Huevos", "1 sobre de Levadura", "1 sobre de Azúcar vainillado"],
+        "pasos": [
+            "Pelamos las manzanas, las cortamos en láminas finas y las rociamos con azúcar.",
+            "Batimos los huevos con el azúcar y el azúcar vainillado.",
+            "Añadimos la mantequilla derretida, la harina y la levadura a la mezcla de huevos y azúcar.",
+            "Vertemos la mezcla en un molde, colocamos las láminas de manzana por encima y horneamos durante 40 minutos a 180ºC."
+        ]
     }
-  ]
+]
