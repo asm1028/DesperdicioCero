@@ -102,7 +102,7 @@ class MyApp extends StatelessWidget {
         '/productosComprados': (context) => ProductosComprados(),
         '/recipes': (context) => RecipesPage(),
         '/recipes/all': (context) => AllRecipes(),
-        '/recipes/detail': (context) => RecipeDetail(recipe: {},),
+        '/recipes/detail': (context) => RecipeDetail(recipe: ModalRoute.of(context)?.settings.arguments as Map,),
         '/recipes/recommendations': (context) => RecommendationsRecipesPage(),
         '/recognizeExpirationDate': (context) => ExpirationDateRecognizer(),
       },

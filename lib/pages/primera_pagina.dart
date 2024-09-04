@@ -30,7 +30,7 @@ class _PrimeraPaginaState extends State<PrimeraPagina> {
           _selectedItemColor = Colors.blue;  // Color para "Lista de la compra"
           break;
         case 1:
-          _selectedItemColor = Color.fromARGB(255, 255, 212, 38);   // Color para "Recetas"
+          _selectedItemColor = Colors.amber;   // Color para "Recetas"
           break;
         case 2:
           _selectedItemColor = Colors.greenAccent[400];  // Color para "Inicio"
