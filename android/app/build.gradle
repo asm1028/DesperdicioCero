@@ -70,6 +70,8 @@ flutter {
 }
 
 dependencies {
+    implementation platform('com.google.firebase:firebase-bom:33.2.0')
+    implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.squareup.okhttp3:okhttp:4.9.0'
     implementation 'com.squareup.okio:okio:2.10.0'
 }
