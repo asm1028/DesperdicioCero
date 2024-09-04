@@ -3,7 +3,7 @@ import 'package:desperdiciocero/pages/recipes_recommendations.dart';
 import 'package:flutter/material.dart';
 
 class RecipesPage extends StatefulWidget {
-  RecipesPage({Key? key}) : super(key: key);
+  RecipesPage({super.key});
 
   @override
   _RecipesPageState createState() => _RecipesPageState();
@@ -17,7 +17,7 @@ class _RecipesPageState extends State<RecipesPage> {
       child: Scaffold(
         appBar: AppBar(
           title: Text('Recetas'),
-          backgroundColor: const Color.fromARGB(255, 255, 212, 38),
+          backgroundColor: Colors.amber,
           bottom: TabBar(
             tabs: [
               Tab(text: 'Todas las Recetas'),

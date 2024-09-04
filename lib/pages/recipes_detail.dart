@@ -3,14 +3,15 @@ import 'package:flutter/material.dart';
 class RecipeDetail extends StatelessWidget {
   final Map recipe;
 
-  // Constructor que recibe la receta
-  RecipeDetail({Key? key, required this.recipe}) : super(key: key);
+  RecipeDetail({super.key, required this.recipe});
 
   @override
   Widget build(BuildContext context) {
+    String recipeName = recipe['nombre'] as String? ?? 'Nombre no disponible';
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(recipe['nombre']),
+        title: Text(recipeName, style: TextStyle(fontSize: 24)),
         backgroundColor: Colors.amber,
       ),
       body: SingleChildScrollView(
@@ -21,17 +22,17 @@ class RecipeDetail extends StatelessWidget {
             children: <Widget>[
               Text(
                 "Ingredientes",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),  // Aumentar tamaño y negrita para "Ingredientes"
               ),
               Divider(),
-              ..._buildIngredientList(recipe['ingredientes'], recipe['cantidades']),
+              ..._buildIngredientList(recipe['ingredientes'] as List? ?? [], recipe['cantidades'] as List? ?? []),
               SizedBox(height: 20),
               Text(
                 "Pasos",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),  // Aumentar tamaño y negrita para "Pasos"
               ),
               Divider(),
-              ..._buildStepList(recipe['pasos']),
+              ..._buildStepList(recipe['pasos'] as List? ?? []),
             ],
           ),
         ),
@@ -39,23 +40,41 @@ class RecipeDetail extends StatelessWidget {
     );
   }
 
-  // Función para construir la lista de ingredientes
   List<Widget> _buildIngredientList(List ingredients, List quantities) {
     List<Widget> list = [];
-    for (int i = 0; i < ingredients.length; i++) {
+    for (int i = 0; i < ingredients.length && i < quantities.length; i++) {
       list.add(
-        Text('${quantities[i]} de ${ingredients[i]}'),
+        Row(
+          children: [
+            Text('·', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+            SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                '${quantities[i]}',
+                style: TextStyle(fontSize: 18),
+                // En caso de que el texto sea muy largo y no quepa en la pantalla, que se muestre completo
+                overflow: TextOverflow.visible,
+              ),
+            ),
+          ],
+        ),
       );
     }
     return list;
   }
 
-  // Función para construir la lista de pasos
   List<Widget> _buildStepList(List steps) {
     List<Widget> list = [];
     for (int i = 0; i < steps.length; i++) {
       list.add(
-        Text('Paso ${i + 1}: ${steps[i]}', style: TextStyle(height: 1.5)),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Paso ${i + 1}: ${steps[i]}', style: TextStyle(fontSize: 18, height: 1.5)),  // Aumentar el tamaño del texto de los pasos
+            SizedBox(height: 8),
+            Divider(),
+          ],
+        ),
       );
     }
     return list;
