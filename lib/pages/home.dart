@@ -177,13 +177,13 @@ class _HomeState extends State<Home> {
                               Color tileColor; // Variable para almacenar el color del tile
                               if (daysToExpire <= 1) {
                                 // Si caduca hoy o mañana
-                                tileColor = const Color.fromARGB(255, 243, 86, 75);
+                                tileColor = const Color.fromARGB(255, 254, 98, 98);
                               } else if (daysToExpire > 1 && daysToExpire <= 5) {
                                 // Si caduca entre 2 y 5 días
-                                tileColor = Colors.orange;
+                                tileColor = const Color.fromARGB(255, 255, 166, 63);
                               } else {
                                 // Si caduca en 6 días o más
-                                tileColor = const Color.fromARGB(255, 93, 210, 97);
+                                tileColor = const Color.fromARGB(255, 113, 217, 116);
                               }
 
                               // Envuelve ListTile y Divider en un Container para aplicar el color de fondo
@@ -247,7 +247,7 @@ class _HomeState extends State<Home> {
                             itemCount: purchasedProducts.length,
                             itemBuilder: (context, index) {
                               var item = purchasedProducts[index];
-                              Color backgroundColor = index % 2 == 0 ? const Color.fromARGB(255, 0, 240, 124) : const Color.fromARGB(255, 223, 218, 218);  // Alternar colores
+                                Color backgroundColor = index % 2 == 0 ? const Color.fromARGB(255, 11, 233, 126) : const Color.fromARGB(255, 223, 218, 218);  // Alternar colores
 
                               return Column(
                                 children: [
