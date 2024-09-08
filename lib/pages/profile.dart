@@ -1,7 +1,6 @@
 import 'package:desperdiciocero/pages/login.dart';
 import 'package:desperdiciocero/pages/register.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -57,7 +56,7 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Perfil', style: TextStyle(color: Colors.white)),
+        title: Text('Perfil de Usuario', style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.blue[400],
       ),
       body: SingleChildScrollView(

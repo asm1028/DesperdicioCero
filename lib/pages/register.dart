@@ -1,3 +1,4 @@
+import 'package:desperdiciocero/pages/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -25,7 +26,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
       if (result.docs.isEmpty) {
         try {
-          UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          // Crear usuario en Firebase Auth
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
             email: email,
             password: password,
           );
@@ -40,18 +42,34 @@ class _RegisterScreenState extends State<RegisterScreen> {
             'password': password,  // TODO: No guardar la contraseña en texto plano
           }, SetOptions(merge: true));  // Se usa merge para no sobrescribir campos existentes
 
-          // Se vuelve a la pantalla anterior
-          Navigator.pop(context);
+          // Se vuelve a la pantalla de perfil
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => Profile()),
+          );
         } catch (e) {
           print('Error en el registro: $e');
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text('Error de Registro'),
+              content: Text('No se pudo registrar. Por favor intente nuevamente o vuelva más tarde.'),
+              actions: [
+                TextButton(
+                  child: Text('Continuar'),
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
+              ],
+            ),
+          );
         }
       } else {
-        // Mensaje de error si el correo ya está registrado
+        // Aparece este mensaje de error si el correo ya está registrado
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
             title: Text('Error'),
-            content: Text('El correo electrónico ya está registrado.'),
+            content: Text('Ya existe un usuario con ese correo electrónico.'),
             actions: [
               TextButton(
                 child: Text('Continuar'),
@@ -68,43 +86,59 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Registro'),
+        title: Text(
+          'Registro de Usuario',
+          style: TextStyle(color: Colors.white),
+        ),
         backgroundColor: Colors.blue[400],
       ),
-      body: Form(
-        key: _formKey,
+      body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              TextFormField(
-                decoration: InputDecoration(labelText: 'Nombre'),
-                validator: (value) => value!.isEmpty ? 'Ingrese un nombre' : null,
-                onChanged: (value) => setState(() => name = value),
-              ),
-              TextFormField(
-                decoration: InputDecoration(labelText: 'Correo electrónico'),
-                validator: (value) => !value!.contains('@') || !value.contains('.') ? 'Ingrese un correo válido' : null,
-                onChanged: (value) => setState(() => email = value),
-              ),
-                TextFormField(
-                decoration: InputDecoration(labelText: 'Contraseña'),
-                obscureText: true,
-                validator: (value) {
-                  if (value!.isEmpty) {
-                  return 'Ingrese una contraseña';
-                  } else if (value.length < 6) {
-                  return 'La contraseña debe tener al menos 6 caracteres';
-                  }
-                  return null;
-                },
-                onChanged: (value) => setState(() => password = value),
+          child: Container(
+            margin: EdgeInsets.only(top: 150.0),
+            child: Card(
+              elevation: 4.0,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      TextFormField(
+                        decoration: InputDecoration(labelText: 'Nombre'),
+                        validator: (value) => value!.isEmpty ? 'Ingrese un nombre' : null,
+                        onChanged: (value) => setState(() => name = value),
+                      ),
+                      TextFormField(
+                        decoration: InputDecoration(labelText: 'Correo electrónico'),
+                        validator: (value) => !value!.contains('@') || !value.contains('.') ? 'Ingrese un correo válido' : null,
+                        onChanged: (value) => setState(() => email = value),
+                      ),
+                      TextFormField(
+                        decoration: InputDecoration(labelText: 'Contraseña'),
+                        obscureText: true,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Ingrese una contraseña';
+                          } else if (value.length < 6) {
+                            return 'La contraseña debe tener al menos 6 caracteres';
+                          }
+                          return null;
+                        },
+                        onChanged: (value) => setState(() => password = value),
+                      ),
+                      SizedBox(height: 20),
+                      ElevatedButton(
+                        onPressed: register,
+                        child: Text('Registrarse'),
+                      ),
+                    ],
+                  ),
                 ),
-              ElevatedButton(
-                onPressed: register,
-                child: Text('Registrarse'),
               ),
-            ],
+            ),
           ),
         ),
       ),
