@@ -195,7 +195,7 @@ class ProductosComprados extends StatelessWidget {
                       alignment: Alignment.centerLeft,
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Icon(Icons.edit, color: Colors.white),
+                        child: Icon(Icons.add, color: Colors.white),
                       ),
                     ),
                     secondaryBackground: Container(

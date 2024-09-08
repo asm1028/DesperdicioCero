@@ -52,7 +52,7 @@ Future<void> initializeUserToken() async {
 
     // Guarda el token en la base de datos bajo la colección 'users'
     FirebaseFirestore.instance.collection('users').doc(userToken).set({
-      'token': userToken,
+      'userToken': userToken,
       'created_at': FieldValue.serverTimestamp(),
     });
 
