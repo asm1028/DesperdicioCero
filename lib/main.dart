@@ -1,6 +1,7 @@
 import 'package:desperdiciocero/firebase_options.dart';
 import 'package:desperdiciocero/pages/home.dart';
 import 'package:desperdiciocero/pages/lista_compra.dart';
+import 'package:desperdiciocero/pages/login.dart';
 import 'package:desperdiciocero/pages/primera_pagina.dart';
 import 'package:desperdiciocero/pages/productos.dart';
 import 'package:desperdiciocero/pages/lista_productos.dart';
@@ -9,6 +10,7 @@ import 'package:desperdiciocero/pages/recipes.dart';
 import 'package:desperdiciocero/pages/recipes_all.dart';
 import 'package:desperdiciocero/pages/recipes_detail.dart';
 import 'package:desperdiciocero/pages/recipes_recommendations.dart';
+import 'package:desperdiciocero/pages/register.dart';
 import 'package:desperdiciocero/pages/user_settings.dart';
 import 'package:desperdiciocero/pages/productos_comprados.dart';
 import 'package:desperdiciocero/pages/productos_compra.dart';
@@ -54,6 +56,9 @@ Future<void> initializeUserToken() async {
       'created_at': FieldValue.serverTimestamp(),
     });
 
+    // Guarda el token como resguardo
+    await prefs.setString('backupToken', userToken);
+
     print("User Token: $userToken");
   }
 }
@@ -97,6 +102,8 @@ class MyApp extends StatelessWidget {
         '/listaProductos': (context) => ListaProductos(),
         '/settings': (context) => UserSettings(),
         '/profile': (context) => Profile(),
+        '/profile/login': (context) => LoginScreen(),
+        '/profile/register': (context) => RegisterScreen(),
         '/listaCompra': (context) => ListaCompra(),
         '/productosCompra': (context) => ProductosCompra(),
         '/productosComprados': (context) => ProductosComprados(),
