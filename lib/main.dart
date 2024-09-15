@@ -18,6 +18,7 @@ import 'package:desperdiciocero/pages/expiration_date_recognizer.dart';
 import 'package:desperdiciocero/utils/notification_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -37,8 +38,14 @@ Future<void> main() async {
   await requestPermissions(); // Solicita los permisos necesarios antes de iniciar la app
 
   NotificationService.initialize(); // Inicializa el servicio de notificaciones
-
-  runApp(const MyApp());
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  bool isDarkMode = prefs.getBool('isDarkMode') ?? false;
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => ThemeProvider(isDarkMode: isDarkMode),
+      child: MyApp(),
+    ),
+  );
 }
 
 // Función para inicializar el token del usuario solo si es necesario
@@ -91,10 +98,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       // Rutas para poder viajar entre las diferentes páginas de la aplicación
       home: PrimeraPagina(),
+      theme: themeProvider.getTheme,
       routes: {
         'primera_pagina': (context) => PrimeraPagina(),
         '/home': (context) => Home(),
@@ -125,4 +134,43 @@ class MyApp extends StatelessWidget {
       ],
     );
   }
+}
+
+class AppTheme {
+  static final lightTheme = ThemeData(
+    brightness: Brightness.light,
+    primaryColor: Colors.white,
+  );
+
+  static final darkTheme = ThemeData(
+    brightness: Brightness.dark,
+    primaryColor: Colors.grey[900],
+  );
+}
+
+class ThemeProvider with ChangeNotifier {
+  ThemeData _selectedTheme = AppTheme.lightTheme;
+  late SharedPreferences prefs;
+
+  ThemeProvider({required bool isDarkMode}) {
+    _initializePreferences();
+    _selectedTheme = isDarkMode ? AppTheme.darkTheme : AppTheme.lightTheme;
+  }
+
+  Future<void> _initializePreferences() async {
+    prefs = await SharedPreferences.getInstance();
+  }
+
+  Future<void> toggleTheme() async {
+    if (_selectedTheme == AppTheme.darkTheme) {
+      _selectedTheme = AppTheme.lightTheme;
+      await prefs.setBool('isDarkMode', false);
+    } else {
+      _selectedTheme = AppTheme.darkTheme;
+      await prefs.setBool('isDarkMode', true);
+    }
+    notifyListeners();
+  }
+
+  ThemeData get getTheme => _selectedTheme;
 }
