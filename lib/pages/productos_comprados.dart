@@ -147,12 +147,7 @@ class ProductosComprados extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Bolsa de la Compra',
-          style: TextStyle(
-            color: Colors.white,
-          ),
-        ),
+        title: Text('Bolsa de la Compra', style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.blue[400],
       ),
       body: FutureBuilder<String?>(
@@ -194,7 +189,7 @@ class ProductosComprados extends StatelessWidget {
                       color: Colors.green,
                       alignment: Alignment.centerLeft,
                       child: Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(20.0),
                         child: Icon(Icons.add, color: Colors.white),
                       ),
                     ),
@@ -202,7 +197,7 @@ class ProductosComprados extends StatelessWidget {
                       color: Colors.red,
                       alignment: Alignment.centerRight,
                       child: Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(20.0),
                         child: Icon(Icons.delete, color: Colors.white),
                       ),
                     ),
@@ -215,9 +210,13 @@ class ProductosComprados extends StatelessWidget {
                         _deleteProduct(context, document.id);
                       }
                     },
-                    child: ListTile(
-                      title: Text(data['name']),
-                      onTap: () => _editProduct(context, document.id, data['name']),
+                    child: Card(
+                      elevation: 4,
+                      margin: EdgeInsets.all(8),
+                      child: ListTile(
+                        title: Text(data['name'], style: TextStyle(fontWeight: FontWeight.bold)),
+                        onTap: () => _editProduct(context, document.id, data['name']),
+                      ),
                     ),
                   );
                 }).toList(),

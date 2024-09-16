@@ -51,7 +51,6 @@ class _RecommendationsRecipesPageState extends State<RecommendationsRecipesPage>
   String normalizeIngredient(String ingredient) {
     return ingredient.endsWith('s') ? ingredient.substring(0, ingredient.length - 1) : ingredient;
   }
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -63,7 +62,7 @@ class _RecommendationsRecipesPageState extends State<RecommendationsRecipesPage>
           .collection('products')
           .where('user_token', isEqualTo: token)
           .where('expiration', isGreaterThan: today)  // Asegurarse de que la fecha de caducidad es en el futuro
-          .where('expiration', isLessThanOrEqualTo: DateTime.now().add(Duration(days: 5))) // y dentro de los próximos 5 días
+          .where('expiration', isLessThanOrEqualTo: now.add(Duration(days: 5))) // y dentro de los próximos 5 días
           .get()
           .then((snapshot) {
               List<String> products = [];
@@ -72,7 +71,7 @@ class _RecommendationsRecipesPageState extends State<RecommendationsRecipesPage>
                   String productName = normalizeIngredient(doc.data()['name']);
                   products.add(productName);
                   DateTime expiration = doc.data()['expiration'].toDate();
-                  int daysUntilExpire = expiration.difference(DateTime.now()).inDays;
+                  int daysUntilExpire = expiration.difference(now).inDays;
 
                   // Asignar puntuación basada en la proximidad de la fecha de caducidad
                   productScores[productName] = daysUntilExpire >= 0 && daysUntilExpire <= 5 ? 5 : 1;
@@ -89,7 +88,7 @@ class _RecommendationsRecipesPageState extends State<RecommendationsRecipesPage>
             return Text("Error: ${snapshot.error}");
           }
           List<Map>? recipes = snapshot.data;
-            if (recipes == null || recipes.isEmpty) {
+          if (recipes == null || recipes.isEmpty) {
             return Center(
               child: Container(
               margin: EdgeInsets.symmetric(horizontal: 50),
@@ -99,21 +98,26 @@ class _RecommendationsRecipesPageState extends State<RecommendationsRecipesPage>
               ),
               ),
             );
-            }
+          }
           return ListView.builder(
             itemCount: recipes.length,
             itemBuilder: (context, index) {
               var recipe = recipes[index]['recipe'];
-              return ListTile(
-                title: Text(recipe['nombre']),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => RecipeDetail(recipe: recipe),
-                    ),
-                  );
-                },
+              return Card(
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+                elevation: 4,
+                margin: EdgeInsets.all(8.0),
+                child: ListTile(
+                  title: Text(recipe['nombre'], style: TextStyle(fontWeight: FontWeight.bold)),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => RecipeDetail(recipe: recipe),
+                      ),
+                    );
+                  },
+                ),
               );
             },
           );

@@ -88,38 +88,49 @@ class _PrimeraPaginaState extends State<PrimeraPagina> {
         ),
       ),
       body: _pages[_selectedIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: _navigateBottomBar,
-        items: <BottomNavigationBarItem>[
-          // Lista de la compra
-          BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_cart),
-            label: 'Lista de la compra',
-          ),
+      bottomNavigationBar: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Divider(
+            height: 1,
+            color: Theme.of(context).brightness == Brightness.dark
+              ? const Color.fromARGB(255, 42, 36, 36) // Modo oscuro
+              : Colors.grey.withOpacity(0.5), // Modo claro
+            ),
+          BottomNavigationBar(
+            currentIndex: _selectedIndex,
+            onTap: _navigateBottomBar,
+            items: <BottomNavigationBarItem>[
+              // Lista de la compra
+              BottomNavigationBarItem(
+                icon: Icon(Icons.shopping_cart),
+                label: 'Lista de la compra',
+              ),
 
-          // Recetas
-          BottomNavigationBarItem(
-            icon: Icon(Icons.receipt_long_sharp),
-            label: 'Recetas',
-          ),
+              // Recetas
+              BottomNavigationBarItem(
+                icon: Icon(Icons.receipt_long_sharp),
+                label: 'Recetas',
+              ),
 
-          // Home
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Inicio',
-          ),
+              // Home
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                label: 'Inicio',
+              ),
 
-          // Productos
-          BottomNavigationBarItem(
-            // icon: Icon(Icons.fastfood),
-            // icon: Icon(Icons.dashboard),
-            icon: Icon(Icons.local_dining),
-            label: 'Productos',
+              // Productos
+              BottomNavigationBarItem(
+                icon: Icon(Icons.local_dining),
+                label: 'Productos',
+              ),
+            ],
+            selectedItemColor: _selectedItemColor,
+            unselectedItemColor: Colors.grey,
+            selectedLabelStyle: TextStyle(fontSize: 16), // Tamaño de fuente para etiquetas seleccionadas
+            unselectedLabelStyle: TextStyle(fontSize: 14), // Tamaño de fuente para etiquetas no seleccionadas
           ),
         ],
-        selectedItemColor: _selectedItemColor,
-        unselectedItemColor: Colors.grey,
       ),
     );
   }

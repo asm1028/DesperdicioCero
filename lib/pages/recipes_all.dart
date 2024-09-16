@@ -26,25 +26,32 @@ class AllRecipes extends StatelessWidget {
           if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           }
-          // Asegurarse de que snapshot.data es no-nulo antes de usarlo
+          // Nos aseguramos de que snapshot.data es no-nulo antes de usarlo
           if (snapshot.data == null) {
             return Center(child: Text("No se encontraron recetas"));
           }
           List recipes = snapshot.data as List; // Casting seguro ya que comprobamos nulos antes
-          return ListView.builder(
-            itemCount: recipes.length,
-            itemBuilder: (context, index) {
-              var recipe = recipes[index];
-              return ListTile(
-                title: Text(recipe['nombre'] ?? 'Receta sin nombre'), // Uso de ?? para manejar nulos
-                onTap: () {
-                  // Aseguramos que la receta no sea nula antes de entrar en la página de dicha receta
-                  if (recipe != null) {
+          return ListView(
+            children: recipes.map<Widget>((recipe) {
+              return Card(
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+                elevation: 4,
+                margin: EdgeInsets.all(8.0),
+                child: ListTile(
+                  contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  title: Text(recipe['nombre'] ?? 'Receta sin nombre', // Manejo de nulos
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  subtitle: Text('Click para ver detalles'), // Puedes ajustar o eliminar este texto
+                  onTap: () {
+                    // Navegar a una nueva página para mostrar detalles
                     Navigator.pushNamed(context, '/recipes/detail', arguments: recipe);
-                  }
-                },
+                  },
+                ),
               );
-            },
+            }).toList(),
           );
         } else {
           return Center(child: CircularProgressIndicator());
