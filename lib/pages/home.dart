@@ -13,6 +13,8 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   DateTime? selectedDate;
   TextEditingController _filterController = TextEditingController();
+  int oneDayThreshold = 1;
+  int fiveDayThreshold = 5;
 
   Future<String?> _getUserToken() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -62,10 +64,24 @@ class _HomeState extends State<Home> {
     return querySnapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
   }
 
+  Future<void> loadThresholds() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      oneDayThreshold = prefs.getInt('oneDayThreshold') ?? oneDayThreshold;
+      fiveDayThreshold = prefs.getInt('fiveDayThreshold') ?? fiveDayThreshold;
+    });
+  }
+
   @override
   void dispose() {
     _filterController.dispose();
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    loadThresholds();
   }
 
   @override
@@ -81,7 +97,10 @@ class _HomeState extends State<Home> {
         backgroundColor: Colors.greenAccent[400],
         actions: <Widget>[
           IconButton(
-            icon: Icon(FontAwesomeIcons.rotateLeft),
+            icon: Icon(
+              FontAwesomeIcons.rotateLeft,
+              color: const Color.fromARGB(255, 39, 37, 37), // Cambia el color del icono a negro
+            ),
             onPressed: () {
               // Función para recargar la página
               Navigator.pushReplacement(
@@ -109,7 +128,7 @@ class _HomeState extends State<Home> {
                 'Alberto Santos Martínez',
                 style: TextStyle(
                   color: Colors.black,
-                  fontSize: 20,
+                  fontSize: 18,
                 ),
               ),
             ),
@@ -175,30 +194,39 @@ class _HomeState extends State<Home> {
                               int daysToExpire = expirationDate.difference(now).inDays;
 
                               Color tileColor; // Variable para almacenar el color del tile
-                              if (daysToExpire <= 1) {
+                              if (daysToExpire <= oneDayThreshold) {
                                 // Si caduca hoy o mañana
-                                tileColor = const Color.fromARGB(255, 254, 98, 98);
-                              } else if (daysToExpire > 1 && daysToExpire <= 5) {
+                                tileColor = const Color.fromARGB(255, 235, 80, 80);
+                              } else if (daysToExpire > oneDayThreshold && daysToExpire <= fiveDayThreshold) {
                                 // Si caduca entre 2 y 5 días
                                 tileColor = const Color.fromARGB(255, 255, 166, 63);
                               } else {
                                 // Si caduca en 6 días o más
-                                tileColor = const Color.fromARGB(255, 113, 217, 116);
+                                tileColor = const Color.fromARGB(255, 92, 204, 96);
                               }
 
-                              // Envuelve ListTile y Divider en un Container para aplicar el color de fondo
                               return Container(
                                 decoration: BoxDecoration(
-                                  color: tileColor, // Aplica el color aquí
+                                  color: tileColor, // Cambia el color según la fecha de caducidad
                                   borderRadius: BorderRadius.circular(5.0),
                                 ),
                                 child: Column(
                                   children: [
-                                    ListTile(
-                                      title: Text(product['name']),
-                                      subtitle: Text('Caduca: ${DateFormat('dd/MM/yyyy').format(expirationDate)}'),
+                                  ListTile(
+                                    title: Text(
+                                    product['name'],
+                                    style: TextStyle(
+                                      color: Colors.black,
                                     ),
-                                    Divider(height: 1), // Añade una fina línea entre cada item
+                                    ),
+                                    subtitle: Text(
+                                    'Caduca: ${DateFormat('dd/MM/yyyy').format(expirationDate)}',
+                                    style: TextStyle(
+                                      color: Colors.black54,
+                                    ),
+                                    ),
+                                  ),
+                                  Divider(height: 1), // Añade una fina línea entre cada item
                                   ],
                                 ),
                               );
@@ -278,23 +306,6 @@ class _HomeState extends State<Home> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamed(context, '/recognizeExpirationDate');
-        },
-        backgroundColor: Colors.greenAccent[400],
-        child: Container(
-          width: 40,
-          height: 40,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('lib/assets/images/Camara.png'),
-              fit: BoxFit.contain,
-            ),
-          ),
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }
