@@ -14,7 +14,6 @@ import 'package:desperdiciocero/pages/register.dart';
 import 'package:desperdiciocero/pages/user_settings.dart';
 import 'package:desperdiciocero/pages/productos_comprados.dart';
 import 'package:desperdiciocero/pages/productos_compra.dart';
-import 'package:desperdiciocero/pages/expiration_date_recognizer.dart';
 import 'package:desperdiciocero/utils/notification_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -73,13 +72,13 @@ Future<void> initializeUserToken() async {
 
 // Función para solicitar permisos
 Future<void> requestPermissions() async {
-  final status = await Permission.camera.request();
+  final status = await Permission.storage.request();
   if (status.isGranted) {
     // Permiso concedido
-    print("Permiso de cámara concedido");
+    print("Permiso de almacenamiento concedido");
   } else if (status.isDenied) {
     // Permiso denegado
-    print("Permiso de cámara denegado");
+    print("Permiso de almacenamiento denegado");
   } else if (status.isPermanentlyDenied) {
     // El usuario ha denegado permanentemente el permiso; abra la configuración de la app
     openAppSettings();
@@ -120,7 +119,6 @@ class MyApp extends StatelessWidget {
         '/recipes/all': (context) => AllRecipes(),
         '/recipes/detail': (context) => RecipeDetail(recipe: ModalRoute.of(context)?.settings.arguments as Map,),
         '/recipes/recommendations': (context) => RecommendationsRecipesPage(),
-        '/recognizeExpirationDate': (context) => ExpirationDateRecognizer(),
       },
 
       // Localización de la aplicación para que salgan los textos en español
