@@ -251,6 +251,12 @@ class ListaProductosState extends State<ListaProductos> {
 
   @override
   Widget build(BuildContext context) {
+    // Se obtiene el ancho de la pantalla
+    double screenWidth = MediaQuery.of(context).size.width;
+    // El ancho de cada elemento en la cuadrícula
+    double itemWidth = 180.0;
+    // Calcula el número de elementos por fila
+    int crossAxisCount = (screenWidth / itemWidth).floor();
     return GestureDetector(
       // Cerrar el teclado al tocar fuera de un campo de texto
       onTap: () {
@@ -437,7 +443,7 @@ class ListaProductosState extends State<ListaProductos> {
                       return GridView.builder(
                         padding: EdgeInsets.all(8.0),
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
+                          crossAxisCount: crossAxisCount,
                           crossAxisSpacing: 8.0,
                           mainAxisSpacing: 8.0,
                           childAspectRatio: 1.15,
