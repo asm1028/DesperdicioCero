@@ -98,6 +98,41 @@ class _HomeState extends State<Home> {
         iconTheme: IconThemeData(color: Colors.black),
         actions: <Widget>[
           IconButton(
+              icon: Icon(
+                FontAwesomeIcons.circleQuestion, // Icono de información
+                color: const Color.fromARGB(255, 39, 37, 37),
+              ),
+              onPressed: () {
+                // Función para mostrar un diálogo con información
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                    title: Text(
+                      'Información',
+                      style: TextStyle(fontSize: 22),
+                    ),
+                    content: Text(
+                      'Esta aplicación te permite gestionar tus productos de manera eficiente. \n\nEn la parte superior del menú principal, encontrarás los productos próximos a caducar, mientras que en la inferior, los productos pendientes de añadir a tu lista, accesible desde el menú de navegación inferior derecho. \n\nAdemás, desde el menú lateral, accesible al pulsar las tres líneas a la izquierda del botón de información, podrás acceder al menú de usuario para registrarte o iniciar sesión, y al menú de configuración para ajustar los aspectos de la aplicación. \n\n¡Disfruta de la experiencia!',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    actions: <Widget>[
+                      TextButton(
+                      child: Text(
+                        'Cerrar',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+          ),
+          IconButton(
             icon: Icon(
               FontAwesomeIcons.rotateLeft,
               color: const Color.fromARGB(255, 39, 37, 37), // Cambia el color del icono a negro
@@ -213,20 +248,22 @@ class _HomeState extends State<Home> {
                                 ),
                                 child: Column(
                                   children: [
-                                  ListTile(
-                                    title: Text(
-                                    product['name'],
-                                    style: TextStyle(
-                                      color: Colors.black,
+                                    ListTile(
+                                      title: Text(
+                                        product['name'],
+                                        style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                      subtitle: Text(
+                                        'Caduca: ${DateFormat('dd/MM/yyyy').format(expirationDate)}',
+                                        style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w300,
+                                        ),
+                                      ),
                                     ),
-                                    ),
-                                    subtitle: Text(
-                                    'Caduca: ${DateFormat('dd/MM/yyyy').format(expirationDate)}',
-                                    style: TextStyle(
-                                      color: Colors.black54,
-                                    ),
-                                    ),
-                                  ),
                                   Divider(height: 1), // Añade una fina línea entre cada item
                                   ],
                                 ),

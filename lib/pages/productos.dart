@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:desperdiciocero/assets/products_data.dart';
@@ -93,6 +94,43 @@ class ProductosState extends State<Productos> {
         appBar: AppBar(
           title: Text('Añadir Productos', style: TextStyle(color: Colors.white)),
           backgroundColor: Colors.purple[400],
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(
+                FontAwesomeIcons.circleQuestion, // Icono de información
+                color: Colors.white,
+              ),
+              onPressed: () {
+                // Función para mostrar un diálogo con información
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                      return AlertDialog(
+                      title: Text(
+                        'Información',
+                        style: TextStyle(fontSize: 22),
+                      ),
+                      content: Text(
+                        'Aquí puedes añadir productos manualmente. Ingresa el nombre del producto y selecciona la fecha de expiración. ',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      actions: <Widget>[
+                        TextButton(
+                        child: Text(
+                          'Cerrar',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+            ),
+          ],
         ),
         body: SingleChildScrollView(
           padding: EdgeInsets.all(16.0),

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:desperdiciocero/pages/productos.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -272,6 +273,43 @@ class ListaProductosState extends State<ListaProductos> {
             ),
           ),
           backgroundColor: Colors.purple[400],
+          actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              FontAwesomeIcons.circleQuestion, // Icono de información
+              color: Colors.white,
+            ),
+            onPressed: () {
+              // Función para mostrar un diálogo con información
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                    return AlertDialog(
+                    title: Text(
+                      'Información',
+                      style: TextStyle(fontSize: 22),
+                    ),
+                    content: Text(
+                      'Aquí puedes ver tus productos y realizar acciones como editarlos o eliminarlos. Si los eliminas puedes moverlos a la lista de la compra o eliminarlos permanentemente.',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    actions: <Widget>[
+                      TextButton(
+                      child: Text(
+                        'Cerrar',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      ),
+                    ],
+                    );
+                },
+              );
+            },
+          ),
+        ],
         ),
         body: Column(
           children: [

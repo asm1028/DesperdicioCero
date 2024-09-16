@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
 
@@ -149,6 +150,43 @@ class ProductosComprados extends StatelessWidget {
       appBar: AppBar(
         title: Text('Bolsa de la Compra', style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.blue[400],
+        actions: <Widget>[
+            IconButton(
+              icon: Icon(
+                FontAwesomeIcons.circleQuestion, // Icono de información
+                color: Colors.white,
+              ),
+              onPressed: () {
+                // Función para mostrar un diálogo con información
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                      return AlertDialog(
+                      title: Text(
+                        'Información',
+                        style: TextStyle(fontSize: 22),
+                      ),
+                      content: Text(
+                        'Aquí puedes encontrar todos los productos que has añadido a tu lista de la compra. Puedes añadir nuevos productos pulsando el botón "+" y eliminarlos deslizando hacia la izquierda. También puedes editar un producto pulsando sobre el producto o deslizando hacia la derecha.',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      actions: <Widget>[
+                        TextButton(
+                        child: Text(
+                          'Cerrar',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+            ),
+          ],
       ),
       body: FutureBuilder<String?>(
         future: getUserToken(),

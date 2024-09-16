@@ -1,5 +1,6 @@
 import 'package:desperdiciocero/main.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -51,6 +52,43 @@ class UserSettings extends StatelessWidget {
       appBar: AppBar(
         title: Text('Ajustes', style: TextStyle(color: Colors.white)),
         backgroundColor: const Color.fromARGB(255, 149, 144, 144),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              FontAwesomeIcons.circleQuestion, // Icono de información
+              color: const Color.fromARGB(255, 39, 37, 37),
+            ),
+            onPressed: () {
+              // Función para mostrar un diálogo con información
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                    return AlertDialog(
+                    title: Text(
+                      'Información',
+                      style: TextStyle(fontSize: 22),
+                    ),
+                    content: Text(
+                      'En esta pantalla puedes cambiar la configuración de la aplicación.\n\nPuedes cambiar entre modo oscuro y modo claro, y ajustar los umbrales de días para ver de forma distinta los productos que caducarán pronto en el menú principal.',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    actions: <Widget>[
+                      TextButton(
+                      child: Text(
+                        'Cerrar',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+          ),
+        ],
       ),
       body: FutureBuilder<SharedPreferences>(
         future: SharedPreferences.getInstance(),

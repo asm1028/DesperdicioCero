@@ -203,6 +203,43 @@ class ListaCompraState extends State<ListaCompra> {
             ),
           ),
           backgroundColor: Colors.blue[400],
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(
+                FontAwesomeIcons.circleQuestion, // Icono de información
+                color: Colors.white,
+              ),
+              onPressed: () {
+                // Función para mostrar un diálogo con información
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                      return AlertDialog(
+                      title: Text(
+                        'Información',
+                        style: TextStyle(fontSize: 22),
+                      ),
+                      content: Text(
+                        'En esta interfaz tienes tu propia lista de la compra. Puedes añadir productos, editarlos, eliminarlos y marcarlos como comprados al dar click en la bolsa. ¡Haz clic en el botón "+" para añadir un producto!',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      actions: <Widget>[
+                        TextButton(
+                        child: Text(
+                          'Cerrar',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+            ),
+          ],
         ),
         body: Column(
           children: [

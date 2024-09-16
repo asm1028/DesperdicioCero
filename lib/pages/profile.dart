@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 import 'package:desperdiciocero/pages/login.dart';
@@ -86,6 +87,43 @@ class _ProfileState extends State<Profile> {
       appBar: AppBar(
         title: Text('Perfil de Usuario', style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.blue[400],
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              FontAwesomeIcons.circleQuestion, // Icono de información
+              color: const Color.fromARGB(255, 39, 37, 37),
+            ),
+            onPressed: () {
+              // Función para mostrar un diálogo con información
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                    return AlertDialog(
+                    title: Text(
+                      'Información',
+                      style: TextStyle(fontSize: 22),
+                    ),
+                    content: Text(
+                      'Aquí puedes iniciar sesión o registrarte para guardar los productos que añadas. Si ya has iniciado sesión, puedes cerrarla aquí.',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    actions: <Widget>[
+                      TextButton(
+                      child: Text(
+                        'Cerrar',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
