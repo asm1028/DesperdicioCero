@@ -62,6 +62,8 @@ const Map<String, String> productos = {
   "Frambuesa": "Frutas",
   "Arándano": "Frutas",
   "Grosella": "Frutas",
+  "Sandía": "Frutas",
+  "Melón": "Frutas",
 
   // Productos de la categoría "Frutos_secos"
   "Castaña": "Frutos_secos",
@@ -154,6 +156,19 @@ const Map<String, String> productos = {
   "Nabos": "Verduras",
   "Canónigos": "Verduras",
   "Coles": "Verduras",
+  "Esparragos": "Verduras",
+  "Menestra": "Verduras",
+  "Remolacha": "Verduras",
+  "Rucula": "Verduras",
+  "Escarolas": "Verduras",
+  "Lombardas": "Verduras",
+  "Maices": "Verduras",
+  "Bambús": "Verduras",
+  "Cebollinos": "Verduras",
+  "Coliflores": "Verduras",
+  "Col rizadas": "Verduras",
+  "Endibias": "Verduras",
+  "Romanescu": "Verduras",
 
   // Productos de la categoría "Legumbres"
   "Lentejas": "Legumbres",
