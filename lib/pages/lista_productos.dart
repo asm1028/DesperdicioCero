@@ -329,15 +329,14 @@ class ListaProductosState extends State<ListaProductos> {
                         icon: Icon(Icons.clear),
                         onPressed: () {
                           setState(() {
-                            _filterText = ''; // Limpia el filtro de texto
-                            _filterController.clear(); // Limpia el texto del TextField
-                            selectedDate = null; // Limpia el filtro de fecha
+                          _filterText = ''; // Limpia el filtro de texto
+                          _filterController.clear(); // Limpia el texto del TextField
+                          selectedDate = null; // Limpia el filtro de fecha
                           });
                         },
                       ),
                       SizedBox(width: 8),
-                      SizedBox(
-                        width: 200,
+                      Expanded(
                         child: TextField(
                           controller: _filterController,
                           decoration: InputDecoration(
