@@ -16,9 +16,14 @@ class _RecipesPageState extends State<RecipesPage> {
       length: 2, // Número de pestañas
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Recetas'),
+          title: Text(
+            'Recetas',
+            style: TextStyle(color: Colors.black), // Asegúrate de que el título sea visible en el fondo ambar
+          ),
           backgroundColor: Colors.amber,
           bottom: TabBar(
+            labelColor: Colors.black, // Color de texto activo
+            unselectedLabelColor: Colors.grey[800], // Color de texto inactivo
             tabs: [
               Tab(text: 'Todas las Recetas'),
               Tab(text: 'Recomendaciones'),

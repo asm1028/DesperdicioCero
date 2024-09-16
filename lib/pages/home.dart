@@ -95,6 +95,7 @@ class _HomeState extends State<Home> {
           ),
         ),
         backgroundColor: Colors.greenAccent[400],
+        iconTheme: IconThemeData(color: Colors.black),
         actions: <Widget>[
           IconButton(
             icon: Icon(
@@ -286,7 +287,12 @@ class _HomeState extends State<Home> {
                                       margin: EdgeInsets.only(bottom: 1.0),  // Margen para reducir espacio entre ítems
                                       child: ListTile(
                                         contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 0.0),  // Reducir el padding vertical
-                                        title: Text(item['name']),
+                                        title: Text(
+                                          item['name'],
+                                          style: TextStyle(
+                                          color: Colors.black,
+                                          ),
+                                        ),
                                       ),
                                     ),
                                   ),

@@ -11,8 +11,9 @@ class RecipeDetail extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(recipeName, style: TextStyle(fontSize: 24)),
+        title: Text(recipeName, style: TextStyle(fontSize: 24, color: Colors.black)),
         backgroundColor: Colors.amber,
+        iconTheme: IconThemeData(color: Colors.black),
       ),
       body: SingleChildScrollView(
         child: Padding(
