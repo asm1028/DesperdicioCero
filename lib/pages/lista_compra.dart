@@ -1,8 +1,8 @@
 import 'package:desperdiciocero/pages/productos_compra.dart';
+import 'package:desperdiciocero/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:desperdiciocero/pages/productos_comprados.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'dart:async';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -48,11 +48,6 @@ class ListaCompraState extends State<ListaCompra> {
     }
   }
 
-  Future<String?> getUserToken() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString('userToken');
-  }
-
   Future<void> _deleteItem(String itemId) async {
     try {
       FirebaseFirestore.instance.collection('shopping_list').doc(itemId).delete();
@@ -67,7 +62,7 @@ class ListaCompraState extends State<ListaCompra> {
   }
 
   Future<void> _moveToPurchased(String itemId, String name) async {
-    final userToken = await getUserToken();
+    final userToken = await Utils().getUserToken();
 
     try  {
       if (userToken != null) {
@@ -284,7 +279,7 @@ class ListaCompraState extends State<ListaCompra> {
             ),
             Expanded(
               child: FutureBuilder<String?>(
-                future: getUserToken(),
+                future: Utils().getUserToken(),
                 builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
                   if (snapshot.hasError) {
                     return Center(child: Text('Algo salió mal'));

@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:desperdiciocero/pages/productos.dart';
+import 'package:desperdiciocero/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ListaProductos extends StatefulWidget {
   ListaProductos({super.key});
@@ -23,16 +23,10 @@ class ListaProductosState extends State<ListaProductos> {
 
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
-  // Función para obtener el token del usuario
-  Future<String?> getUserToken() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString('userToken');
-  }
-
   // Función para eliminar un producto
   void _deleteProduct(BuildContext context, String productId) async {
     final productRef = FirebaseFirestore.instance.collection('products').doc(productId);
-    final userToken = await getUserToken();
+    final userToken = await Utils().getUserToken();
 
     if (userToken == null) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -406,7 +400,7 @@ class ListaProductosState extends State<ListaProductos> {
             ),
             Expanded(
               child: FutureBuilder<String?>(
-                future: getUserToken(),
+                future: Utils().getUserToken(),
                 builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
                   if (snapshot.hasError) {
                     return Center(child: Text('Algo salió mal'));

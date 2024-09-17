@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:desperdiciocero/pages/primera_pagina.dart';
+import 'package:desperdiciocero/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
@@ -16,13 +17,8 @@ class _HomeState extends State<Home> {
   int oneDayThreshold = 1;
   int fiveDayThreshold = 5;
 
-  Future<String?> _getUserToken() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString('userToken');
-  }
-
   Future<List<Map<String, dynamic>>> _fetchExpiringProducts() async {
-    String? userToken = await _getUserToken();
+    String? userToken = await Utils().getUserToken();
     if (userToken == null) return [];
 
     // Cálculo de la fecha actual y la fecha dentro de 3 días
@@ -53,7 +49,7 @@ class _HomeState extends State<Home> {
   }
 
   Future<List<Map<String, dynamic>>> _fetchPurchasedProducts() async {
-    String? userToken = await _getUserToken();
+    String? userToken = await Utils().getUserToken();
     if (userToken == null) return [];
 
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance

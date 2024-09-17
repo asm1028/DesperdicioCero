@@ -1,18 +1,12 @@
-import 'dart:async';
+import 'package:desperdiciocero/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
 
 class ProductosComprados extends StatelessWidget {
   ProductosComprados({super.key});
-
-  Future<String?> getUserToken() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString('userToken');
-  }
 
   void _editProduct(BuildContext context, String productId, String currentName) async {
     TextEditingController nameController = TextEditingController(text: currentName);
@@ -96,7 +90,7 @@ class ProductosComprados extends StatelessWidget {
                   TextButton(
                     onPressed: () async {
                       DateTime finalExpiryDate = selectedDate.add(Duration(days: additionalDays));
-                      String userToken = (await getUserToken())!;
+                      String userToken = (await Utils().getUserToken())!;
 
                       try {
                         // Agregar producto a la base de datos "products"
@@ -189,7 +183,7 @@ class ProductosComprados extends StatelessWidget {
           ],
       ),
       body: FutureBuilder<String?>(
-        future: getUserToken(),
+        future: Utils().getUserToken(),
         builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());

@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'package:desperdiciocero/pages/recipes_detail.dart';
+import 'package:desperdiciocero/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class RecommendationsRecipesPage extends StatefulWidget {
   @override
@@ -15,11 +15,6 @@ class _RecommendationsRecipesPageState extends State<RecommendationsRecipesPage>
     final String response = await rootBundle.loadString('lib/assets/recipes.json');
     final data = json.decode(response);
     return data;
-  }
-
-  Future<String?> getUserToken() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString('userToken');
   }
 
   Future<List<Map>> findRecipesUsingProducts(List<String> products, Map<String, int> productScores) async {
@@ -54,7 +49,7 @@ class _RecommendationsRecipesPageState extends State<RecommendationsRecipesPage>
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: getUserToken().then((token) {
+      future: Utils().getUserToken().then((token) {
         if (token != null) {
           DateTime now = DateTime.now();
           DateTime today = DateTime(now.year, now.month, now.day);
@@ -67,7 +62,7 @@ class _RecommendationsRecipesPageState extends State<RecommendationsRecipesPage>
           .then((snapshot) {
               List<String> products = [];
               Map<String, int> productScores = {};
-              snapshot.docs.forEach((doc) {
+              for (var doc in snapshot.docs) {
                   String productName = normalizeIngredient(doc.data()['name']);
                   products.add(productName);
                   DateTime expiration = doc.data()['expiration'].toDate();
@@ -75,7 +70,7 @@ class _RecommendationsRecipesPageState extends State<RecommendationsRecipesPage>
 
                   // Asignar puntuación basada en la proximidad de la fecha de caducidad
                   productScores[productName] = daysUntilExpire >= 0 && daysUntilExpire <= 5 ? 5 : 1;
-              });
+              }
               return findRecipesUsingProducts(products, productScores);
           });
         } else {
