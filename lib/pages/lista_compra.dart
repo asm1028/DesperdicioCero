@@ -20,7 +20,6 @@ class ListaCompraState extends State<ListaCompra> {
   String _sortOrder = 'Ascendente';
   String _filterText = '';
 
-  final TextEditingController _nameController = TextEditingController();
   final Connectivity _connectivity = Connectivity();
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   StreamSubscription<List<ConnectivityResult>>? _connectivitySubscription;
@@ -52,10 +51,6 @@ class ListaCompraState extends State<ListaCompra> {
   Future<String?> getUserToken() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString('userToken');
-  }
-
-  void _clearFields() {
-    _nameController.clear();
   }
 
   Future<void> _deleteItem(String itemId) async {

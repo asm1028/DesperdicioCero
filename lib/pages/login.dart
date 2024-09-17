@@ -23,7 +23,7 @@ class _LoginScreenState extends State<LoginScreen> {
           password: password,
         );
 
-        // Buscar el userToken en Firestore basado en el email
+        // Busca el userToken en Firestore basado en el email
         var userDoc = await FirebaseFirestore.instance
           .collection('users')
           .where('email', isEqualTo: email)
@@ -43,12 +43,18 @@ class _LoginScreenState extends State<LoginScreen> {
             MaterialPageRoute(builder: (context) => PrimeraPagina()),
           );
         } else {
-          // Mostrar mensaje de error si no se encuentra el documento
           showError('No se encontró el usuario.');
         }
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'user-not-found') {
+          showError('No se encontró cuenta con ese correo electrónico.');
+        } else if (e.code == 'wrong-password') {
+          showError('La contraseña es incorrecta.');
+        } else {
+          showError('Error al iniciar sesión, por favor intente nuevamente más tarde y cuando tenga conexión a internet en caso de no tenerlo.');
+        }
       } catch (e) {
-        // Mostrar mensaje de error en caso de fallo de autenticación
-        showError('Error al iniciar sesión: ${e.toString()}');
+        showError('Error al iniciar sesión, por favor intente nuevamente más tarde y cuando tenga conexión a internet en caso de no tenerlo.');
       }
     }
   }

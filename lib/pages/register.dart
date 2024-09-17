@@ -39,7 +39,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
           await FirebaseFirestore.instance.collection('users').doc(userToken).set({
             'name': name,
             'email': email,
-            'password': password,  // TODO: No guardar la contraseña en texto plano
           }, SetOptions(merge: true));  // Se usa merge para no sobrescribir campos existentes
 
           // Se vuelve a la pantalla de perfil
