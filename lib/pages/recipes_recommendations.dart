@@ -29,7 +29,7 @@ class _RecommendationsRecipesPageState extends State<RecommendationsRecipesPage>
   /// Ejemplo de uso:
   /// ```dart
   /// List<String> products = ['manzana', 'naranja', 'plátano'];
-  /// Map<String, int> productScores = {'manzana': 5, 'naranja': 3, 'plátano': 2};
+  /// Map<String, int> productScores = {'manzana': 5, 'naranja': 1, 'plátano': 1};
   /// List<Map> recommendedRecipes = await findRecipesUsingProducts(products, productScores);
   /// ```
   Future<List<Map>> findRecipesUsingProducts(List<String> products, Map<String, int> productScores) async {
@@ -78,7 +78,7 @@ class _RecommendationsRecipesPageState extends State<RecommendationsRecipesPage>
           .collection('products')
           .where('user_token', isEqualTo: token) // Busca los productos del usuario actual
           .where('expiration', isGreaterThan: today)  // y que no hayan caducado todavía
-          .where('expiration', isLessThanOrEqualTo: now.add(Duration(days: 5))) // y dentro de los próximos 5 días
+          .where('expiration', isLessThanOrEqualTo: now.add(Duration(days: 10))) // y dentro de los próximos 10 días
           .get()
           .then((snapshot) {
               List<String> products = [];
