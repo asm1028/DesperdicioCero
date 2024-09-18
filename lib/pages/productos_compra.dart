@@ -12,6 +12,7 @@ class ProductosCompra extends StatefulWidget {
   ProductosCompraState createState() => ProductosCompraState();
 }
 
+/// Esta clase representa el estado de la página de añadir productos de forma manual.
 class ProductosCompraState extends State<ProductosCompra> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
@@ -22,13 +23,19 @@ class ProductosCompraState extends State<ProductosCompra> {
     super.initState();
   }
 
-  /// Agrega un producto a la base de datos.
+  /// Añade un producto al carrito de la compra.
   ///
-  /// Esta función recibe el nombre del producto y la fecha de expiración como parámetros.
-  /// Verifica si el formulario es válido y si el token de usuario no es nulo.
-  /// Luego, agrega el producto a la colección 'products' en la base de datos de Firebase.
-  /// Muestra un mensaje emergente con el nombre del producto y su fecha de expiración.
-  /// Finalmente, limpia los campos del formulario.
+  /// Este método toma el nombre del producto como parámetro y lo agrega al carrito de la compra en la base de datos.
+  /// Para poder agregar el producto, se requiere que el formulario sea válido y que el token de usuario no sea nulo.
+  /// Si se cumple esta condición, se crea una referencia a la colección 'shopping_list' en la base de datos de Firestore
+  /// y se agrega un nuevo documento con los siguientes campos:
+  ///   - 'name': el nombre del producto (sin espacios en blanco al principio o al final).
+  ///   - 'user_token': el token de usuario obtenido de las preferencias compartidas.
+  ///   - 'added_day': la marca de tiempo del servidor en el momento de agregar el producto.
+  ///
+  /// Después de agregar el producto, se muestra una notificación emergente con el mensaje "Producto añadido: [nombre del producto] al carro de la compra".
+  /// Los campos del formulario se borran después de agregar el producto.
+  /// Si ocurre algún error durante el proceso, se muestra una notificación emergente con el mensaje "Algo salió mal. Por favor, inténtalo de nuevo."
   void addProduct(String name) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String? userToken = prefs.getString('userToken');

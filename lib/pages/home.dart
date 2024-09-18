@@ -6,17 +6,33 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+/// Representa la página principal de la aplicación.
 class Home extends StatefulWidget {
   @override
   _HomeState createState() => _HomeState();
 }
 
+/// Representa el estado de la página principal de la aplicación.
+///
+/// Esta clase es responsable de gestionar el estado de la página de inicio.
+/// Incluye métodos para obtener productos próximos a caducar y productos comprados,
+/// cargar umbrales, liberar recursos, inicializar el estado y construir la interfaz de usuario.
 class _HomeState extends State<Home> {
   DateTime? selectedDate;
   TextEditingController _filterController = TextEditingController();
   int oneDayThreshold = 1;
   int fiveDayThreshold = 5;
 
+  /// Obtiene una lista de productos próximos a caducar.
+  ///
+  /// Este método recupera una lista de productos cuyas fechas de caducidad caen dentro de los próximos tres días.
+  /// Requiere que se pase un token de usuario válido para realizar la consulta.
+  ///
+  /// Returns:
+  ///  - Future<List<Map<String, dynamic>>>: Una lista de productos próximos a caducar.
+  ///
+  /// Si ocurre un error durante el proceso de recuperación, se devuelve una lista vacía.
+  /// En caso de error, se muestra un SnackBar con un mensaje de error correspondiente.
   Future<List<Map<String, dynamic>>> _fetchExpiringProducts() async {
     String? userToken = await Utils().getUserToken();
     if (userToken == null) return [];
@@ -48,6 +64,13 @@ class _HomeState extends State<Home> {
     }
   }
 
+  /// Recupera una lista de productos comprados.
+  ///
+  /// Esta función realiza una consulta a la base de datos para obtener los productos comprados por el usuario actual.
+  /// Utiliza el token de usuario obtenido a través de la clase `Utils` para filtrar los resultados.
+  ///
+  /// Retorna una lista de mapas, donde cada mapa representa un producto comprado y contiene información en formato clave-valor.
+  /// Si no se encuentra ningún producto comprado o no se puede obtener el token de usuario, se retorna una lista vacía.
   Future<List<Map<String, dynamic>>> _fetchPurchasedProducts() async {
     String? userToken = await Utils().getUserToken();
     if (userToken == null) return [];
@@ -60,6 +83,16 @@ class _HomeState extends State<Home> {
     return querySnapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
   }
 
+  /// Carga los umbrales desde las preferencias compartidas.
+  ///
+  /// Esta función asincrónica carga los umbrales de un día y de cinco días desde las preferencias compartidas.
+  /// Si no se encuentran los umbrales en las preferencias, se utilizarán los valores predeterminados.
+  /// Los umbrales cargados se asignarán a las variables [oneDayThreshold] y [fiveDayThreshold].
+  ///
+  /// Ejemplo de uso:
+  /// ```dart
+  /// await loadThresholds();
+  /// ```
   Future<void> loadThresholds() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -68,12 +101,29 @@ class _HomeState extends State<Home> {
     });
   }
 
+  /// Libera los recursos utilizados por la página de inicio.
+  ///
+  /// Este método se llama automáticamente cuando la página de inicio se elimina de la memoria.
+  /// Se encarga de liberar los recursos utilizados por la página, como el controlador de filtro.
+  /// Es importante llamar a este método para evitar fugas de memoria.
+  ///
+  /// Ejemplo de uso:
+  ///
+  /// ```dart
+  /// @override
+  /// void dispose() {
+  ///   _filterController.dispose();
+  ///   super.dispose();
+  /// }
+  /// ```
   @override
   void dispose() {
     _filterController.dispose();
     super.dispose();
   }
 
+  /// Método que se llama al inicializar el estado del widget.
+  /// Llama al método [loadThresholds] para cargar los umbrales.
   @override
   void initState() {
     super.initState();

@@ -1,26 +1,13 @@
-import 'dart:convert';
+import 'package:desperdiciocero/utils/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show rootBundle;
 
+/// Esta clase representa la página de todas las recetas.
 class AllRecipes extends StatelessWidget {
-
-  /// Función que carga las recetas desde un fichero JSON.
-  ///
-  /// Esta función lee las recetas que están ubicadas en la ruta 'lib/assets/recipes.json'
-  /// y decodea dicha receta en una lista de objetos dinámicos.
-  /// Y gracias a que la receta está en formato JSON, podemos acceder a sus atributos fácilmente
-  ///
-  /// Devuelve una lista de objetos dinámicos que representan las recetas cargadas.
-  Future<List<dynamic>> loadRecipes() async {
-    final String response = await rootBundle.loadString('lib/assets/recipes.json');
-    final data = json.decode(response);
-    return data;
-  }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: loadRecipes(),
+      future: Utils().loadRecipes(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasError) {

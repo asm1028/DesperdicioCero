@@ -8,6 +8,15 @@ import 'package:desperdiciocero/pages/login.dart';
 import 'package:desperdiciocero/pages/primera_pagina.dart';
 import 'package:desperdiciocero/pages/register.dart';
 
+/// Clase que representa el perfil de usuario.
+///
+/// Esta clase es un StatefulWidget que muestra la información del perfil del usuario.
+///
+/// Ejemplo de uso:
+///
+/// ```dart
+/// Profile profile = Profile();
+/// ```
 class Profile extends StatefulWidget {
   Profile({super.key});
 
@@ -15,6 +24,7 @@ class Profile extends StatefulWidget {
   _ProfileState createState() => _ProfileState();
 }
 
+/// Clase que representa el estado del perfil de usuario.
 class _ProfileState extends State<Profile> {
   String greeting = '';
   bool hasName = false;
@@ -27,6 +37,12 @@ class _ProfileState extends State<Profile> {
     loadUserData();
   }
 
+  /// Comprueba el estado de inicio de sesión.
+  ///
+  /// Esta función verifica si el usuario ha iniciado sesión o no.
+  /// Utiliza la instancia de FirebaseAuth para obtener el usuario actual.
+  /// Luego, actualiza el estado de [isLoggedIn] en función de si el usuario es nulo o no.
+  /// Finalmente, actualiza la interfaz de usuario utilizando [setState].
   void checkLoggedInState() async {
     var user = FirebaseAuth.instance.currentUser;
     setState(() {
@@ -62,6 +78,16 @@ class _ProfileState extends State<Profile> {
     }
   }
 
+  /// Cierra la sesión del usuario actual y realiza algunas acciones adicionales.
+  ///
+  /// Esta función cierra la sesión del usuario actual utilizando FirebaseAuth.instance.signOut().
+  /// Luego, obtiene una instancia de SharedPreferences y recupera el valor de 'backupToken'.
+  /// Si 'backupToken' no es nulo y no está vacío, se guarda en 'userToken' en SharedPreferences.
+  /// De lo contrario, se genera un nuevo 'userToken' utilizando Uuid().v4() y se guarda en SharedPreferences.
+  /// Además, se crea un nuevo documento en la colección 'users' de FirebaseFirestore con el 'userToken' y la fecha de creación.
+  /// Finalmente, se navega a la página 'PrimeraPagina' utilizando Navigator.pushReplacement().
+  ///
+  /// Nota: Asegúrese de que el contexto esté disponible al llamar a esta función.
   void signOut() async {
     await FirebaseAuth.instance.signOut();
     final SharedPreferences prefs = await SharedPreferences.getInstance();

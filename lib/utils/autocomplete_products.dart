@@ -2,6 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:easy_autocomplete/easy_autocomplete.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+/// Clase que representa un widget de autocompletado personalizado.
+///
+/// Este widget se utiliza para mostrar un campo de texto con funcionalidad de autocompletado.
+/// Proporciona una lista de sugerencias y permite al usuario seleccionar una opción de la lista.
+///
+/// Para utilizar este widget, se debe proporcionar un [TextEditingController] que controlará el valor del campo de texto,
+/// una lista de [suggestions] que contiene las sugerencias a mostrar al usuario,
+/// una función [onChanged] opcional que se llamará cuando el valor del campo de texto cambie,
+/// un [validator] opcional que se utilizará para validar el valor del campo de texto,
+/// y un [maxLength] opcional que indica la longitud máxima del texto permitido.
 class CustomAutocomplete extends StatefulWidget {
   final TextEditingController controller;
   final List<String> suggestions;
@@ -22,6 +32,7 @@ class CustomAutocomplete extends StatefulWidget {
   _CustomAutocompleteState createState() => _CustomAutocompleteState();
 }
 
+/// Clase que representa el estado de un widget de autocompletado personalizado.
 class _CustomAutocompleteState extends State<CustomAutocomplete> {
   @override
   Widget build(BuildContext context) {

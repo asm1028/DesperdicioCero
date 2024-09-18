@@ -4,16 +4,36 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:desperdiciocero/pages/primera_pagina.dart';
 
+/// Clase que representa la pantalla de inicio de sesión.
+///
+/// Esta clase es un StatefulWidget que permite crear un estado mutable para la pantalla de inicio de sesión.
 class LoginScreen extends StatefulWidget {
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
 
+/// Clase que representa el estado de la página deL Login.
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   String email = '';
   String password = '';
 
+  /// Realiza el inicio de sesión del usuario.
+  ///
+  /// Este método valida el formulario actual y, si es válido, intenta autenticar al usuario utilizando Firebase Auth.
+  /// Si la autenticación es exitosa, busca el `userToken` correspondiente al correo electrónico del usuario en Firestore.
+  /// Si se encuentra un documento de usuario correspondiente, guarda el `userToken` en SharedPreferences.
+  /// Luego, navega a la página de perfil del usuario o a la pantalla principal.
+  /// Si no se encuentra ningún documento de usuario correspondiente, muestra un mensaje de error.
+  /// Si se produce un error durante el inicio de sesión, muestra un mensaje de error genérico.
+  ///
+  /// Ejemplo de uso:
+  ///
+  /// ```dart
+  /// login();
+  /// ```
+  ///
+  /// Nota: Este método debe ser llamado dentro de un widget que tenga acceso al contexto.
   void login() async {
     if (_formKey.currentState!.validate()) {
       try {
@@ -59,6 +79,13 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
+  /// Muestra un diálogo de error con el mensaje proporcionado.
+  ///
+  /// Muestra un diálogo de error con un título "Error" y el mensaje especificado.
+  /// El diálogo contiene un botón "OK" que cierra el diálogo al ser presionado.
+  ///
+  /// Parámetros:
+  ///   - [message]: El mensaje de error a mostrar en el diálogo.
   void showError(String message) {
     showDialog(
       context: context,

@@ -4,6 +4,10 @@ import 'package:desperdiciocero/pages/lista_productos.dart';
 import 'package:desperdiciocero/pages/recipes.dart';
 import 'package:flutter/material.dart';
 
+/// Clase que representa la primera página de la aplicación.
+///
+/// Esta clase es un StatefulWidget que muestra la primera página de la aplicación.
+/// Se utiliza para inicializar y mantener el estado de la página.
 class PrimeraPagina extends StatefulWidget {
   PrimeraPagina({super.key});
 
@@ -11,6 +15,7 @@ class PrimeraPagina extends StatefulWidget {
   State<PrimeraPagina> createState() => _PrimeraPaginaState();
 }
 
+/// Clase que representa el estado de la primera página de la aplicación.
 class _PrimeraPaginaState extends State<PrimeraPagina> {
   int _selectedIndex = 2;
   Color? _selectedItemColor = Colors.greenAccent[400];  // Color inicial para el ítem Home
@@ -22,6 +27,19 @@ class _PrimeraPaginaState extends State<PrimeraPagina> {
     ListaProductos()
   ];
 
+  /// Navega a la opción seleccionada en la barra inferior y actualiza el color del ítem seleccionado.
+  ///
+  /// El parámetro [index] indica el índice de la opción seleccionada.
+  /// Los valores posibles para [index] son:
+  ///   - 0: "Lista de la compra"
+  ///   - 1: "Recetas"
+  ///   - 2: "Inicio"
+  ///   - 3: "Productos"
+  ///
+  /// Ejemplo de uso:
+  /// ```dart
+  /// _navigateBottomBar(2); // Navega a la opción "Inicio" y actualiza el color del ítem seleccionado.
+  /// ```
   void _navigateBottomBar(int index){
     setState(() {
       _selectedIndex = index;

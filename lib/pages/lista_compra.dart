@@ -8,6 +8,12 @@ import 'dart:async';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:desperdiciocero/assets/products_data.dart';
 
+/// Clase que representa una lista de compra.
+///
+/// Esta clase es un StatefulWidget que se utiliza para crear una lista de compra en la aplicación.
+///
+/// Para utilizar esta clase, se debe instanciar un objeto de tipo [ListaCompra] y pasarle una clave [key].
+/// Luego, se debe llamar al método [createState] para obtener el estado de la lista de compra.
 class ListaCompra extends StatefulWidget {
   ListaCompra({super.key});
 
@@ -15,6 +21,7 @@ class ListaCompra extends StatefulWidget {
   ListaCompraState createState() => ListaCompraState();
 }
 
+/// Clase que representa el estado de la página de la lista de compra.
 class ListaCompraState extends State<ListaCompra> {
   String _sortField = 'Nombre';
   String _sortOrder = 'Ascendente';
@@ -36,18 +43,46 @@ class ListaCompraState extends State<ListaCompra> {
     super.dispose();
   }
 
+  /// Actualiza el estado de la conexión.
+  ///
+  /// Esta función se encarga de actualizar el estado de la conexión a Internet.
+  /// Recibe una lista de resultados de conectividad y verifica el primer resultado.
+  /// Si el resultado es `ConnectivityResult.none`, muestra un `SnackBar` en la pantalla
+  /// indicando que no hay conexión a Internet y que los datos se sincronizarán automáticamente
+  /// cuando se restablezca la conexión.
+  ///
+  /// Parámetros:
+  /// - `results`: Lista de resultados de conectividad.
+  ///
+  /// Ejemplo de uso:
+  /// ```dart
+  /// _updateConnectionStatus(results);
+  /// ```
   void _updateConnectionStatus(List<ConnectivityResult> results) async {
     ConnectivityResult result = results.first;
     if (result == ConnectivityResult.none) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('No hay conexión a Internet. Los datos se sincronizarán automáticamente cuando se restablezca la conexión.'),
-          duration: Duration(seconds: 5),
+          duration: Duration(seconds: 2),
         ),
       );
     }
   }
 
+  /// Elimina un elemento de la lista de la compra.
+  ///
+  /// Este método elimina un elemento de la lista de la compra identificado por su [itemId].
+  /// Si el elemento se elimina correctamente, no se produce ninguna excepción.
+  /// Si ocurre algún error durante la eliminación, se muestra una notificación de error en la pantalla.
+  ///
+  /// Parámetros:
+  /// - [itemId]: El ID del elemento que se desea eliminar.
+  ///
+  /// Ejemplo de uso:
+  /// ```dart
+  /// await _deleteItem('123456');
+  /// ```
   Future<void> _deleteItem(String itemId) async {
     try {
       FirebaseFirestore.instance.collection('shopping_list').doc(itemId).delete();
@@ -61,6 +96,25 @@ class ListaCompraState extends State<ListaCompra> {
     }
   }
 
+  /// Mueve un producto de la lista de la compra a la lista de productos comprados.
+  ///
+  /// Parámetros:
+  /// - `itemId`: El ID del producto en la lista de la compra.
+  /// - `name`: El nombre del producto a mover.
+  ///
+  /// Retorna:
+  /// Un `Future` que representa la finalización de la operación.
+  ///
+  /// Excepciones:
+  /// - `Exception`: Si ocurre un error al mover el producto a comprados.
+  ///
+  /// Descripción:
+  /// Esta función se utiliza para mover un producto de la lista de la compra a la lista de productos comprados.
+  /// Primero, se obtiene el token de usuario utilizando la clase `Utils`. Luego, se verifica si el token no es nulo.
+  /// Si el token no es nulo, se accede a la colección "purchased_products" en Firestore y se agrega un nuevo documento con el nombre del producto y el token de usuario.
+  /// A continuación, se elimina el documento correspondiente al producto en la colección "shopping_list" en Firestore.
+  /// Finalmente, se muestra un mensaje emergente en la interfaz de usuario indicando que el producto ha sido movido a comprados.
+  /// Si ocurre algún error durante el proceso, se muestra un mensaje emergente de error.
   Future<void> _moveToPurchased(String itemId, String name) async {
     final userToken = await Utils().getUserToken();
 
@@ -91,6 +145,18 @@ class ListaCompraState extends State<ListaCompra> {
     }
   }
 
+  /// Muestra un diálogo para editar un producto en la lista de compras.
+  ///
+  /// Este método muestra un diálogo modal que permite al usuario editar el nombre de un producto en la lista de compras.
+  /// El diálogo contiene un campo de texto donde se puede ingresar el nuevo nombre del producto.
+  /// Al hacer clic en el botón "Guardar", se actualiza el nombre del producto en la base de datos y se muestra un mensaje de confirmación.
+  /// Si ocurre algún error durante el proceso de actualización, se muestra un mensaje de error.
+  ///
+  /// - Parameters:
+  ///   - context: El contexto de la aplicación.
+  ///   - productId: El ID del producto que se va a editar.
+  ///   - currentName: El nombre actual del producto.
+  /// - Returns: Una [Future] que representa la finalización de la operación.
   Future<void> _editItem(BuildContext context, String productId, String currentName) async {
     TextEditingController nameController = TextEditingController(text: currentName);
 
@@ -154,6 +220,14 @@ class ListaCompraState extends State<ListaCompra> {
     );
   }
 
+  /// Muestra un diálogo modal con un indicador de progreso circular y un mensaje de "Procesando...".
+  /// Este diálogo se utiliza para indicar al usuario que se está realizando una tarea en segundo plano.
+  /// El diálogo no se puede cerrar tocando fuera de él, ya que [barrierDismissible] está establecido en `false`.
+  ///
+  /// Ejemplo de uso:
+  /// ```dart
+  /// _showLoadingDialog();
+  /// ```
   void _showLoadingDialog() {
     showDialog(
       context: scaffoldKey.currentContext!,

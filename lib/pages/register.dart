@@ -4,20 +4,34 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+/// Clase de pantalla de registro.
+///
+/// Esta clase es un StatefulWidget que representa la pantalla de registro en la aplicación.
 class RegisterScreen extends StatefulWidget {
   @override
   _RegisterScreenState createState() => _RegisterScreenState();
 }
 
+/// Clase de estado de la pantalla de registro.
 class _RegisterScreenState extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
   String email = '';
   String password = '';
   String name = '';
 
+  /// Función para registrar un usuario.
+  ///
+  /// Esta función valida el formulario y realiza las siguientes acciones:
+  /// - Verifica si el correo electrónico ya está registrado en la base de datos.
+  /// - Si el correo no está registrado, crea un nuevo usuario en Firebase Auth.
+  /// - Obtiene el token de usuario desde SharedPreferences.
+  /// - Guarda los datos del usuario en Firestore sin sobrescribir los datos existentes.
+  /// - Navega a la pantalla de perfil.
+  /// - Si ocurre un error durante el registro, muestra un diálogo de error.
+  /// - Si el correo ya está registrado, muestra un diálogo de error.
   void register() async {
     if (_formKey.currentState!.validate()) {
-      // Verificar si el correo ya está registrado
+      // Verifica si el correo ya está registrado
       final QuerySnapshot result = await FirebaseFirestore.instance
         .collection('users')
         .where('email', isEqualTo: email)
@@ -26,16 +40,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
       if (result.docs.isEmpty) {
         try {
-          // Crear usuario en Firebase Auth
+          // Crea usuario en Firebase Auth
           await FirebaseAuth.instance.createUserWithEmailAndPassword(
             email: email,
             password: password,
           );
-          // Obtener el userToken desde SharedPreferences
+          // Obtiene el userToken desde SharedPreferences
           final SharedPreferences prefs = await SharedPreferences.getInstance();
           String? userToken = prefs.getString('userToken');
 
-          // Guardar los datos del usuario en Firestore sin actualizar los datos que ya existían
+          // Guarda los datos del usuario en Firestore sin actualizar los datos que ya existían
           await FirebaseFirestore.instance.collection('users').doc(userToken).set({
             'name': name,
             'email': email,

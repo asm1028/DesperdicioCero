@@ -5,9 +5,21 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 
+/// Esta clase representa la página de productos comprados.
 class ProductosComprados extends StatelessWidget {
   ProductosComprados({super.key});
 
+  /// Abre un diálogo para editar un producto.
+  ///
+  /// Muestra un diálogo modal que permite al usuario editar un producto.
+  /// El diálogo contiene un campo de texto para el nombre del producto,
+  /// un selector de fecha de caducidad y un selector de días adicionales.
+  /// Al guardar los cambios, el producto se agrega a la base de datos "products" y
+  /// se elimina de la base de datos "purchased_products".
+  ///
+  /// - `context`: El contexto de la aplicación.
+  /// - `productId`: El ID del producto a editar.
+  /// - `currentName`: El nombre actual del producto.
   void _editProduct(BuildContext context, String productId, String currentName) async {
     TextEditingController nameController = TextEditingController(text: currentName);
     DateTime selectedDate = DateTime.now(); // Fecha por defecto
@@ -125,6 +137,18 @@ class ProductosComprados extends StatelessWidget {
     );
   }
 
+  /// Elimina un producto de la base de datos.
+  ///
+  /// Este método elimina un producto de la colección "purchased_products" en la base de datos de Firebase.
+  ///
+  /// Parámetros:
+  ///  - [context]: El contexto de la aplicación.
+  ///  - [productId]: El ID del producto que se desea eliminar.
+  ///
+  /// Ejemplo de uso:
+  /// ```dart
+  /// _deleteProduct(context, '123456789');
+  /// ```
   void _deleteProduct(BuildContext context, String productId) async {
     try {
       FirebaseFirestore.instance.collection('purchased_products').doc(productId).delete();

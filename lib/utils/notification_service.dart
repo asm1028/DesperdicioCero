@@ -3,10 +3,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 
+/// Clase que proporciona servicios de notificación.
 class NotificationService {
+  /// Plugin de notificaciones locales de Flutter.
   static final FlutterLocalNotificationsPlugin _notificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
+  /// Inicializa el servicio de notificaciones.
   static void initialize() {
     final InitializationSettings initializationSettings =
         InitializationSettings(
@@ -17,6 +20,11 @@ class NotificationService {
     _configureDailyCheck();
   }
 
+  /// Muestra una notificación.
+  ///
+  /// - [id]: El ID de la notificación.
+  /// - [title]: El título de la notificación.
+  /// - [body]: El cuerpo de la notificación.
   static Future<void> showNotification(int id, String title, String body) async {
     await _notificationsPlugin.show(
       id,
@@ -33,6 +41,7 @@ class NotificationService {
     );
   }
 
+  /// Configura la comprobación diaria.
   static Future<void> _configureDailyCheck() async {
     await AndroidAlarmManager.initialize();
     await AndroidAlarmManager.periodic(
@@ -42,6 +51,7 @@ class NotificationService {
     );
   }
 
+  /// Comprueba las fechas de caducidad.
   static Future<void> checkExpiryDates() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String? userToken = prefs.getString('userToken');

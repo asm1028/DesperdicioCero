@@ -4,9 +4,25 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+/// Página de ajustes de usuario.
 class UserSettings extends StatelessWidget {
   UserSettings({super.key});
 
+  /// Actualiza el umbral con el nuevo valor proporcionado por el usuario.
+  ///
+  /// Muestra un diálogo de alerta que permite al usuario ingresar un nuevo valor para el umbral.
+  /// Una vez que el usuario presiona el botón "Guardar", se valida el nuevo valor y se guarda en las preferencias compartidas.
+  /// Además, se actualiza la variable en tiempo real utilizando el proveedor de temas.
+  ///
+  /// - `context`: El contexto de la aplicación.
+  /// - `key`: La clave para identificar el umbral en las preferencias compartidas.
+  /// - `currentValue`: El valor actual del umbral.
+  ///
+  /// Ejemplo de uso:
+  ///
+  /// ```dart
+  /// await updateThreshold(context, 'umbral', 10);
+  /// ```
   Future<void> updateThreshold(BuildContext context, String key, int currentValue) async {
     final TextEditingController controller = TextEditingController(text: currentValue.toString());
     return showDialog(

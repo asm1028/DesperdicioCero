@@ -14,6 +14,7 @@ class Productos extends StatefulWidget {
   ProductosState createState() => ProductosState();
 }
 
+/// Esta clase representa el estado de la página de añadir productos de forma manual.
 class ProductosState extends State<Productos> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
@@ -25,13 +26,26 @@ class ProductosState extends State<Productos> {
     super.initState();
   }
 
-  /// Agrega un producto a la base de datos.
+
+  /// Añade un producto a la base de datos.
   ///
-  /// Esta función recibe el nombre del producto y la fecha de expiración como parámetros.
-  /// Verifica si el formulario es válido y si el token de usuario no es nulo.
-  /// Luego, agrega el producto a la colección 'products' en la base de datos de Firebase.
-  /// Muestra un mensaje emergente con el nombre del producto y su fecha de expiración.
-  /// Finalmente, limpia los campos del formulario.
+  /// Este método toma el nombre del producto y la fecha de caducidad como parámetros.
+  /// Primero, obtiene el token de usuario almacenado en las preferencias compartidas.
+  /// Luego, valida el formulario y el token de usuario.
+  /// Si el formulario es válido y se ha proporcionado un token de usuario, se agrega el producto a la colección 'products' en Firestore.
+  /// El nombre del producto se recorta y se guarda junto con la fecha de caducidad y el token de usuario.
+  /// A continuación, se muestra una notificación emergente con el nombre del producto y la fecha de caducidad.
+  /// Por último, se limpian los campos del formulario.
+  /// Si ocurre algún error, se muestra una notificación emergente indicando que algo salió mal.
+  ///
+  /// Parámetros:
+  ///   - [name]: El nombre del producto.
+  ///   - [expirationDate]: La fecha de caducidad del producto.
+  ///
+  /// Ejemplo de uso:
+  /// ```dart
+  /// addProduct('Manzanas', DateTime.now());
+  /// ```
   void addProduct(String name, DateTime expirationDate) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String? userToken = prefs.getString('userToken');
@@ -63,6 +77,13 @@ class ProductosState extends State<Productos> {
     }
   }
 
+  /// Muestra un diálogo de selección de fecha y actualiza la fecha seleccionada.
+  ///
+  /// Este método muestra un diálogo de selección de fecha utilizando el [showDatePicker]
+  /// y actualiza la fecha seleccionada en el estado del widget.
+  ///
+  /// - `context`: El contexto de la aplicación.
+  ///
   void _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -77,6 +98,11 @@ class ProductosState extends State<Productos> {
     }
   }
 
+  /// Limpia los campos del formulario.
+  ///
+  /// Esta función se encarga de limpiar los campos del formulario en la página de productos.
+  /// Limpia el campo de nombre (_nameController) y establece la fecha seleccionada (_selectedDate)
+  /// como la fecha actual.
   void _clearFields() {
     _nameController.clear();
     setState(() {

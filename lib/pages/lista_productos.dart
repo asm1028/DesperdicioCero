@@ -5,6 +5,17 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 
+/// Clase que representa la pantalla de la lista de productos.
+///
+/// Esta clase es un StatefulWidget, lo que significa que puede cambiar su estado interno.
+///
+/// Para utilizar esta clase, se debe proporcionar una clave [key] opcional al constructor.
+///
+/// Ejemplo de uso:
+///
+/// ```dart
+/// ListaProductos(key: UniqueKey());
+/// ```
 class ListaProductos extends StatefulWidget {
   ListaProductos({super.key});
 
@@ -12,6 +23,7 @@ class ListaProductos extends StatefulWidget {
   ListaProductosState createState() => ListaProductosState();
 }
 
+/// Clase que representa el estado de la página de la lista de productos.
 class ListaProductosState extends State<ListaProductos> {
   // Valores inciales de los filtros y orden
   String _sortField = 'Fecha de caducidad';
@@ -23,7 +35,23 @@ class ListaProductosState extends State<ListaProductos> {
 
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
-  // Función para eliminar un producto
+  /// Elimina un producto de la base de datos y muestra mensajes de confirmación al usuario.
+  ///
+  /// El método `_deleteProduct` elimina un producto de la base de datos utilizando el ID del producto proporcionado.
+  /// Si el token de usuario no se puede obtener, se muestra un mensaje de error.
+  /// Se muestra un diálogo de confirmación al usuario antes de realizar la eliminación.
+  /// Si el usuario confirma la eliminación, se muestra un diálogo de carga y se realiza la eliminación del producto.
+  /// Si el producto no existe en la base de datos, se muestra un mensaje de error.
+  /// Si ocurre algún error durante el proceso de eliminación, se muestra un mensaje de error.
+  ///
+  /// Parámetros:
+  ///  - `context`: El contexto de la aplicación.
+  ///  - `productId`: El ID del producto a eliminar.
+  ///
+  /// Ejemplo de uso:
+  /// ```dart
+  /// _deleteProduct(context, '123456');
+  /// ```
   void _deleteProduct(BuildContext context, String productId) async {
     final productRef = FirebaseFirestore.instance.collection('products').doc(productId);
     final userToken = await Utils().getUserToken();
@@ -131,6 +159,21 @@ class ListaProductosState extends State<ListaProductos> {
     );
   }
 
+  /// Abre un diálogo para editar un producto.
+  ///
+  /// Muestra un diálogo modal que permite al usuario editar el nombre y la fecha de caducidad de un producto.
+  /// El diálogo contiene un campo de texto para el nombre del producto y un botón para seleccionar la fecha de caducidad.
+  /// Al guardar los cambios, se actualiza el producto en la base de datos y se muestra un mensaje de éxito o error.
+  ///
+  /// - `context`: El contexto de la aplicación.
+  /// - `productId`: El ID del producto a editar.
+  /// - `currentName`: El nombre actual del producto.
+  /// - `currentExpirationDate`: La fecha de caducidad actual del producto.
+  ///
+  /// Ejemplo de uso:
+  /// ```dart
+  /// _editProduct(context, '12345', 'Producto A', DateTime.now());
+  /// ```
   Future<void> _editProduct(BuildContext context, String productId, String currentName, DateTime currentExpirationDate) async {
     TextEditingController nameController = TextEditingController(text: currentName);
     DateTime selectedDate = currentExpirationDate;
@@ -215,7 +258,16 @@ class ListaProductosState extends State<ListaProductos> {
     );
   }
 
-  // Función que muestra un diálogo de carga
+  /// Muestra un diálogo de carga en la pantalla.
+  ///
+  /// Este método muestra un diálogo de carga en la pantalla actual. El diálogo
+  /// contiene un indicador de progreso circular y un mensaje de "Procesando...".
+  /// El diálogo es modal, lo que significa que el usuario no puede interactuar
+  /// con la pantalla subyacente mientras el diálogo está visible.
+  ///
+  /// El diálogo se muestra utilizando el contexto proporcionado por la clave
+  /// `scaffoldKey`. Asegúrese de que `scaffoldKey` no sea nulo antes de llamar
+  /// a este método.
   void _showLoadingDialog() {
     showDialog(
       context: scaffoldKey.currentContext!,
